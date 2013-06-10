@@ -50,11 +50,11 @@ public class GameScreen implements Screen{
 	private Stage ActiveScreen;
 	
 	public GameScreen() {
+		UILayer = new Stage(1024, 600, true);
 		InputMultiplexer input = new InputMultiplexer();
-		input.addProcessor(new UIProcessor());
+		input.addProcessor(UILayer);
 		input.addProcessor(new GameProcessor());
 		Gdx.input.setInputProcessor(input);
-		UILayer = new Stage(1024, 600, true);
 		UItable = new UITable();
 		UItable.setFillParent(true);
 		UILayer.addActor(UItable);
@@ -65,6 +65,11 @@ public class GameScreen implements Screen{
 			GameTest.fillRectangle(0, 212, 1024, 600);
 		ActiveScreen.addActor(new Image(new SpriteDrawable(new Sprite(new Texture(GameTest), 0, 212, 1024, 600)), Scaling.fill));
 		GameTest.dispose();
+	}
+	
+	public void switchScreen(int screen) {
+		assert(screen >= 0 && screen <= 3);
+		ActiveScreen = Screen[screen];
 	}
 
 
@@ -126,54 +131,6 @@ public class GameScreen implements Screen{
 		}
 		ActiveScreen = null;
 		UILayer.dispose();
-	}
-	
-	private final class UIProcessor implements InputProcessor {
-
-		@Override
-		public boolean keyDown(int keycode) {
-			return false;
-		}
-
-		@Override
-		public boolean keyUp(int keycode) {
-			return false;
-		}
-
-		@Override
-		public boolean keyTyped(char character) {
-			return false;
-		}
-
-		@Override
-		public boolean touchDown(int screenX, int screenY, int pointer,
-				int button) {
-			return UILayer.touchDown(screenX, screenY, pointer, button);
-		}
-
-		@Override
-		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-			// TODO Auto-generated method stub
-			return UILayer.touchUp(screenX, screenY, pointer, button);
-		}
-
-		@Override
-		public boolean touchDragged(int screenX, int screenY, int pointer) {
-			// TODO Auto-generated method stub
-			return UILayer.touchDragged(screenX, screenY, pointer);
-		}
-
-		@Override
-		public boolean mouseMoved(int screenX, int screenY) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean scrolled(int amount) {
-			// TODO Auto-generated method stub
-			return false;
-		}
 	}
 	
 	private final class GameProcessor implements InputProcessor {
