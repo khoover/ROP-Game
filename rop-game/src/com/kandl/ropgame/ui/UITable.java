@@ -4,9 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.kandl.ropgame.*;
 
@@ -40,6 +42,37 @@ public class UITable extends Table {
 			Scene[i] = new Button((Drawable) null, null, null);
 			Scenes.add(Scene[i]);
 		}
+		
+		//necessary because java hates everyone
+		Scene[0].addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				GameScreen.switchScreen(0);
+			}
+		});
+		Scene[1].addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				GameScreen.switchScreen(1);
+			}
+		});
+		Scene[2].addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				GameScreen.switchScreen(2);
+			}
+		});
+		Scene[3].addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				GameScreen.switchScreen(3);
+			}
+		});
+		
 		Tab = new Image();
 		ExpandedOrder = null;
 		Pixmap test = new Pixmap(128, 128, Pixmap.Format.RGB888);

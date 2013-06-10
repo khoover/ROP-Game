@@ -47,7 +47,8 @@ public class GameScreen implements Screen{
 	private final Stage UILayer;
 	private final UITable UItable;
 	private final Stage[] Screen = new Stage[4];
-	private Stage ActiveScreen;
+	private static Stage ActiveScreen;
+	public static GameScreen screen;
 	
 	public GameScreen() {
 		UILayer = new Stage(1024, 600, true);
@@ -67,15 +68,13 @@ public class GameScreen implements Screen{
 		GameTest.dispose();
 	}
 	
-	public void switchScreen(int screen) {
+	public static void switchScreen(int screen) {
 		assert(screen >= 0 && screen <= 3);
-		ActiveScreen = Screen[screen];
+		ActiveScreen = GameScreen.screen.Screen[screen];
 	}
-
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
 		ActiveScreen.act(delta);
 		UILayer.act(delta);
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -87,7 +86,6 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 		final int UIlength = (float) width / (float) height < 1.7 ? 1280 : 1024;
 		final int UIheight = UIlength == 1280 ? 800 : 600;
 		if (UIheight != UILayer.getHeight()) {

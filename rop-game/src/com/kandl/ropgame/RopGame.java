@@ -11,6 +11,7 @@ public class RopGame extends Game {
 	@Override
 	public void create() {
 		gameScreen = new GameScreen();
+		GameScreen.screen = gameScreen;
 		setScreen(gameScreen);
 	}
 
