@@ -22,6 +22,8 @@ package com.kandl.ropgame;
  */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -32,6 +34,11 @@ import com.badlogic.gdx.utils.Scaling;
 import com.kandl.ropgame.ui.UITable;
 
 public class GameScreen implements Screen{
+	public static final int FRONT = 0;
+	public static final int INGREDIENTS = 1;
+	public static final int GRILL = 2;
+	public static final int ASSEMBLY = 3;
+	
 	private final Stage UILayer;
 	private final UITable UItable;
 	private final Stage GameLayer;
@@ -44,8 +51,13 @@ public class GameScreen implements Screen{
 	 */
 	
 	public GameScreen() {
+		InputMultiplexer input = new InputMultiplexer();
+		input.addProcessor(new UIProcessor());
+		input.addProcessor(new GameProcessor());
+		Gdx.input.setInputProcessor(input);
 		UILayer = new Stage(1024, 600, true);
 		UItable = new UITable();
+		UItable.setFillParent(true);
 		UILayer.addActor(UItable);
 		GameLayer = new Stage(1024, 600, true, UILayer.getSpriteBatch());
 		Pixmap GameTest = new Pixmap(1024, 1024, Pixmap.Format.RGBA8888);
@@ -53,6 +65,12 @@ public class GameScreen implements Screen{
 			GameTest.fillRectangle(0, 212, 1024, 600);
 		GameLayer.addActor(new Image(new SpriteDrawable(new Sprite(new Texture(GameTest), 0, 212, 1024, 600)), Scaling.fill));
 		GameTest.dispose();
+		UILayer.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println("Hit");
+			}
+		});
 	}
 
 
@@ -63,8 +81,9 @@ public class GameScreen implements Screen{
 		UILayer.act(delta);
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		GameLayer.draw();
+		//GameLayer.draw();
 		UILayer.draw();
+		UITable.drawDebug(UILayer);
 	}
 
 	@Override
@@ -116,5 +135,105 @@ public class GameScreen implements Screen{
 	
 	public Actor GameHit(float stageX, float stageY, boolean touchability) {
 		return GameLayer.hit(stageX, stageY, touchability);
+	}
+	
+	private final class UIProcessor implements InputProcessor {
+
+		@Override
+		public boolean keyDown(int keycode) {
+			return false;
+		}
+
+		@Override
+		public boolean keyUp(int keycode) {
+			return false;
+		}
+
+		@Override
+		public boolean keyTyped(char character) {
+			return false;
+		}
+
+		@Override
+		public boolean touchDown(int screenX, int screenY, int pointer,
+				int button) {
+			return UILayer.touchDown(screenX, screenY, pointer, button);
+		}
+
+		@Override
+		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+			// TODO Auto-generated method stub
+			return UILayer.touchUp(screenX, screenY, pointer, button);
+		}
+
+		@Override
+		public boolean touchDragged(int screenX, int screenY, int pointer) {
+			// TODO Auto-generated method stub
+			return UILayer.touchDragged(screenX, screenY, pointer);
+		}
+
+		@Override
+		public boolean mouseMoved(int screenX, int screenY) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean scrolled(int amount) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+	}
+	
+	private final class GameProcessor implements InputProcessor {
+
+		@Override
+		public boolean keyDown(int keycode) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean keyUp(int keycode) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean keyTyped(char character) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean touchDown(int screenX, int screenY, int pointer,
+				int button) {
+			// TODO Auto-generated method stub
+			return GameLayer.touchDown(screenX, screenY, pointer, button);
+		}
+
+		@Override
+		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+			// TODO Auto-generated method stub
+			return GameLayer.touchUp(screenX, screenY, pointer, button);
+		}
+
+		@Override
+		public boolean touchDragged(int screenX, int screenY, int pointer) {
+			// TODO Auto-generated method stub
+			return GameLayer.touchDragged(screenX, screenY, pointer);
+		}
+
+		@Override
+		public boolean mouseMoved(int screenX, int screenY) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean scrolled(int amount) {
+			// TODO Auto-generated method stub
+			return false;
+		}
 	}
 }
