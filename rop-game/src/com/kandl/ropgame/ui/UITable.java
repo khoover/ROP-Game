@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.kandl.ropgame.*;
 
 /** A table responsible for the entire UI layout, and all assets contained by it.
@@ -33,8 +34,12 @@ public class UITable extends Table {
 		// test nulls
 		OrderLine = new Image();
 		Score = null;
-		Scenes = null;
+		Scenes = new ButtonGroup();
 		Scene = new Button[4];
+		for (int i = 0; i < 4; ++i) {
+			Scene[i] = new Button((Drawable) null, null, null);
+			Scenes.add(Scene[i]);
+		}
 		Tab = new Image();
 		ExpandedOrder = null;
 		Pixmap test = new Pixmap(128, 128, Pixmap.Format.RGB888);
@@ -51,20 +56,20 @@ public class UITable extends Table {
 		test.dispose();
 		
 		//actual layout now
-		this.row().height(135);
-		this.add(OrderLine).expandX().fill();
-		this.add(Tab).width(330).fill();
-		this.row().expandY();
-		this.add(Clock).expandX().bottom().left().padBottom(10).padLeft(10);
-		this.add(ExpandedOrder).width(330).fill();
+		row().height(135);
+		add(OrderLine).expandX().fill();
+		add(Tab).width(330).fill();
+		row().expandY();
+		add(Clock).expandX().bottom().left().padBottom(10).padLeft(10);
+		add(ExpandedOrder).width(330).fill();
 	}
 	
 	public void resize(float width, float height) {
 		int width1 = (int) (330 * (height / 600f));
 		int height1 = (int) (135 * (height / 600f));
-		this.getCell(Tab).size(width1, height1).fill();
-		this.getCell(ExpandedOrder).width(width1).fill();
-		this.getCell(OrderLine).height(height1).fill();
-		this.invalidateHierarchy();
+		getCell(Tab).size(width1, height1).fill();
+		getCell(ExpandedOrder).width(width1).fill();
+		getCell(OrderLine).height(height1).fill();
+		invalidateHierarchy();
 	}
 }
