@@ -35,7 +35,6 @@ public class GameScreen implements Screen{
 	private final Stage UILayer;
 	private final UITable UItable;
 	private final Stage GameLayer;
-	private Image UIImage;
 	
 	/* NOTE:
 	 * Figure out how viewport should be set for UI layer (ie. scaling)
@@ -74,19 +73,7 @@ public class GameScreen implements Screen{
 		final int UIlength = (float) width / (float) height < 1.7 ? 1280 : 1024;
 		final int UIheight = UIlength == 1280 ? 800 : 600;
 		if (UIheight != UILayer.getHeight()) {
-			UILayer.getRoot().removeActor(UIImage);
-			Pixmap UItest = new Pixmap(2048, 2048, Pixmap.Format.RGBA8888);
-				UItest.setColor(Color.WHITE);
-				final int padX = (2048 - UIlength)/2;
-				final int padY = (2048 - UIheight)/2;
-				UItest.fillRectangle(padX, padY, UIlength, UIheight);
-				UItest.setColor(Color.CLEAR);
-				Pixmap.setBlending(Pixmap.Blending.None);
-				UItest.fillRectangle(padX+100, padY+100, UIlength - 200, UIheight - 200);
-				Pixmap.setBlending(Pixmap.Blending.SourceOver);
-			UIImage = new Image(new SpriteDrawable(new Sprite(new Texture(UItest), padX, padY, UIlength, UIheight)), Scaling.fill);
-			UItest.dispose();
-			UILayer.addActor(UIImage);
+			UItable.resize(UIlength, UIheight);
 		}
 		System.out.println("UI: " + UIlength);
 		UILayer.setViewport(UIlength, UIheight, true);
@@ -122,5 +109,12 @@ public class GameScreen implements Screen{
 		GameLayer.dispose();
 		UILayer.dispose();
 	}
-
+	
+	public Actor UIhit(float stageX, float stageY, boolean touchability) {
+		return UILayer.hit(stageX, stageY, touchability);
+	}
+	
+	public Actor GameHit(float stageX, float stageY, boolean touchability) {
+		return GameLayer.hit(stageX, stageY, touchability);
+	}
 }
