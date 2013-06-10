@@ -46,7 +46,8 @@ public class GameScreen implements Screen{
 	
 	private final Stage UILayer;
 	private final UITable UItable;
-	private final Stage GameLayer;
+	private final Stage[] Screen = new Stage[4];
+	private Stage ActiveScreen;
 	
 	public GameScreen() {
 		InputMultiplexer input = new InputMultiplexer();
@@ -57,29 +58,24 @@ public class GameScreen implements Screen{
 		UItable = new UITable();
 		UItable.setFillParent(true);
 		UILayer.addActor(UItable);
-		GameLayer = new Stage(1024, 600, true, UILayer.getSpriteBatch());
+		for (int i = 0; i < 4; ++i) { Screen[i] = new Stage(1024, 600, true, UILayer.getSpriteBatch()); }
+		ActiveScreen = Screen[0];
 		Pixmap GameTest = new Pixmap(1024, 1024, Pixmap.Format.RGBA8888);
 			GameTest.setColor(Color.RED);
 			GameTest.fillRectangle(0, 212, 1024, 600);
-		GameLayer.addActor(new Image(new SpriteDrawable(new Sprite(new Texture(GameTest), 0, 212, 1024, 600)), Scaling.fill));
+		ActiveScreen.addActor(new Image(new SpriteDrawable(new Sprite(new Texture(GameTest), 0, 212, 1024, 600)), Scaling.fill));
 		GameTest.dispose();
-		UILayer.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("Hit");
-			}
-		});
 	}
 
 
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
-		GameLayer.act(delta);
+		ActiveScreen.act(delta);
 		UILayer.act(delta);
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		//GameLayer.draw();
+		//ActiveScren.draw();
 		UILayer.draw();
 		UITable.drawDebug(UILayer);
 	}
@@ -95,7 +91,9 @@ public class GameScreen implements Screen{
 		System.out.println("UI: " + UIlength);
 		UILayer.setViewport(UIlength, UIheight, true);
 		final int Gamelength = UIlength == 1280 ? 960 : 1024;
-		GameLayer.setViewport(Gamelength, 600, true);
+		for (Stage s: Screen) {
+			s.setViewport(Gamelength, 600, true);
+		}
 	}
 
 	@Override
@@ -123,7 +121,10 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void dispose() {
-		GameLayer.dispose();
+		for (Stage s: Screen) {
+			s.dispose();
+		}
+		ActiveScreen = null;
 		UILayer.dispose();
 	}
 	
@@ -199,19 +200,19 @@ public class GameScreen implements Screen{
 		public boolean touchDown(int screenX, int screenY, int pointer,
 				int button) {
 			// TODO Auto-generated method stub
-			return GameLayer.touchDown(screenX, screenY, pointer, button);
+			return ActiveScreen.touchDown(screenX, screenY, pointer, button);
 		}
 
 		@Override
 		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 			// TODO Auto-generated method stub
-			return GameLayer.touchUp(screenX, screenY, pointer, button);
+			return ActiveScreen.touchUp(screenX, screenY, pointer, button);
 		}
 
 		@Override
 		public boolean touchDragged(int screenX, int screenY, int pointer) {
 			// TODO Auto-generated method stub
-			return GameLayer.touchDragged(screenX, screenY, pointer);
+			return ActiveScreen.touchDragged(screenX, screenY, pointer);
 		}
 
 		@Override
