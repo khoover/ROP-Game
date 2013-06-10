@@ -21,6 +21,11 @@ package com.kandl.ropgame;
  * so when reflow happens, it'll stretch to take up space. Similarly, bottom row...Oh. Well then...Ah, fuck it, just run with it for now.
  */
 
+/*
+ * Drag and Drop, in scenes.scene2d.util. Will love them, use them for the UI recipes, for making the sandwich...
+ * Really nothing I can't do. Incredibly nice. 
+ */
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -42,13 +47,6 @@ public class GameScreen implements Screen{
 	private final Stage UILayer;
 	private final UITable UItable;
 	private final Stage GameLayer;
-	
-	/* NOTE:
-	 * Figure out how viewport should be set for UI layer (ie. scaling)
-	 * 		- Solved, have two Stages; one for UILayer, the other for game world.
-	 * Figure out how to swap between scenes
-	 * Formalize MVC within the context of the Actor framework (saves me time)
-	 */
 	
 	public GameScreen() {
 		InputMultiplexer input = new InputMultiplexer();
