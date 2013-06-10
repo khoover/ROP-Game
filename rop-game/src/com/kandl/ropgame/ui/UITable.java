@@ -7,10 +7,14 @@ import com.kandl.ropgame.RopGame;
  * 
  * @author Ken Hoover */
 public class UITable extends Table {
+	
 
 	public UITable() {
 		// TODO Auto-generated constructor stub
 		super();
 		if (RopGame.DEBUG) super.debug();
+	}
+	
+	public void resize(int width, int height) {
 	}
 }
