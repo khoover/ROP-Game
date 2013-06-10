@@ -61,7 +61,7 @@ public class GameScreen implements Screen{
 		for (int i = 0; i < 4; ++i) { Screen[i] = new Stage(1024, 600, true, UILayer.getSpriteBatch()); }
 		ActiveScreen = Screen[0];
 		Pixmap GameTest = new Pixmap(1024, 1024, Pixmap.Format.RGBA8888);
-			GameTest.setColor(Color.RED);
+			GameTest.setColor(Color.YELLOW);
 			GameTest.fillRectangle(0, 212, 1024, 600);
 		ActiveScreen.addActor(new Image(new SpriteDrawable(new Sprite(new Texture(GameTest), 0, 212, 1024, 600)), Scaling.fill));
 		GameTest.dispose();
@@ -80,7 +80,7 @@ public class GameScreen implements Screen{
 		UILayer.act(delta);
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		//ActiveScren.draw();
+		ActiveScreen.draw();
 		UILayer.draw();
 		UITable.drawDebug(UILayer);
 	}
