@@ -129,14 +129,6 @@ public class GameScreen implements Screen{
 		UILayer.dispose();
 	}
 	
-	public Actor UIhit(float stageX, float stageY, boolean touchability) {
-		return UILayer.hit(stageX, stageY, touchability);
-	}
-	
-	public Actor GameHit(float stageX, float stageY, boolean touchability) {
-		return GameLayer.hit(stageX, stageY, touchability);
-	}
-	
 	private final class UIProcessor implements InputProcessor {
 
 		@Override
