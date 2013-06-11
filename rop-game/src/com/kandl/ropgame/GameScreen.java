@@ -50,11 +50,11 @@ public class GameScreen implements Screen{
 	private final Stage[] Screen = new Stage[4];
 	private static Stage ActiveScreen;
 	public static GameScreen screen;
-	private final Image background;
+	private Image background;
 	
 	public GameScreen() {
 		//Create UI, input processors
-		UILayer = new Stage(1024, 600, true);
+		UILayer = new Stage(1280, 800, true);
 		InputMultiplexer input = new InputMultiplexer();
 		input.addProcessor(UILayer);
 		input.addProcessor(new GameProcessor());
@@ -64,19 +64,35 @@ public class GameScreen implements Screen{
 		UILayer.addActor(UItable);
 		
 		//Create scenes
-		for (int i = 0; i < 4; ++i) { Screen[i] = new Stage(1024, 600, true, UILayer.getSpriteBatch()); }
+		Screen[0] = createFrontScreen();
+		Screen[1] = createMakeScreen();
+		Screen[2] = createGrillScreen();
+		Screen[3] = createCutScreen();
+		
 		ActiveScreen = Screen[0];
-		Pixmap GameTest = new Pixmap(2048, 2048, Pixmap.Format.RGBA8888);
-			GameTest.setColor(Color.BLUE);
-			GameTest.fill();
-			GameTest.setColor(Color.YELLOW);
-			GameTest.fillRectangle(0, 212, 1024, 600);
-		background = new Image(new SpriteDrawable(new Sprite(new Texture(GameTest), 0, 212, 2048, 600)), Scaling.fill);
-		GameTest.dispose();
 		ActiveScreen.addActor(background);
+	}
+
+	private Stage createCutScreen() {
+		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
+		return scene;
+	}
+	
+	private Stage createGrillScreen() {
+		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
+		return scene;
+	}
+
+	private Stage createMakeScreen() {
+		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
+		return scene;
+	}
+
+	private Stage createFrontScreen() {
+		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
 		
 		// Set listener that moves front world
-		Screen[0].addListener(new DragListener() {
+		scene.addListener(new DragListener() {
 			@Override
 			public void drag (InputEvent event, float x, float y, int pointer) {
 				float dx = -getDeltaX();
@@ -85,8 +101,17 @@ public class GameScreen implements Screen{
 				else Screen[0].addAction(Actions.moveBy(dx, 0, 0));
 			}
 		});
+		
+		Pixmap GameTest = new Pixmap(2048, 2048, Pixmap.Format.RGBA8888);
+			GameTest.setColor(Color.BLUE);
+			GameTest.fill();
+			GameTest.setColor(Color.YELLOW);
+			GameTest.fillRectangle(0, 0, 1024, 800);
+		background = new Image(new SpriteDrawable(new Sprite(new Texture(GameTest), 0, 0, 2048, 800)), Scaling.fill);
+		GameTest.dispose();
+		return scene;
 	}
-	
+
 	public static void switchScreen(int screen) {
 		assert(screen >= 0 && screen <= 3);
 		ActiveScreen = GameScreen.screen.Screen[screen];
@@ -102,7 +127,7 @@ public class GameScreen implements Screen{
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		ActiveScreen.draw();
 		UILayer.draw();
-		UITable.drawDebug(UILayer);
+		if (RopGame.DEBUG) UITable.drawDebug(UILayer);
 	}
 
 	@Override
@@ -112,11 +137,10 @@ public class GameScreen implements Screen{
 		if (UIheight != UILayer.getHeight()) {
 			UItable.resize(UIlength, UIheight);
 		}
-		System.out.println("UI: " + UIlength);
 		UILayer.setViewport(UIlength, UIheight, true);
-		final int Gamelength = UIlength == 1280 ? 960 : 1024;
+		final int Gamelength = UIlength == 1280 ? 1280 : 1366;
 		for (Stage s: Screen) {
-			s.setViewport(Gamelength, 600, true);
+			s.setViewport(Gamelength, 800, true);
 		}
 	}
 
@@ -150,6 +174,14 @@ public class GameScreen implements Screen{
 		}
 		ActiveScreen = null;
 		UILayer.dispose();
+	}
+	
+	public Stage getScreen(int stage) {
+		return Screen[stage];
+	}
+	
+	public Stage getUI() {
+		return UILayer;
 	}
 	
 	private final class GameProcessor implements InputProcessor {
