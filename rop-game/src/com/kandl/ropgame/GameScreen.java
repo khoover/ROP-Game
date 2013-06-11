@@ -33,6 +33,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Scaling;
@@ -49,8 +50,10 @@ public class GameScreen implements Screen{
 	private final Stage[] Screen = new Stage[4];
 	private static Stage ActiveScreen;
 	public static GameScreen screen;
+	private final Image background;
 	
 	public GameScreen() {
+		//Create UI, input processors
 		UILayer = new Stage(1024, 600, true);
 		InputMultiplexer input = new InputMultiplexer();
 		input.addProcessor(UILayer);
@@ -59,13 +62,29 @@ public class GameScreen implements Screen{
 		UItable = new UITable();
 		UItable.setFillParent(true);
 		UILayer.addActor(UItable);
+		
+		//Create scenes
 		for (int i = 0; i < 4; ++i) { Screen[i] = new Stage(1024, 600, true, UILayer.getSpriteBatch()); }
 		ActiveScreen = Screen[0];
-		Pixmap GameTest = new Pixmap(1024, 1024, Pixmap.Format.RGBA8888);
+		Pixmap GameTest = new Pixmap(2048, 2048, Pixmap.Format.RGBA8888);
+			GameTest.setColor(Color.BLUE);
+			GameTest.fill();
 			GameTest.setColor(Color.YELLOW);
 			GameTest.fillRectangle(0, 212, 1024, 600);
-		ActiveScreen.addActor(new Image(new SpriteDrawable(new Sprite(new Texture(GameTest), 0, 212, 1024, 600)), Scaling.fill));
+		background = new Image(new SpriteDrawable(new Sprite(new Texture(GameTest), 0, 212, 2048, 600)), Scaling.fill);
 		GameTest.dispose();
+		ActiveScreen.addActor(background);
+		
+		// Set listener that moves front world
+		Screen[0].addListener(new DragListener() {
+			@Override
+			public void drag (InputEvent event, float x, float y, int pointer) {
+				float dx = -getDeltaX();
+				if (Screen[0].getRoot().getX() + dx >= 0) Screen[0].addAction(Actions.moveTo(0, 0));
+				else if (Screen[0].getRoot().getX() + dx <= Screen[0].getWidth() - background.getWidth()) Screen[0].addAction(Actions.moveTo(Screen[0].getWidth() - background.getWidth(), 0));
+				else Screen[0].addAction(Actions.moveBy(dx, 0, 0));
+			}
+		});
 	}
 	
 	public static void switchScreen(int screen) {
@@ -75,7 +94,9 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
-		ActiveScreen.act(delta);
+		for (Stage s: Screen) {
+			s.act(delta);
+		}
 		UILayer.act(delta);
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);

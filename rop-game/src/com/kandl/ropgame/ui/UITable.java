@@ -1,8 +1,10 @@
 package com.kandl.ropgame.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,6 +19,7 @@ import com.kandl.ropgame.*;
  * @author Ken Hoover */
 public class UITable extends Table {
 	private final Image OrderLine;
+	private final BitmapFont font;
 	
 	// top right corner stuff
 	private final Label Score;
@@ -24,8 +27,7 @@ public class UITable extends Table {
 	private final ButtonGroup Scenes;
 	private final Image Tab;
 	
-	private final Image ExpandedOrder;
-	
+	private final Image ExpandedOrder;	
 	private final Image Clock;
 
 	public UITable() {
@@ -34,8 +36,9 @@ public class UITable extends Table {
 		if (RopGame.DEBUG) super.debug();
 		
 		// test nulls
+		font = new BitmapFont(Gdx.files.internal("test.fnt"), false);
 		OrderLine = new Image();
-		Score = null;
+		Score = new Label("$12345678.90", new Label.LabelStyle(font, Color.WHITE));
 		Scenes = new ButtonGroup();
 		Scene = new Button[4];
 		for (int i = 0; i < 4; ++i) {
@@ -91,7 +94,7 @@ public class UITable extends Table {
 		//actual layout now
 		row().height(135);
 		add(OrderLine).expandX().fill();
-		add(Tab).width(330).fill();
+		add(Score).width(330).fill();
 		row().expandY();
 		add(Clock).expandX().bottom().left().padBottom(10).padLeft(10);
 		add(ExpandedOrder).width(330).fill();
@@ -100,7 +103,7 @@ public class UITable extends Table {
 	public void resize(float width, float height) {
 		int width1 = (int) (330 * (height / 600f));
 		int height1 = (int) (135 * (height / 600f));
-		getCell(Tab).size(width1, height1).fill();
+		getCell(Score).size(width1, height1).fill();
 		getCell(ExpandedOrder).width(width1).fill();
 		getCell(OrderLine).height(height1).fill();
 		invalidateHierarchy();
