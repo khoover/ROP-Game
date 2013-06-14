@@ -1,22 +1,33 @@
 package com.kandl.ropgame;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class RopGame extends Game {
-	private GameScreen gameScreen;
+	public static GameScreen gameScreen;
+	public static float Score;
 	public static final int WIDTH = 1024;
 	public static final int HEIGHT = 600;
 	public static final boolean DEBUG = true;
+	public static final AssetManager assets = new AssetManager();
 	
 	@Override
 	public void create() {
+		Score = 0;
 		gameScreen = new GameScreen();
-		GameScreen.screen = gameScreen;
 		setScreen(gameScreen);
+		loadAll();
+	}
+	
+	private void loadAll() {
+		assets.load("test.fnt", BitmapFont.class);
+		assets.finishLoading();
 	}
 
 	@Override
 	public void dispose() {
 		gameScreen.dispose();
+		assets.dispose();
 	}
 }

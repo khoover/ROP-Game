@@ -1,6 +1,5 @@
 package com.kandl.ropgame.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,14 +18,16 @@ import com.kandl.ropgame.*;
  * @author Ken Hoover */
 public class UITable extends Table {
 	private final Image OrderLine;
-	private final BitmapFont font;
 	
 	// top right corner stuff
 	private final Label Score;
 	private final Button[] Scene;
 	private final ButtonGroup Scenes;
+	private final Table ButtonTable;
+	private final VerticalGroup RightCorner;
 	private final Image Tab;
 	
+	private final Image RightBackground;
 	private final Image ExpandedOrder;	
 	private final Image Clock;
 
@@ -36,9 +37,11 @@ public class UITable extends Table {
 		if (RopGame.DEBUG) super.debug();
 		
 		// test nulls
-		font = new BitmapFont(Gdx.files.internal("test.fnt"), false);
+		ButtonTable = null;
+		RightCorner = null;
+		RightBackground = null;
 		OrderLine = new Image();
-		Score = new Label("$12345678.90", new Label.LabelStyle(font, Color.WHITE));
+		Score = new Label("$" + String.format("%1$.2f", RopGame.Score), new Label.LabelStyle(RopGame.assets.get("font.fnt", BitmapFont.class), Color.WHITE));
 		Scenes = new ButtonGroup();
 		Scene = new Button[4];
 		for (int i = 0; i < 4; ++i) {
@@ -78,26 +81,21 @@ public class UITable extends Table {
 		
 		Tab = new Image();
 		ExpandedOrder = null;
-		Pixmap test = new Pixmap(128, 128, Pixmap.Format.RGB888);
-		test.setColor(Color.WHITE);
-		test.fillRectangle(0, 0, 128, 128);
-		Clock = new Image(new Sprite(new Texture(test)));
-		Clock.addListener(new InputListener() {
-			@Override
-			public boolean touchDown(InputEvent e, float x, float y, int a, int b) {
-				System.out.println("Clicked");
-				return true;
-			}
-		});
-		test.dispose();
+		Clock = new Image();
 		
 		//actual layout now
-		row().height(135);
+		row().height(180);
 		add(OrderLine).expandX().fill();
-		add(Score).width(330).fill();
+		add(Score).width(440).fill();
 		row().expandY();
 		add(Clock).expandX().bottom().left().padBottom(10).padLeft(10);
-		add(ExpandedOrder).width(330).fill();
+		add(ExpandedOrder).width(440).fill();
+	}
+	
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+		Score.setText("$" + String.format("%1$.2f", RopGame.Score));
 	}
 	
 	public void resize(float width, float height) {
