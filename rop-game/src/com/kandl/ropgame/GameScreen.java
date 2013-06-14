@@ -53,6 +53,9 @@ public class GameScreen implements Screen{
 	public GameScreen() {
 		//Create UI, input processors
 		UILayer = new Stage(1280, 800, true);
+		UItable = new UITable();
+		UItable.setFillParent(true);
+		UILayer.addActor(UItable);
 		
 		//Create scenes
 		Scene[0] = createFrontScreen();
@@ -65,9 +68,6 @@ public class GameScreen implements Screen{
 		input.addProcessor(UILayer);
 		input.addProcessor(ActiveScene);
 		Gdx.input.setInputProcessor(input);
-		UItable = new UITable();
-		UItable.setFillParent(true);
-		UILayer.addActor(UItable);
 	}
 
 	private Stage createCutScreen() {

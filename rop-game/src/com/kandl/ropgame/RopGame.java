@@ -21,7 +21,6 @@ public class RopGame extends Game {
 	}
 	
 	private void loadAll() {
-		assets.load("test.fnt", BitmapFont.class);
 		assets.finishLoading();
 	}
 
