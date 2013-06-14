@@ -1,0 +1,8 @@
+{
+	com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+		front: { up: front_up, down: front_down, checked: front_selected },
+		make: { up: make_up, down: make_down, checked: make_selected },
+		grill: { up: grill_up, down: grill_down, checked: grill_selected },
+		cut: {up: cut_up, down: cut_down, checked: cut_selected }
+	}
+}

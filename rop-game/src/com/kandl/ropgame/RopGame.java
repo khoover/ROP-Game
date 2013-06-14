@@ -2,7 +2,6 @@ package com.kandl.ropgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class RopGame extends Game {
 	public static GameScreen gameScreen;

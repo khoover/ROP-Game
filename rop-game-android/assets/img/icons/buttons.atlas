@@ -1,0 +1,89 @@
+
+buttons.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cut_down
+  rotate: false
+  xy: 1, 105
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
+cut_selected
+  rotate: false
+  xy: 1, 1
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
+cut_up
+  rotate: false
+  xy: 105, 105
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
+front_down
+  rotate: false
+  xy: 105, 1
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
+front_selected
+  rotate: false
+  xy: 209, 105
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
+front_up
+  rotate: false
+  xy: 209, 1
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
+grill_down
+  rotate: false
+  xy: 313, 105
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
+grill_selected
+  rotate: false
+  xy: 313, 1
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
+grill_up
+  rotate: false
+  xy: 417, 105
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
+make_down
+  rotate: false
+  xy: 417, 1
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
+make_selected
+  rotate: false
+  xy: 521, 105
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
+make_up
+  rotate: false
+  xy: 521, 1
+  size: 102, 102
+  orig: 102, 102
+  offset: 0, 0
+  index: -1
