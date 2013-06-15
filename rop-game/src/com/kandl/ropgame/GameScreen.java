@@ -48,7 +48,7 @@ public class GameScreen implements Screen{
 	
 	private final UILayer UILayer;
 	private final Stage[] Scene = new Stage[4];
-	private static Stage ActiveScene;
+	private Stage ActiveScene;
 	private Image frontBackground;
 	
 	public GameScreen() {
@@ -70,6 +70,10 @@ public class GameScreen implements Screen{
 
 	private Stage createCutScreen() {
 		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
+		Texture background = new Texture(Gdx.files.internal("img/backgrounds/cuttingBoard.png"));
+		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
+		for (Actor a: scene.getActors()) {
+		}
 		return scene;
 	}
 	
@@ -92,28 +96,22 @@ public class GameScreen implements Screen{
 			public void drag (InputEvent event, float x, float y, int pointer) {
 				float dx = -getDeltaX();
 				if (Scene[0].getRoot().getX() + dx >= 0) Scene[0].addAction(Actions.moveTo(0, 0)); // if root left edge enters stage
-				else if (Scene[0].getRoot().getX() + dx <= Scene[0].getWidth() - 440 - frontBackground.getWidth()) { // if root right edge is left of background + UI coverage
-					Scene[0].addAction(Actions.moveTo(Scene[0].getWidth()- 440 - frontBackground.getWidth(), 0));
+				else if (Scene[0].getRoot().getX() + dx <= Scene[0].getWidth() - 445 - frontBackground.getWidth()) { // if root right edge is left of background + UI coverage
+					Scene[0].addAction(Actions.moveTo(Scene[0].getWidth()- 445 - frontBackground.getWidth(), 0));
 				}
 				else Scene[0].addAction(Actions.moveBy(dx, 0, 0));
 			}
 		});
-		
-		Pixmap GameTest = new Pixmap(2048, 2048, Pixmap.Format.RGBA8888);
-			GameTest.setColor(Color.BLUE);
-			GameTest.fill();
-			GameTest.setColor(Color.YELLOW);
-			GameTest.fillRectangle(0, 0, 1280, 790);
-		frontBackground = new Image(new SpriteDrawable(new Sprite(new Texture(GameTest), 0, 0, 2048, 800)), Scaling.fill);
-		GameTest.dispose();
+		frontBackground = new Image(new TiledDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/backgrounds/new front.png")), 0, 224, 1280, 800)), Scaling.stretch);
 		scene.addActor(frontBackground);
+		frontBackground.setSize(1280 * 5, 800);
 		return scene;
 	}
 
-	public static void switchScreen(int screen) {
+	public void switchScreen(final int screen) {
 		if (RopGame.DEBUG) assert(screen >= 0 && screen <= 3);
 		((InputMultiplexer) Gdx.input.getInputProcessor()).removeProcessor(ActiveScene);
-		ActiveScene = RopGame.gameScreen.Scene[screen];
+		ActiveScene = Scene[screen];
 		((InputMultiplexer) Gdx.input.getInputProcessor()).addProcessor(ActiveScene);
 	}
 
@@ -131,7 +129,7 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		float length = (float) width * (float) height / 800f;
+		float length = (float) width * 800f / (float) height;
 		UILayer.setViewport(length, 800, true);
 		UILayer.resize(length, 800);
 		for (Stage s: Scene) {
