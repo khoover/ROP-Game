@@ -31,6 +31,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -105,7 +107,7 @@ public class GameScreen implements Screen{
 			GameTest.setColor(Color.BLUE);
 			GameTest.fill();
 			GameTest.setColor(Color.YELLOW);
-			GameTest.fillRectangle(0, 0, 1024, 800);
+			GameTest.fillRectangle(0, 0, 1280, 790);
 		frontBackground = new Image(new SpriteDrawable(new Sprite(new Texture(GameTest), 0, 0, 2048, 800)), Scaling.fill);
 		GameTest.dispose();
 		scene.addActor(frontBackground);

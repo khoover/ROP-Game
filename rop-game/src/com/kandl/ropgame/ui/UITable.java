@@ -1,5 +1,6 @@
 package com.kandl.ropgame.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -41,11 +42,11 @@ public class UITable extends Table {
 		RightCorner = null;
 		RightBackground = null;
 		OrderLine = new Image();
-		Score = new Label("$" + String.format("%1$.2f", RopGame.Score), new Label.LabelStyle(RopGame.assets.get("font.fnt", BitmapFont.class), Color.WHITE));
+		Score = new Label("$" + String.format("%1$.2f", RopGame.score), new Label.LabelStyle(new BitmapFont(Gdx.files.internal("fonts/score.fnt"), false), Color.YELLOW));
 		Scenes = new ButtonGroup();
 		Scene = new Button[4];
 		for (int i = 0; i < 4; ++i) {
-			Scene[i] = new Button((Drawable) null, null, null);
+			Scene[i] = new Button((Drawable) null);
 			Scenes.add(Scene[i]);
 		}
 		
@@ -95,7 +96,7 @@ public class UITable extends Table {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		Score.setText("$" + String.format("%1$.2f", RopGame.Score));
+		Score.setText("$" + String.format("%1$.2f", RopGame.score));
 	}
 	
 	public void resize(float width, float height) {
