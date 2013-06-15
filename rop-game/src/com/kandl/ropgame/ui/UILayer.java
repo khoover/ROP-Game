@@ -11,35 +11,36 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Scaling;
 import com.esotericsoftware.tablelayout.Cell;
 import com.kandl.ropgame.*;
 
 /** A table responsible for the entire UI layout, and all assets contained by it.
  * 
  * @author Ken Hoover */
-public class UITable extends Table implements Disposable {
+public class UILayer extends Stage implements Disposable {
 	private final Image orderLine;
 	
 	// top right corner stuff
 	private final Label score;
 	private final Button[] scene;
 	private final ButtonGroup scenes;
-	private final Table cornerTable;
 	
-	private final Image expandedOrder;	
+	private Image expandedOrder;	
 	private final Image clock;
 	
 	private final Skin rightPanelSkin;
 
-	public UITable() {
-		super();
-		if (RopGame.DEBUG) super.debug();
+	public UILayer(int width, int height, boolean stretch) {
+		super(width, height, stretch);
 		
 		// set skin up
 		rightPanelSkin = new Skin(Gdx.files.internal("img/icons/buttons.json"));
@@ -62,29 +63,10 @@ public class UITable extends Table implements Disposable {
 		scene[2].setStyle(rightPanelSkin.get("grill", Button.ButtonStyle.class));
 		scene[3].setStyle(rightPanelSkin.get("cut", Button.ButtonStyle.class));
 		
-		// create corner table
-		cornerTable = new Table(rightPanelSkin);
-		if (RopGame.DEBUG) cornerTable.debug();
-		cornerTable.setBackground("background");
-		cornerTable.add(score).expand().fill().colspan(4);
-		cornerTable.row().space(4,8,4,8).expand().fill();
-		cornerTable.add(scene[0]).uniform();
-		cornerTable.add(scene[1]).uniform();
-		cornerTable.add(scene[2]).uniform();
-		cornerTable.add(scene[3]).uniform();
-		
-		expandedOrder = null;
+		expandedOrder = new Image(rightPanelSkin.get("front", Button.ButtonStyle.class).up, Scaling.fit, Align.center);
 		clock = new Image();
 		orderLine = new Image();
-		
-		//actual layout now
-		row().height(180);
-		add(orderLine).expandX().fill();
-		add(cornerTable).width(440).fill();
-		row().expandY();
-		add(clock).expandX().bottom().left().padBottom(10).padLeft(10);
-		add(expandedOrder).width(440).fill();
-		
+				
 		//necessary because java hates everyone
 		scene[0].addListener(new ChangeListener() {
 
@@ -123,18 +105,10 @@ public class UITable extends Table implements Disposable {
 	}
 	
 	public void resize(float width, float height) {
-		int width1 = (int) (440 * (height / 800f));
-		int height1 = (int) (180 * (height / 800f));
-		getCell(cornerTable).size(width1, height1).fill();
-		for (Button b : scene) {
-			cornerTable.getCell(b).width(width1 / 4f - 10);
-			cornerTable.getCell(b).height(height1 / 2f);
-		}
-		cornerTable.invalidate();
-		score.getStyle().font.setScale(height/800f);
-		getCell(expandedOrder).width(width1).fill();
-		getCell(orderLine).height(height1).fill();
-		invalidateHierarchy();
+	}
+	
+	public Image getOrderImage () {
+		return expandedOrder;
 	}
 
 	@Override

@@ -38,7 +38,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Scaling;
-import com.kandl.ropgame.ui.UITable;
+import com.kandl.ropgame.ui.UILayer;
 
 public class GameScreen implements Screen{
 	public static final int FRONT = 0;
@@ -46,18 +46,14 @@ public class GameScreen implements Screen{
 	public static final int GRILL = 2;
 	public static final int ASSEMBLY = 3;
 	
-	private final Stage UILayer;
-	private final UITable UItable;
+	private final UILayer UILayer;
 	private final Stage[] Scene = new Stage[4];
 	private static Stage ActiveScene;
 	private Image frontBackground;
 	
 	public GameScreen() {
 		//Create UI, input processors
-		UILayer = new Stage(1280, 800, true);
-		UItable = new UITable();
-		UItable.setFillParent(true);
-		UILayer.addActor(UItable);
+		UILayer = new UILayer(1280, 800, true);
 		
 		//Create scenes
 		Scene[0] = createFrontScreen();
@@ -131,13 +127,12 @@ public class GameScreen implements Screen{
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		ActiveScene.draw();
 		UILayer.draw();
-		if (RopGame.DEBUG) UITable.drawDebug(UILayer);
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		UILayer.setViewport(width, height, true);
-		UItable.resize(width, height);
+		UILayer.resize(width, height);
 		final int Gamelength = (float) width / (float) height < 1.7 ? 1280 : 1366;
 		for (Stage s: Scene) {
 			s.setViewport(Gamelength, 800, true);
