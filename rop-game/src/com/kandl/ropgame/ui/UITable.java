@@ -6,105 +6,139 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
+import com.badlogic.gdx.utils.Disposable;
+import com.esotericsoftware.tablelayout.Cell;
 import com.kandl.ropgame.*;
 
 /** A table responsible for the entire UI layout, and all assets contained by it.
  * 
  * @author Ken Hoover */
-public class UITable extends Table {
-	private final Image OrderLine;
+public class UITable extends Table implements Disposable {
+	private final Image orderLine;
 	
 	// top right corner stuff
-	private final Label Score;
-	private final Button[] Scene;
-	private final ButtonGroup Scenes;
-	private final Table ButtonTable;
-	private final VerticalGroup RightCorner;
-	private final Image Tab;
+	private final Label score;
+	private final Button[] scene;
+	private final ButtonGroup scenes;
+	private final Table cornerTable;
 	
-	private final Image RightBackground;
-	private final Image ExpandedOrder;	
-	private final Image Clock;
+	private final Image expandedOrder;	
+	private final Image clock;
+	
+	private final Skin rightPanelSkin;
 
 	public UITable() {
-		// TODO Auto-generated constructor stub
 		super();
 		if (RopGame.DEBUG) super.debug();
 		
-		// test nulls
-		ButtonTable = null;
-		RightCorner = null;
-		RightBackground = null;
-		OrderLine = new Image();
-		Score = new Label("$" + String.format("%1$.2f", RopGame.score), new Label.LabelStyle(new BitmapFont(Gdx.files.internal("fonts/score.fnt"), false), Color.YELLOW));
-		Scenes = new ButtonGroup();
-		Scene = new Button[4];
+		// set skin up
+		rightPanelSkin = new Skin(Gdx.files.internal("img/icons/buttons.json"));
+		Pixmap background = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+		background.setColor(Color.BLACK);
+		background.fill();
+		rightPanelSkin.add("background", new TiledDrawable(new TextureRegion(new Texture(background))), TiledDrawable.class);
+		background.dispose();
+		
+		// create components of corner table
+		score = new Label("$" + String.format("%1$.2f", RopGame.score), new Label.LabelStyle(new BitmapFont(Gdx.files.internal("fonts/score.fnt"), false), Color.YELLOW));
+		scenes = new ButtonGroup();
+		scene = new Button[4];
 		for (int i = 0; i < 4; ++i) {
-			Scene[i] = new Button((Drawable) null);
-			Scenes.add(Scene[i]);
+			scene[i] = new Button((Drawable) null);
+			scenes.add(scene[i]);
 		}
+		scene[0].setStyle(rightPanelSkin.get("front", Button.ButtonStyle.class));
+		scene[1].setStyle(rightPanelSkin.get("make", Button.ButtonStyle.class));
+		scene[2].setStyle(rightPanelSkin.get("grill", Button.ButtonStyle.class));
+		scene[3].setStyle(rightPanelSkin.get("cut", Button.ButtonStyle.class));
+		
+		// create corner table
+		cornerTable = new Table(rightPanelSkin);
+		if (RopGame.DEBUG) cornerTable.debug();
+		cornerTable.setBackground("background");
+		cornerTable.add(score).expand().fill().colspan(4);
+		cornerTable.row().space(4,8,4,8).expand().fill();
+		cornerTable.add(scene[0]).uniform();
+		cornerTable.add(scene[1]).uniform();
+		cornerTable.add(scene[2]).uniform();
+		cornerTable.add(scene[3]).uniform();
+		
+		expandedOrder = null;
+		clock = new Image();
+		orderLine = new Image();
+		
+		//actual layout now
+		row().height(180);
+		add(orderLine).expandX().fill();
+		add(cornerTable).width(440).fill();
+		row().expandY();
+		add(clock).expandX().bottom().left().padBottom(10).padLeft(10);
+		add(expandedOrder).width(440).fill();
 		
 		//necessary because java hates everyone
-		Scene[0].addListener(new ChangeListener() {
+		scene[0].addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GameScreen.switchScreen(0);
 			}
 		});
-		Scene[1].addListener(new ChangeListener() {
+		scene[1].addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GameScreen.switchScreen(1);
 			}
 		});
-		Scene[2].addListener(new ChangeListener() {
+		scene[2].addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GameScreen.switchScreen(2);
 			}
 		});
-		Scene[3].addListener(new ChangeListener() {
+		scene[3].addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GameScreen.switchScreen(3);
 			}
 		});
-		
-		Tab = new Image();
-		ExpandedOrder = null;
-		Clock = new Image();
-		
-		//actual layout now
-		row().height(180);
-		add(OrderLine).expandX().fill();
-		add(Score).width(440).fill();
-		row().expandY();
-		add(Clock).expandX().bottom().left().padBottom(10).padLeft(10);
-		add(ExpandedOrder).width(440).fill();
 	}
 	
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		Score.setText("$" + String.format("%1$.2f", RopGame.score));
+		score.setText("$" + String.format("%1$.2f", RopGame.score));
 	}
 	
 	public void resize(float width, float height) {
-		int width1 = (int) (330 * (height / 600f));
-		int height1 = (int) (135 * (height / 600f));
-		getCell(Score).size(width1, height1).fill();
-		getCell(ExpandedOrder).width(width1).fill();
-		getCell(OrderLine).height(height1).fill();
+		int width1 = (int) (440 * (height / 800f));
+		int height1 = (int) (180 * (height / 800f));
+		getCell(cornerTable).size(width1, height1).fill();
+		for (Button b : scene) {
+			cornerTable.getCell(b).width(width1 / 4f - 10);
+			cornerTable.getCell(b).height(height1 / 2f);
+		}
+		cornerTable.invalidate();
+		score.getStyle().font.setScale(height/800f);
+		getCell(expandedOrder).width(width1).fill();
+		getCell(orderLine).height(height1).fill();
 		invalidateHierarchy();
+	}
+
+	@Override
+	public void dispose() {
+		
 	}
 }
