@@ -136,13 +136,9 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		final int UIlength = (float) width / (float) height < 1.7 ? 1280 : 1024;
-		final int UIheight = UIlength == 1280 ? 800 : 600;
-		if (UIheight != UILayer.getHeight()) {
-			UItable.resize(UIlength, UIheight);
-		}
-		UILayer.setViewport(UIlength, UIheight, true);
-		final int Gamelength = UIlength == 1280 ? 1280 : 1366;
+		UILayer.setViewport(width, height, true);
+		UItable.resize(width, height);
+		final int Gamelength = (float) width / (float) height < 1.7 ? 1280 : 1366;
 		for (Stage s: Scene) {
 			s.setViewport(Gamelength, 800, true);
 		}
