@@ -91,9 +91,9 @@ public class GameScreen implements Screen{
 			@Override
 			public void drag (InputEvent event, float x, float y, int pointer) {
 				float dx = -getDeltaX();
-				if (Scene[0].getRoot().getX() + dx >= 0) Scene[0].addAction(Actions.moveTo(0, 0));
-				else if (Scene[0].getRoot().getX() + dx <= Scene[0].getWidth() - frontBackground.getWidth()) {
-					Scene[0].addAction(Actions.moveTo(Scene[0].getWidth() - frontBackground.getWidth(), 0));
+				if (Scene[0].getRoot().getX() + dx >= 0) Scene[0].addAction(Actions.moveTo(0, 0)); // if root left edge enters stage
+				else if (Scene[0].getRoot().getX() + dx <= Scene[0].getWidth() - 440 - frontBackground.getWidth()) { // if root right edge is left of background + UI coverage
+					Scene[0].addAction(Actions.moveTo(Scene[0].getWidth()- 440 - frontBackground.getWidth(), 0));
 				}
 				else Scene[0].addAction(Actions.moveBy(dx, 0, 0));
 			}
@@ -131,11 +131,11 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		UILayer.setViewport(width, height, true);
-		UILayer.resize(width, height);
-		final int Gamelength = (float) width / (float) height < 1.7 ? 1280 : 1366;
+		float length = (float) width * (float) height / 800f;
+		UILayer.setViewport(length, 800, true);
+		UILayer.resize(length, 800);
 		for (Stage s: Scene) {
-			s.setViewport(Gamelength, 800, true);
+			s.setViewport(length, 800, true);
 		}
 	}
 
