@@ -2,6 +2,7 @@ package com.kandl.ropgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 
 public class RopGame extends Game {
 	public static GameScreen gameScreen;
@@ -14,12 +15,14 @@ public class RopGame extends Game {
 	@Override
 	public void create() {
 		score = 0;
+		loadAll();
 		gameScreen = new GameScreen();
 		setScreen(gameScreen);
-		loadAll();
 	}
 	
 	private void loadAll() {
+		assets.load("img/backgrounds/new front.png", Texture.class);
+		assets.load("img/backgrounds/cuttingBoard.png", Texture.class);
 		assets.finishLoading();
 	}
 

@@ -38,6 +38,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Scaling;
+import com.kandl.ropgame.managers.GroupManager;
 import com.kandl.ropgame.ui.UILayer;
 
 public class GameScreen implements Screen{
@@ -70,7 +71,7 @@ public class GameScreen implements Screen{
 
 	private Stage createCutScreen() {
 		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
-		Texture background = new Texture(Gdx.files.internal("img/backgrounds/cuttingBoard.png"));
+		Texture background = RopGame.assets.get("img/backgrounds/cuttingBoard.png", Texture.class);
 		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
 		for (Actor a: scene.getActors()) {
 			a.setPosition(-50, 0);
@@ -103,9 +104,10 @@ public class GameScreen implements Screen{
 				else Scene[0].addAction(Actions.moveBy(dx, 0, 0));
 			}
 		});
-		frontBackground = new Image(new TiledDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/backgrounds/new front.png")), 0, 224, 1280, 800)), Scaling.stretch);
+		frontBackground = new Image(new TiledDrawable(new TextureRegion(RopGame.assets.get("img/backgrounds/new front.png", Texture.class), 0, 224, 1280, 800)), Scaling.stretch);
 		scene.addActor(frontBackground);
 		frontBackground.setSize(1280 * 5, 800);
+		scene.addActor(new GroupManager());
 		return scene;
 	}
 
