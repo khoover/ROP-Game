@@ -44,7 +44,7 @@ public class UILayer extends Stage implements Disposable {
 		
 		// set skin up
 		rightPanelSkin = new Skin(Gdx.files.internal("img/icons/buttons.json"));
-		Pixmap background = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+		Pixmap background = new Pixmap(128, 128, Pixmap.Format.RGBA8888);
 		background.setColor(Color.BLACK);
 		background.fill();
 		this.background = new Image(new TiledDrawable(new TextureRegion(new Texture(background))));
@@ -79,7 +79,7 @@ public class UILayer extends Stage implements Disposable {
 		this.background.setPosition(width - padX - 5, 0);
 		this.background.setSize(padX + 5, height);
 		addActor(score);
-		score.setPosition(width - padX + 5, height - padY / 2f);
+		score.setPosition(width - padX + 5, height - padY / 2f + 5);
 		for (int i = 0; i < 4; ++i) {
 			addActor(scene[i]);
 			scene[i].setPosition(width - padX + 4 + i * 110, height - padY);
@@ -127,7 +127,7 @@ public class UILayer extends Stage implements Disposable {
 	public void resize(float width, float height) {
 		orderLine.setSize(width - padX, padY);
 		background.setPosition(width - padX - 5, 0);
-		score.setPosition(width - padX + 5, height - padY / 2f);
+		score.setPosition(width - padX + 5, height - padY / 2f + 10);
 		for (int i = 0; i < 4; ++i) {
 			scene[i].setPosition(width - padX + 4 + i * 110, height - padY);
 		}

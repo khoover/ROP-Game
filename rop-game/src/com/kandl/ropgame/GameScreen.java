@@ -73,6 +73,7 @@ public class GameScreen implements Screen{
 		Texture background = new Texture(Gdx.files.internal("img/backgrounds/cuttingBoard.png"));
 		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
 		for (Actor a: scene.getActors()) {
+			a.setPosition(-50, 0);
 		}
 		return scene;
 	}
