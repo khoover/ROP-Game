@@ -25,6 +25,7 @@ public class RopGame extends Game {
 	private void loadAll() {
 		assets.load("img/backgrounds/new front.png", Texture.class);
 		assets.load("img/backgrounds/cuttingBoard.png", Texture.class);
+		assets.load("img/backgrounds/Grills.png", Texture.class);
 		assets.finishLoading();
 	}
 

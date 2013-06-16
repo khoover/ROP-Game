@@ -81,6 +81,11 @@ public class GameScreen implements Screen{
 	
 	private Stage createGrillScreen() {
 		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
+		Texture background = RopGame.assets.get("img/backgrounds/Grills.png", Texture.class);
+		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
+		for (Actor a: scene.getActors()) {
+			a.setPosition(-50, 0);
+		}
 		return scene;
 	}
 
