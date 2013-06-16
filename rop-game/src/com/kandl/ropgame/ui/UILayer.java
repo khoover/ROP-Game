@@ -9,13 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.Scaling;
 import com.kandl.ropgame.*;
 
 /** A stage responsible for the entire UI layout, and all assets contained by it.
@@ -31,7 +28,6 @@ public class UILayer extends Stage implements Disposable {
 	private final Button[] scene;
 	private final ButtonGroup scenes;
 	private final Image background;
-	private final Image expandedOrder;	
 	
 	private final Image clock;
 	
@@ -65,7 +61,6 @@ public class UILayer extends Stage implements Disposable {
 		scene[2].setStyle(rightPanelSkin.get("grill", Button.ButtonStyle.class));
 		scene[3].setStyle(rightPanelSkin.get("cut", Button.ButtonStyle.class));
 		
-		expandedOrder = new Image(rightPanelSkin.get("front", Button.ButtonStyle.class).up, Scaling.stretch);
 		clock = new Image();
 		orderLine = new Image();
 		
@@ -84,7 +79,6 @@ public class UILayer extends Stage implements Disposable {
 			addActor(scene[i]);
 			scene[i].setPosition(width - padX + 4 + i * 110, height - padY);
 		}
-		addActor(expandedOrder);
 		
 		//necessary because java hates everyone
 		scene[0].addListener(new ChangeListener() {
@@ -131,15 +125,11 @@ public class UILayer extends Stage implements Disposable {
 		for (int i = 0; i < 4; ++i) {
 			scene[i].setPosition(width - padX + 4 + i * 110, height - padY);
 		}
-		expandedOrder.setPosition(width - padX, 5);
-	}
-	
-	public Image getOrderImage () {
-		return expandedOrder;
 	}
 
 	@Override
 	public void dispose() {
-		
+		score.getStyle().font.dispose();
+		rightPanelSkin.dispose();
 	}
 }
