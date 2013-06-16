@@ -3,6 +3,7 @@ package com.kandl.ropgame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.kandl.ropgame.view.Person;
 
 public class RopGame extends Game {
 	public static GameScreen gameScreen;
@@ -16,6 +17,7 @@ public class RopGame extends Game {
 	public void create() {
 		score = 0;
 		loadAll();
+		Person.initialize();
 		gameScreen = new GameScreen();
 		setScreen(gameScreen);
 	}
