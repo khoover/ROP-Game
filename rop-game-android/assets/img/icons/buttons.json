@@ -1,8 +1,28 @@
 {
+	com.badlogic.gdx.graphics.Color: {
+		green: { a: 1, b: 0, g: 1, r: 0 },
+		red: { a: 1, b: 0, g: 0, r: 1 },
+		white: { a: 1, b: 1, g: 1, r: 1 },
+		black: { a: 0, b: 0, g: 0, r: 0 }
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+		green_up: { color: green, name: generic_button_up },
+		green_down: { color: green, name: generic_button_down },
+		red_up: { color: red, name: generic_button_up },
+		red_down: { color: red, name: generic_button_down },
+	},
 	com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 		front: { up: front_up, down: front_down, checked: front_selected },
 		make: { up: make_up, down: make_down, checked: make_selected },
 		grill: { up: grill_up, down: grill_down, checked: grill_selected },
-		cut: {up: cut_up, down: cut_down, checked: cut_selected }
+		cut: { up: cut_up, down: cut_down, checked: cut_selected },
+	},
+	com.badlogic.gdx.graphics.g2d.BitmapFont: {
+        score: { file: fonts/score.fnt }
+    },
+	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+		generic: { up: generic_button_up, down: generic_button_down, font: score, fontColor: white },
+		accept: { up: green_up, down: green_down, font: score, fontColor: white },
+		trash: { up: red_up, down: red_down, font: score, fontColor: white }
 	}
 }
