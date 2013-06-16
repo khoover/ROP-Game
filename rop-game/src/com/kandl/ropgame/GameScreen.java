@@ -107,7 +107,7 @@ public class GameScreen implements Screen{
 		frontBackground = new Image(new TiledDrawable(new TextureRegion(RopGame.assets.get("img/backgrounds/new front.png", Texture.class), 0, 224, 1280, 800)), Scaling.stretch);
 		scene.addActor(frontBackground);
 		frontBackground.setSize(1280 * 5, 800);
-		scene.addActor(new GroupManager());
+		//scene.addActor(new GroupManager());
 		return scene;
 	}
 
