@@ -5,7 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 
 public class RopGame extends Game {
 	public static GameScreen gameScreen;
-	public static float score;
+	public static double score;
 	public static final int WIDTH = 1024;
 	public static final int HEIGHT = 600;
 	public static final boolean DEBUG = true;
