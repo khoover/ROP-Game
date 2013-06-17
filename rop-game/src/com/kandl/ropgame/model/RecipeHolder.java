@@ -9,4 +9,13 @@ public class RecipeHolder {
 	public RecipeHolder (Recipe... orders) {
 		this.orders = new Array<Recipe>(orders);
 	}
+	
+	public Recipe getLeftRecipe() {
+		return orders.get(0);
+	}
+	
+	public Recipe getRightRecipe() {
+		if (orders.size < 2) return null;
+		else return orders.get(1);
+	}
 }
