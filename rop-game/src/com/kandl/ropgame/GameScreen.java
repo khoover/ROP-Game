@@ -39,6 +39,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Scaling;
 import com.kandl.ropgame.managers.GroupManager;
+import com.kandl.ropgame.managers.TableManager;
 import com.kandl.ropgame.ui.UILayer;
 
 public class GameScreen implements Screen{
