@@ -4,7 +4,7 @@
 		red: { a: 1, b: 0, g: 0, r: 1 },
 		white: { a: 1, b: 1, g: 1, r: 1 },
 		black: { a: 1, b: 0, g: 0, r: 0 },
-		grey: { a: 1, b: 0.5, g: 0.5, r: 0.5 }
+		yellow: { a: 1, b: 0.28, g: 0.95, r: 1 }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 		green_up: { color: green, name: generic_button_up },
@@ -22,7 +22,8 @@
         default: { file: fonts/default.fnt }
     },
     com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
-    	default: { font: default, fontColor: green }
+    	default: { font: default, fontColor: green },
+    	person: { font: default, fontColor: yellow }
     },
 	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		default: { up: generic_button_up, down: generic_button_down, font: default, fontColor: white },
