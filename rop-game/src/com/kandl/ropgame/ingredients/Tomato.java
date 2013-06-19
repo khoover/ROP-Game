@@ -14,7 +14,7 @@ public class Tomato extends Ingredient {
 
 	@Override
 	public Image getSideView() {
-		return new Image(new SpriteDrawable(assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("icons/tomato")));
+		return new Image(new SpriteDrawable(assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("bigger food/tomatoes_side")));
 	}
 
 	@Override

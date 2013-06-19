@@ -31,7 +31,7 @@ public abstract class SheetManager {
 	
 	public static void addOrder(RecipeHolder r) {
 		number++;
-		MiniOrderSheet m = new MiniOrderSheet(new OrderSheet(r), miniWidth - 10, false);
+		MiniOrderSheet m = new MiniOrderSheet(new OrderSheet(r), miniWidth - 10, false, null);
 		miniSheets.add(m);
 		UI.addActor(m);
 		m.addAction(Actions.moveTo(10 + miniWidth * (number) + (miniWidth - m.getLogicWidth()) / 2f, height - padY + 35));
@@ -97,5 +97,9 @@ public abstract class SheetManager {
 		UI = ui;
 		UI.addActor(downArrow);
 		downArrow.setPosition(10 + miniWidth - downArrow.getWidth() - (miniWidth - downArrow.getWidth()) / 2f, height - 30);
+	}
+	
+	public static OrderSheet getCurrent() {
+		return currentSheet;
 	}
 }

@@ -32,7 +32,6 @@ public abstract class GrillManager {
 	}
 	
 	public static void removeFromGrill(GrillView v) {
-		Stage stage = RopGame.gameScreen.getScreen(2);
 		v.remove();
 		for (Array<GrillView> arr: spots) {
 			if (arr.indexOf(v, true) != -1) arr.set(arr.indexOf(v, true), null);

@@ -18,7 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.kandl.ropgame.*;
+import com.kandl.ropgame.managers.GrillManager;
 import com.kandl.ropgame.managers.SheetManager;
+import com.kandl.ropgame.view.sandwichView.GrillView;
 
 /** A stage responsible for the entire UI layout, and all assets contained by it.
  * 
@@ -130,7 +132,7 @@ public class UILayer extends Stage implements Disposable {
 			public void changed(ChangeEvent event, Actor actor) {
 				RopGame.gameScreen.switchScreen(0);
 				SheetManager.setDragable(true);
-				//trash.setVisible(false);
+				trash.setVisible(false);
 				confirm.setVisible(false);
 			}
 		});
@@ -140,9 +142,38 @@ public class UILayer extends Stage implements Disposable {
 			public void changed(ChangeEvent event, Actor actor) {
 				RopGame.gameScreen.switchScreen(1);
 				SheetManager.setDragable(false);
-				//trash.setVisible(true);
+				
+				trash.setVisible(true);
+				trash.removeListener(trashListener);
+				trashListener = new ChangeListener() {
+
+					@Override
+					public void changed(ChangeEvent event, Actor actor) {
+						RopGame.gameScreen.trashMaking();
+					}
+					
+				};
+				trash.addListener(trashListener);
+				
 				confirm.setVisible(true);
 				confirm.setText("Grill");
+				confirm.removeListener(confirmListener);
+				confirmListener = new ChangeListener() {
+
+					@Override
+					public void changed(ChangeEvent event, Actor actor) {
+						GrillView v = new GrillView(RopGame.gameScreen.getCurrentMaking().getSandwich(),
+								SheetManager.getCurrent().getMini());
+						if (GrillManager.assignGrill(v)) {
+							RopGame.gameScreen.trashMaking();
+							RopGame.gameScreen.switchScreen(2);
+							scene[2].setChecked(true);
+							scene[1].setChecked(false);
+						}
+					}
+					
+				};
+				confirm.addListener(confirmListener);
 			}
 		});
 		scene[2].addListener(new ChangeListener() {
@@ -151,7 +182,7 @@ public class UILayer extends Stage implements Disposable {
 			public void changed(ChangeEvent event, Actor actor) {
 				RopGame.gameScreen.switchScreen(2);
 				SheetManager.setDragable(false);
-				//trash.setVisible(false);
+				trash.setVisible(false);
 				confirm.setVisible(false);
 			}
 		});
@@ -161,9 +192,32 @@ public class UILayer extends Stage implements Disposable {
 			public void changed(ChangeEvent event, Actor actor) {
 				RopGame.gameScreen.switchScreen(3);
 				SheetManager.setDragable(false);
-				//trash.setVisible(true);
+				trash.setVisible(true);
+				trash.removeListener(trashListener);
+				trashListener = new ChangeListener() {
+
+					@Override
+					public void changed(ChangeEvent event, Actor actor) {
+						RopGame.gameScreen.trashCutting();
+					}
+					
+				};
+				trash.addListener(trashListener);
+				
 				confirm.setVisible(true);
 				confirm.setText("Serve");
+				confirm.removeListener(confirmListener);
+				confirmListener = new ChangeListener() {
+
+					@Override
+					public void changed(ChangeEvent event, Actor actor) {
+						if (SheetManager.addSandwich(RopGame.gameScreen.getCurrentCutting().getSandwich())) {
+							RopGame.gameScreen.trashCutting();
+						}
+					}
+					
+				};
+				confirm.addListener(confirmListener);
 			}
 		});
 	}
@@ -188,6 +242,10 @@ public class UILayer extends Stage implements Disposable {
 		leftArrow.setPosition(width - padX + 5, ((float) height + 120 - padY) / 2f);
 		rightArrow.setPosition(width - 15 - rightArrow.getImageWidth(), leftArrow.getY());
 		SheetManager.resize(width, height);
+	}
+	
+	public Button[] getButtons() {
+		return scene;
 	}
 
 	@Override

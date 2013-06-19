@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.kandl.ropgame.ingredients.Ingredient;
 import com.kandl.ropgame.managers.SheetManager;
+import com.kandl.ropgame.model.Recipe;
 
 public class MiniOrderSheet extends Group implements Disposable {
 	private static final LabelStyle normal = new LabelStyle(new BitmapFont(), Color.WHITE);
@@ -30,8 +31,9 @@ public class MiniOrderSheet extends Group implements Disposable {
 	private Image background;
 	private Array<Image> components;
 	private float scale;
+	private MiniOrderSheet source;
 	
-	public MiniOrderSheet (OrderSheet base, float width, boolean copy) {
+	public MiniOrderSheet (OrderSheet base, float width, boolean copy, MiniOrderSheet source) {
 		components = new Array<Image>(2);
 		float ratio = 170f / 420f;
 		if (ratio * targetHeight > width) { this.width = width; this.height = (1f / ratio) * width; scale = this.width / 170f; }
@@ -48,6 +50,9 @@ public class MiniOrderSheet extends Group implements Disposable {
 				}
 			});
 			base.setMini(this);
+			source = null;
+		} else {
+			this.source = source; 
 		}
 		Pixmap p = new Pixmap(350, 480, Pixmap.Format.RGB888);
 		p.setColor(Color.WHITE);
@@ -74,10 +79,15 @@ public class MiniOrderSheet extends Group implements Disposable {
 			addActor(current);
 			current.setPosition(10, height - scale * (50 * ++n));
 		}
+		current = new ProgressBar(Recipe.CookState.toTime(base.getOrder().getLeftRecipe().getCooked()));
+		current.setScale(scale);
+		components.add(current);
+		addActor(current);
+		current.setPosition(10, height - scale * (50 * ++n));
 	}
 	
 	public MiniOrderSheet copy() {
-		return new MiniOrderSheet(base, width, true);
+		return new MiniOrderSheet(base, width, true, this);
 	}
 	
 	public float getLogicWidth() {
@@ -116,5 +126,9 @@ public class MiniOrderSheet extends Group implements Disposable {
 	@Override
 	public void dispose() {
 		((TextureRegionDrawable) background.getDrawable()).getRegion().getTexture().dispose();
+	}
+
+	public MiniOrderSheet getSource() {
+		return source;
 	}
 }

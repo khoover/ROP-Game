@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.kandl.ropgame.ingredients.Ingredient;
 import com.kandl.ropgame.managers.SheetManager;
 import com.kandl.ropgame.managers.TableManager;
+import com.kandl.ropgame.model.Recipe;
 import com.kandl.ropgame.model.RecipeHolder;
 import com.kandl.ropgame.model.Sandwich;
 import com.kandl.ropgame.ui.UILayer;
@@ -27,7 +28,7 @@ public class OrderSheet extends Group implements Disposable {
 	private Label name;
 	private RecipeHolder order;
 	private Array<Sandwich> sandwiches;
-	private boolean dragable = false, addable = true;
+	private boolean dragable = false, addable = true, servable = false;
 	private Image background, time, cut;
 	private Array<Image> foreground;
 	private MiniOrderSheet mini;
@@ -36,6 +37,7 @@ public class OrderSheet extends Group implements Disposable {
 	}
 	
 	public OrderSheet(RecipeHolder r) {
+		sandwiches = new Array<Sandwich>(2);
 		Pixmap p = new Pixmap(350, 480, Pixmap.Format.RGB888);
 		p.setColor(Color.WHITE);
 		p.fill();
@@ -63,6 +65,9 @@ public class OrderSheet extends Group implements Disposable {
 			addActor(current);
 			current.setPosition(20, 370 - n++*60);
 		}
+		current = new ProgressBar(Recipe.CookState.toTime(order.getLeftRecipe().getCooked()));
+		addActor(current);
+		current.setPosition(20, 370-n*60);
 		
 		if (r.getRightRecipe() != null) {
 			t = new Texture(128, 512, Pixmap.Format.RGB888);
@@ -87,6 +92,9 @@ public class OrderSheet extends Group implements Disposable {
 				addActor(current);
 				current.setPosition(200, 370 - n++*60);
 			}
+			current = new ProgressBar(Recipe.CookState.toTime(order.getRightRecipe().getCooked()));
+			addActor(current);
+			current.setPosition(200, 370-n*60);
 		}
 		
 		background.addListener(new DragListener() {
@@ -113,7 +121,7 @@ public class OrderSheet extends Group implements Disposable {
 				com.kandl.ropgame.model.Group g = TableManager.findGroupFromPosition(event.getStageX(), event.getStageY());
 				if (g == null) OrderSheet.this.addAction(Actions.moveTo(startX, startY));
 				else {
-					if (g.serve(OrderSheet.this)) {
+					if (servable && g.serve(OrderSheet.this)) {
 						SheetManager.removeSheet(OrderSheet.this);
 						OrderSheet.this.dispose();
 					} else {
@@ -142,6 +150,7 @@ public class OrderSheet extends Group implements Disposable {
 		else value = false;
 		if (sandwiches.size == 2 || order.getRightRecipe() == null) {
 			addable = false;
+			servable = true;
 			background.setColor(Color.GREEN);
 			mini.setBackgroundColor(Color.GREEN);
 		}

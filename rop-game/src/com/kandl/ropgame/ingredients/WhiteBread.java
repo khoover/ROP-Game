@@ -29,7 +29,7 @@ public class WhiteBread extends Bread {
 
 	@Override
 	public Image getSideView() {
-		return new Image(new SpriteDrawable(assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("bigger food/sideview_bread_top")));
+		return new Image(new SpriteDrawable(assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("bigger food/bread_side")));
 	}
 
 	@Override

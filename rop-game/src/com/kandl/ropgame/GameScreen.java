@@ -57,13 +57,9 @@ import com.kandl.ropgame.view.sandwichView.CutView;
 import com.kandl.ropgame.view.sandwichView.MakeView;
 
 public class GameScreen implements Screen{
-	public static final int FRONT = 0;
-	public static final int INGREDIENTS = 1;
-	public static final int GRILL = 2;
-	public static final int ASSEMBLY = 3;
-	
 	private MakeView currentMaking;
 	private CutView currentCutting = null;
+	private Target makeTarget;
 	private DragAndDrop makeDrag;
 	private final UILayer UILayer;
 	private final Stage[] Scene = new Stage[4];
@@ -131,7 +127,7 @@ public class GameScreen implements Screen{
 
 	private Stage createMakeScreen() {
 		makeDrag = new DragAndDrop();
-		makeDrag.setDragActorPosition(-300, 100);
+		makeDrag.setDragActorPosition(-300, 50);
 		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
 		Texture background = RopGame.assets.get("img/backgrounds/Making.png", Texture.class);
 		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
@@ -159,7 +155,7 @@ public class GameScreen implements Screen{
 		currentMaking = new MakeView(new Sandwich(new WhiteBread()));
 		scene.addActor(currentMaking);
 		currentMaking.setPosition(100, 146);
-		makeDrag.addTarget(new Target(currentMaking) {
+		makeTarget = new Target(currentMaking) {
 
 			@Override
 			public boolean drag(Source source, Payload payload, float x,
@@ -173,7 +169,8 @@ public class GameScreen implements Screen{
 				((MakeView) getActor()).addIngredient((Ingredient) payload.getObject()); 
 			}
 			
-		});
+		};
+		makeDrag.addTarget(makeTarget);
 		return scene;
 	}
 
@@ -276,6 +273,48 @@ public class GameScreen implements Screen{
 	
 	public Stage getUI() {
 		return UILayer;
+	}
+	
+	public void trashMaking() {
+		currentMaking.remove();
+		makeDrag.removeTarget(makeTarget);
+		initMaking();
+	}
+
+	public void initMaking() {
+		currentMaking = new MakeView(new Sandwich(new WhiteBread()));
+		Scene[1].addActor(currentMaking);
+		currentMaking.setPosition(100, 146);
+		makeTarget = new Target(currentMaking) {
+
+			@Override
+			public boolean drag(Source source, Payload payload, float x,
+					float y, int pointer) {
+				return !((MakeView) getActor()).isFull();
+			}
+
+			@Override
+			public void drop(Source source, Payload payload, float x, float y,
+					int pointer) {
+				((MakeView) getActor()).addIngredient((Ingredient) payload.getObject()); 
+			}
+			
+		};
+		makeDrag.addTarget(makeTarget);
+	}
+	
+	public void initCutting(CutView c) {
+		currentCutting = c;
+		Scene[3].addActor(currentCutting);
+		currentCutting.setPosition(315, 193);
+		switchScreen(3);
+		UILayer.getButtons()[3].setChecked(true);
+		UILayer.getButtons()[2].setChecked(false);
+	}
+
+	public void trashCutting() {
+		currentCutting.remove();
+		currentCutting = null;
 	}
 
 	public MakeView getCurrentMaking() {

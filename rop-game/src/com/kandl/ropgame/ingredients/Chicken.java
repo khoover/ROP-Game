@@ -15,7 +15,7 @@ public class Chicken extends Ingredient {
 	@Override
 	public Image getSideView() {
 		// TODO Auto-generated method stub
-		return new Image(new SpriteDrawable(assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("icons/chicken")));
+		return new Image(new SpriteDrawable(assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("bigger food/chicken_side")));
 	}
 
 	@Override

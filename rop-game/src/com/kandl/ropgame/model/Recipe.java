@@ -12,8 +12,8 @@ public class Recipe {
 		
 		public static CookState getRandom() {
 			double f = Math.random();
-			if (f < 10d/3d) return LIGHT;
-			if (f < 20d/3d) return MEDIUM;
+			if (f < 1d/3d) return LIGHT;
+			if (f < 2d/3d) return MEDIUM;
 			return WELL;
 		}
 		
@@ -23,6 +23,21 @@ public class Recipe {
 			else if (t < 25) return MEDIUM;
 			else if (t < 35) return WELL;
 			else return BURNT;
+		}
+		
+		public static float toTime(CookState s) {
+			switch(s) {
+			case UNCOOKED:
+				return 0;
+			case LIGHT:
+				return 10;
+			case MEDIUM:
+				return 20;
+			case WELL:
+				return 30;
+			default:
+				return 40;
+			}
 		}
 	}
 	

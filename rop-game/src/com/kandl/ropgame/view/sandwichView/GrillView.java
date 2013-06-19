@@ -5,6 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
+import com.kandl.ropgame.RopGame;
+import com.kandl.ropgame.managers.GrillManager;
+import com.kandl.ropgame.managers.SheetManager;
 import com.kandl.ropgame.model.Recipe.CookState;
 import com.kandl.ropgame.model.Sandwich;
 import com.kandl.ropgame.view.MiniOrderSheet;
@@ -16,17 +19,20 @@ public class GrillView extends Group implements Disposable {
 	private MiniOrderSheet order;
 	private Image breadImage;
 	
-	public GrillView(Sandwich s, MiniOrderSheet o) {
+	public GrillView(Sandwich s, final MiniOrderSheet o) {
 		model = s;
 		breadImage = s.getBread().getTopView(CookState.UNCOOKED);
 		breadImage.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent e, float x, float y) {
-				
+				if (RopGame.gameScreen.getCurrentCutting() != null) return;
+				RopGame.gameScreen.initCutting(new CutView(model));
+				SheetManager.switchTo(o);
+				GrillManager.removeFromGrill(GrillView.this);
 			}
 		});
 		addActor(breadImage);
-		order = o;
+		order = o.copy();
 		addActor(order);
 		bar = new ProgressBar();
 		addActor(bar);
@@ -40,6 +46,15 @@ public class GrillView extends Group implements Disposable {
 		if (CookState.fromTime(model.getCookTime()) != CookState.fromTime(old)) {
 			breadImage.remove();
 			breadImage = model.getBread().getTopView(CookState.fromTime(model.getCookTime()));
+			breadImage.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent e, float x, float y) {
+					if (RopGame.gameScreen.getCurrentCutting() != null) return;
+					RopGame.gameScreen.initCutting(new CutView(model));
+					SheetManager.switchTo(order.getSource());
+					GrillManager.removeFromGrill(GrillView.this);
+				}
+			});
 			addActor(breadImage);
 		}
 	}

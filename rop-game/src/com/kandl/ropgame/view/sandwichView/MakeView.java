@@ -10,6 +10,7 @@ public class MakeView extends Group {
 	private Sandwich sandwich;
 	private Array<Image> ingredients;
 	private int size;
+	private float height;
 	
 	public MakeView(Sandwich s) {
 		sandwich = s;
@@ -17,18 +18,23 @@ public class MakeView extends Group {
 		ingredients.add(sandwich.getBread().getSideView());
 		addActor(ingredients.get(0));
 		ingredients.get(0).setPosition(0, 0);
-		size = 1;
+		height = ingredients.get(0).getHeight() - 5;
 	}
 	
 	public void addIngredient(Ingredient i) {
 		sandwich.addIngredient(i);
 		ingredients.add(i.getSideView());
 		addActor(ingredients.peek());
-		ingredients.peek().setPosition(0, size++ * 87);
-		setSize(getWidth(), getHeight() + 87);
+		ingredients.peek().setPosition(0, height);
+		height += ingredients.peek().getHeight() - 50;
+		setSize(getWidth(), height);
 	}
 	
 	public boolean isFull() {
 		return ingredients.size >= 4;
+	}
+	
+	public Sandwich getSandwich() {
+		return sandwich;
 	}
 }
