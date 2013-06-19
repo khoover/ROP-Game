@@ -9,7 +9,7 @@ public class GroupManager extends Actor {
 	private final int MAX = 3;
 	private static int current = 0;
 	private float spawnGap = 0;
-	private static float despawnGap = 0;
+	private static float despawnGap = 10;
 	
 	public void createGroup() {
 		current++;
@@ -24,7 +24,7 @@ public class GroupManager extends Actor {
 	public void act(float delta) {
 		spawnGap += delta;
 		despawnGap += delta;
-		if (spawnGap >= (RopGame.DEBUG ? 0 : 30) && despawnGap >= 10 && current < MAX) createGroup();
+		if (spawnGap >= (RopGame.DEBUG ? 0 : 20) && despawnGap >= 10 && current < MAX) createGroup();
 	}
 	
 	public static void despawn() {
