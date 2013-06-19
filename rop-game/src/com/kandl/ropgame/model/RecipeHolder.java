@@ -5,9 +5,15 @@ import com.kandl.ropgame.model.Recipe;
 
 public class RecipeHolder {
 	private Array<Recipe> orders;
+	private String name;
 	
-	public RecipeHolder (Recipe... orders) {
+	public RecipeHolder (String name, Recipe... orders) {
 		this.orders = new Array<Recipe>(orders);
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public Recipe getLeftRecipe() {

@@ -5,17 +5,20 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.kandl.ropgame.*;
-import com.kandl.ropgame.managers.TableManager;
+import com.kandl.ropgame.managers.SheetManager;
 
 /** A stage responsible for the entire UI layout, and all assets contained by it.
  * 
@@ -26,6 +29,8 @@ public class UILayer extends Stage implements Disposable {
 	private final Image orderLine;
 	private final TextButton confirm;
 	private final TextButton trash;
+	private final Image leftArrow, rightArrow;
+	private final Image clock;
 	
 	// right panel stuff
 	private final Label score;
@@ -33,7 +38,8 @@ public class UILayer extends Stage implements Disposable {
 	private final ButtonGroup scenes;
 	private final Image background;
 	
-	private final Image clock;
+	private ChangeListener confirmListener;
+	private ChangeListener trashListener;
 	
 	public static final Skin rightPanelSkin = new Skin(Gdx.files.internal("img/icons/buttons.json"));
 
@@ -41,6 +47,8 @@ public class UILayer extends Stage implements Disposable {
 		super(width, height, stretch);
 		padX = 440;
 		padY = 180;
+		confirmListener = null;
+		trashListener = null;
 		
 		// set skin up
 		Pixmap background = new Pixmap(128, 128, Pixmap.Format.RGBA8888);
@@ -65,6 +73,8 @@ public class UILayer extends Stage implements Disposable {
 		scene[3].setStyle(rightPanelSkin.get("cut", Button.ButtonStyle.class));
 		
 		clock = new Image();
+		leftArrow = new Image(new TextureRegionDrawable(RopGame.assets.get("img/icons/buttons.atlas", TextureAtlas.class).findRegion("triangle_left")));
+		rightArrow = new Image(new TextureRegionDrawable(RopGame.assets.get("img/icons/buttons.atlas", TextureAtlas.class).findRegion("triangle_right")));
 		orderLine = new Image(new TiledDrawable((TiledDrawable) this.background.getDrawable()));
 		confirm = new TextButton("", rightPanelSkin.get("accept", TextButton.TextButtonStyle.class));
 		trash = new TextButton("Trash", rightPanelSkin.get("trash", TextButton.TextButtonStyle.class));
@@ -74,7 +84,7 @@ public class UILayer extends Stage implements Disposable {
 		clock.setPosition(5, 5);
 		addActor(orderLine);
 		orderLine.setPosition(0, height - padY);
-		orderLine.setSize(width - padX, padY);
+		orderLine.setSize(width, padY);
 		addActor(this.background);
 		this.background.setPosition(width - padX - 5, 0);
 		this.background.setSize(padX + 5, height);
@@ -84,14 +94,34 @@ public class UILayer extends Stage implements Disposable {
 			addActor(scene[i]);
 			scene[i].setPosition(width - padX + 4 + i * 110, height - padY);
 		}
+		
+		addActor(leftArrow);
+		leftArrow.setPosition(width - padX + 5, ((float) height - padY) / 2f);
+		leftArrow.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent e, float x, float y) {
+				SheetManager.shiftLeft();
+			}
+		});
+		addActor(rightArrow);
+		rightArrow.setPosition(width - 15 - rightArrow.getImageWidth(), leftArrow.getY());
+		rightArrow.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent e, float x, float y) {
+				SheetManager.shiftRight();
+			}
+		});
+		
 		addActor(confirm);
 		confirm.setSize(300, 50);
 		confirm.setPosition(width - (padX + (padX - 300f) / 2f), 70);
 		confirm.setVisible(false);
+		confirm.addListener(confirmListener);
 		addActor(trash);
 		trash.setSize(200, 50);
 		trash.setPosition(width - (padX + (padX - 300f)/2f), 10);
 		trash.setVisible(false);
+		trash.addListener(trashListener);
 		
 		//necessary because java hates everyone
 		scene[0].addListener(new ChangeListener() {
@@ -99,7 +129,8 @@ public class UILayer extends Stage implements Disposable {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				RopGame.gameScreen.switchScreen(0);
-				trash.setVisible(false);
+				SheetManager.setDragable(true);
+				//trash.setVisible(false);
 				confirm.setVisible(false);
 			}
 		});
@@ -108,7 +139,8 @@ public class UILayer extends Stage implements Disposable {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				RopGame.gameScreen.switchScreen(1);
-				trash.setVisible(true);
+				SheetManager.setDragable(false);
+				//trash.setVisible(true);
 				confirm.setVisible(true);
 				confirm.setText("Grill");
 			}
@@ -118,7 +150,8 @@ public class UILayer extends Stage implements Disposable {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				RopGame.gameScreen.switchScreen(2);
-				trash.setVisible(false);
+				SheetManager.setDragable(false);
+				//trash.setVisible(false);
 				confirm.setVisible(false);
 			}
 		});
@@ -127,7 +160,8 @@ public class UILayer extends Stage implements Disposable {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				RopGame.gameScreen.switchScreen(3);
-				trash.setVisible(true);
+				SheetManager.setDragable(false);
+				//trash.setVisible(true);
 				confirm.setVisible(true);
 				confirm.setText("Serve");
 			}
@@ -142,7 +176,8 @@ public class UILayer extends Stage implements Disposable {
 	
 	// guaranteed that height never changes, so all we have to do is fidget with widths/X.
 	public void resize(float width, float height) {
-		orderLine.setSize(width - padX, padY);
+		orderLine.setSize(width, padY);
+		orderLine.setPosition(0, height - padY);
 		background.setPosition(width - padX - 5, 0);
 		score.setPosition(width - padX + 5, height - padY / 2f + 10);
 		for (int i = 0; i < 4; ++i) {
@@ -150,6 +185,9 @@ public class UILayer extends Stage implements Disposable {
 		}
 		confirm.setPosition(width - (padX - (padX - 300f) / 2f), 70);
 		trash.setPosition(width - (padX - (padX - 200f)/2f), 10);
+		leftArrow.setPosition(width - padX + 5, ((float) height + 120 - padY) / 2f);
+		rightArrow.setPosition(width - 15 - rightArrow.getImageWidth(), leftArrow.getY());
+		SheetManager.resize(width, height);
 	}
 
 	@Override

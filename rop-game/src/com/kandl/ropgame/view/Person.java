@@ -1,15 +1,14 @@
 package com.kandl.ropgame.view;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.kandl.ropgame.model.Recipe;
 
-public class Person extends Image {
+public class Person extends Group {
 	public static final int WALKING = 0;
 	public static final int SITTING = 1;
 	public static final int EATING = 2;
@@ -18,21 +17,16 @@ public class Person extends Image {
 	private static Pool<Array<Animation>> femaleSpriteStore;
 	private static Pool<String> maleNames;
 	private static Pool<String> femaleNames;
-
-	private Array<Animation> sprites;
-	private TextureRegionDrawable frame;
-	private int state;
-	private int stateTime;
-	private boolean male;
-	private String name;
-	private Recipe order;
-	private boolean flipped;
-	private Label nameLabel;
+	private static TextureAtlas spriteAtlas;
 	
-	public Person(boolean male, int state, boolean flipped) {
+	private Array<Animation> sprites;
+	private final boolean male;
+	private final String name;
+	private final Recipe order;
+	private boolean flipped;
+	
+	public Person(boolean male, boolean flipped) {
 		this.flipped = flipped;
-		this.state = state;
-		stateTime = 0;
 		if (male) {
 			sprites = maleSpriteStore.obtain();
 			if (sprites == null) {
@@ -56,31 +50,25 @@ public class Person extends Image {
 				name = femaleNames.obtain();
 			}
 		}
-		frame = new TextureRegionDrawable(sprites.get(state).getKeyFrame(0));
-		this.setDrawable(frame);
 		order = new Recipe();
-	}
-	
-	@Override
-	public void act(float delta) {
-		super.act(delta);
-		stateTime += delta;
-		frame.setRegion(sprites.get(state).getKeyFrame(stateTime, true));
-		if (frame.getRegion().isFlipX() != flipped) frame.getRegion().flip(flipped, false);
-	}
-	
-	@Override
-	public void draw(SpriteBatch batch, float alpha) {
-		super.draw(batch, alpha);
 	}
 	
 	public Recipe getOrder() {
 		return order;
 	}
 	
-	public void setState(int state, boolean flipped) {
-		this.state = state;
+	public String getName() {
+		return name;
+	}
+	
+	public void setFlipped(boolean flipped) {
 		this.flipped = flipped;
+	}
+	
+	public TextureRegion getFrame(int state, float stateTime) {
+		TextureRegion r = sprites.get(state).getKeyFrame(stateTime, true);
+		if (r.isFlipX() != flipped) r.flip(flipped, false);
+		return r;
 	}
 
 	public static void initialize() {
@@ -100,7 +88,7 @@ public class Person extends Image {
 			}
 			
 		};
-		maleSpriteStore = new Pool<Array<Animation>>(0, 6){
+		maleSpriteStore = new Pool<Array<Animation>>(0, 3){
 
 			@Override
 			protected Array<Animation> newObject() {
@@ -108,7 +96,7 @@ public class Person extends Image {
 			}
 			
 		};
-		femaleSpriteStore = new Pool<Array<Animation>>(0, 6){
+		femaleSpriteStore = new Pool<Array<Animation>>(0, 3){
 
 			@Override
 			protected Array<Animation> newObject() {
@@ -120,11 +108,35 @@ public class Person extends Image {
 		// add assets here
 		maleNames.freeAll(new Array<String>(new String[] {"Bob", "Frank", "Joe", "Harry", "George", "Alf"}));
 		femaleNames.freeAll(new Array<String>(new String[] {"Anne", "Mary", "Lucy", "Agnes", "Ridley", "Elly", "Lois"}));
+		
+		spriteAtlas = new TextureAtlas("img/people/people.atlas");
+		for (int i = 1; i <= 3; ++i) {
+			Array<? extends TextureRegion> regions = spriteAtlas.findRegions(String.format("person%1$d", i));
+			Animation walking = null;
+			Animation sitting = new Animation(1, regions.get(0));
+			sitting.setPlayMode(Animation.LOOP);
+			Animation eating = new Animation (0.4f, regions, Animation.LOOP);
+			Array<Animation> sprite = new Array<Animation>(new Animation[] {walking, sitting, eating});
+			femaleSpriteStore.free(sprite);
+		}
+		for (int i = 4; i <= 6; ++i) {
+			Array<? extends TextureRegion> regions = spriteAtlas.findRegions(String.format("person%1$d", i));
+			Animation walking = null;
+			Animation sitting = new Animation(1, regions.get(0));
+			sitting.setPlayMode(Animation.LOOP);
+			Animation eating = new Animation (0.4f, regions, Animation.LOOP);
+			Array<Animation> sprite = new Array<Animation>(new Animation[] {walking, sitting, eating});
+			maleSpriteStore.free(sprite);
+		}
 	}
 	
 	public void free() {
 		if (male) { maleNames.free(name); maleSpriteStore.free(sprites); }
 		else { femaleNames.free(name); femaleSpriteStore.free(sprites); }
+	}
+	
+	public static void dispose() {
+		spriteAtlas.dispose();
 	}
 	
 }

@@ -23,7 +23,7 @@ public abstract class TableManager {
 	
 	public static int assignTable(Group g) {
 		while (true) {
-			int place = ((int) Math.random() * 10);
+			int place = (int) (Math.random() * 10);
 			if (tables.get(place) != null) continue;
 			tables.set(place, g);
 			return place;
@@ -74,7 +74,7 @@ public abstract class TableManager {
 	}
 	
 	public static Group findGroupFromPosition(float x, float y) {
-		if (y <= 400) return tables.get(((int) x / TABLEWIDTH));
+		if (y <= 600) return tables.get((int) ((x - RopGame.gameScreen.getOffsetX()) / (float) TABLEWIDTH));
 		else return null;
 	}
 }

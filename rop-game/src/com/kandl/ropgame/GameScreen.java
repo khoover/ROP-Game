@@ -29,18 +29,32 @@ package com.kandl.ropgame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
+import com.kandl.ropgame.ingredients.Chicken;
+import com.kandl.ropgame.ingredients.Ingredient;
+import com.kandl.ropgame.ingredients.Lettuce;
+import com.kandl.ropgame.ingredients.Onion;
+import com.kandl.ropgame.ingredients.Tomato;
+import com.kandl.ropgame.ingredients.WhiteBread;
 import com.kandl.ropgame.managers.GroupManager;
-import com.kandl.ropgame.managers.TableManager;
+import com.kandl.ropgame.managers.SheetManager;
+import com.kandl.ropgame.model.Sandwich;
 import com.kandl.ropgame.ui.UILayer;
+import com.kandl.ropgame.view.Person;
+import com.kandl.ropgame.view.ProgressBar;
+import com.kandl.ropgame.view.sandwichView.CutView;
+import com.kandl.ropgame.view.sandwichView.MakeView;
 
 public class GameScreen implements Screen{
 	public static final int FRONT = 0;
@@ -48,20 +62,45 @@ public class GameScreen implements Screen{
 	public static final int GRILL = 2;
 	public static final int ASSEMBLY = 3;
 	
+	private MakeView currentMaking;
+	private CutView currentCutting = null;
+	private DragAndDrop makeDrag;
 	private final UILayer UILayer;
 	private final Stage[] Scene = new Stage[4];
 	private Stage ActiveScene;
 	private Image frontBackground;
+	private float offsetX;
+	private Array<Ingredient> ingredients = new Array<Ingredient>(5);
+	private Music frontMusic = Gdx.audio.newMusic(Gdx.files.internal("sound/front_music.ogg"));
+	private Music grillMusic = Gdx.audio.newMusic(Gdx.files.internal("sound/grill_music.ogg"));
+
+	public float getOffsetX() {
+		return offsetX;
+	}
 	
 	public GameScreen() {
 		//Create UI, input processors
 		UILayer = new UILayer(1280, 800, true);
+		SheetManager.initialize(UILayer);
+		frontMusic.setLooping(true);
+		frontMusic.setVolume(0.5f);
+		frontMusic.play();
+		grillMusic.setLooping(true);
+		grillMusic.setVolume(0.75f);
+		
+		Chicken.initialize(ingredients);
+		Lettuce.initialize(ingredients);
+		Onion.initialize(ingredients);
+		Tomato.initialize(ingredients);
+		WhiteBread.initialize();
+		Ingredient.loadAll();
 		
 		//Create scenes
 		Scene[0] = createFrontScreen();
 		Scene[1] = createMakeScreen();
 		Scene[2] = createGrillScreen();
 		Scene[3] = createCutScreen();
+		Person.initialize();
 		ActiveScene = Scene[0];
 		
 		InputMultiplexer input = new InputMultiplexer();
@@ -85,13 +124,56 @@ public class GameScreen implements Screen{
 		Texture background = RopGame.assets.get("img/backgrounds/Grills.png", Texture.class);
 		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
 		for (Actor a: scene.getActors()) {
-			a.setPosition(-50, 0);
+			a.setPosition(0, 0);
 		}
 		return scene;
 	}
 
 	private Stage createMakeScreen() {
+		makeDrag = new DragAndDrop();
+		makeDrag.setDragActorPosition(-300, 100);
 		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
+		Texture background = RopGame.assets.get("img/backgrounds/Making.png", Texture.class);
+		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
+		for (Actor a: scene.getActors()) {
+			a.setPosition(-60, 0);
+		}
+		int n = 0;
+		for (final Ingredient i: ingredients) {
+			Image current = new Image(new SpriteDrawable(i.getIcon()));
+			scene.addActor(current);
+			current.setPosition(10 + 170 * n++, 550);
+			makeDrag.addSource(new Source(current) {
+
+				@Override
+				public Payload dragStart(InputEvent event, float x, float y,
+						int pointer) {
+					Payload p = new Payload();
+					p.setDragActor(i.getSideView());
+					p.setObject(i);
+					return p;
+				}
+				
+			});
+		}
+		currentMaking = new MakeView(new Sandwich(new WhiteBread()));
+		scene.addActor(currentMaking);
+		currentMaking.setPosition(100, 146);
+		makeDrag.addTarget(new Target(currentMaking) {
+
+			@Override
+			public boolean drag(Source source, Payload payload, float x,
+					float y, int pointer) {
+				return !((MakeView) getActor()).isFull();
+			}
+
+			@Override
+			public void drop(Source source, Payload payload, float x, float y,
+					int pointer) {
+				((MakeView) getActor()).addIngredient((Ingredient) payload.getObject()); 
+			}
+			
+		});
 		return scene;
 	}
 
@@ -103,23 +185,28 @@ public class GameScreen implements Screen{
 			@Override
 			public void drag (InputEvent event, float x, float y, int pointer) {
 				float dx = -getDeltaX();
-				if (Scene[0].getRoot().getX() + dx >= 0) Scene[0].addAction(Actions.moveTo(0, 0)); // if root left edge enters stage
+				if (Scene[0].getRoot().getX() + dx >= 0) { Scene[0].addAction(Actions.moveTo(0, 0)); offsetX = 0;}// if root left edge enters stage
 				else if (Scene[0].getRoot().getX() + dx <= Scene[0].getWidth() - 445 - frontBackground.getWidth()) { // if root right edge is left of background + UI coverage
 					Scene[0].addAction(Actions.moveTo(Scene[0].getWidth()- 445 - frontBackground.getWidth(), 0));
+					offsetX = Scene[0].getWidth() - 445 - frontBackground.getWidth();
 				}
-				else Scene[0].addAction(Actions.moveBy(dx, 0, 0));
+				else { Scene[0].addAction(Actions.moveBy(dx, 0, 0)); offsetX += dx; }
 			}
 		});
 		frontBackground = new Image(new TiledDrawable(new TextureRegion(RopGame.assets.get("img/backgrounds/new front.png", Texture.class), 0, 224, 1280, 800)), Scaling.stretch);
 		scene.addActor(frontBackground);
 		frontBackground.setSize(1280 * 5, 800);
-		//scene.addActor(new GroupManager());
+		scene.addActor(new GroupManager());
 		return scene;
 	}
 
 	public void switchScreen(final int screen) {
 		if (RopGame.DEBUG) assert(screen >= 0 && screen <= 3);
+		frontMusic.stop();
+		grillMusic.stop();
 		((InputMultiplexer) Gdx.input.getInputProcessor()).removeProcessor(ActiveScene);
+		if (screen == 0) frontMusic.play();
+		else if (screen == 2) grillMusic.play();
 		ActiveScene = Scene[screen];
 		((InputMultiplexer) Gdx.input.getInputProcessor()).addProcessor(ActiveScene);
 	}
@@ -168,7 +255,7 @@ public class GameScreen implements Screen{
 		// TODO add call to showPauseOverlay
 
 	}
-
+	
 	@Override
 	public void dispose() {
 		for (Stage s: Scene) {
@@ -176,6 +263,11 @@ public class GameScreen implements Screen{
 		}
 		ActiveScene = null;
 		UILayer.dispose();
+		frontMusic.dispose();
+		grillMusic.dispose();
+		Ingredient.dispose();
+		Person.dispose();
+		ProgressBar.staticDispose();
 	}
 	
 	public Stage getScreen(int stage) {
@@ -184,5 +276,13 @@ public class GameScreen implements Screen{
 	
 	public Stage getUI() {
 		return UILayer;
+	}
+
+	public MakeView getCurrentMaking() {
+		return currentMaking;
+	}
+
+	public CutView getCurrentCutting() {
+		return currentCutting;
 	}
 }

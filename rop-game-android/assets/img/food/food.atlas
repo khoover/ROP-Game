@@ -1,19 +1,19 @@
 
 food.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 bigger food/sideview_bread_top
   rotate: false
   xy: 1, 1
-  size: 674, 180
-  orig: 674, 180
+  size: 600, 87
+  orig: 600, 87
   offset: 0, 0
   index: -1
 
 food2.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 bread/bread_brown
   rotate: false
@@ -46,7 +46,7 @@ bread/bread_normal
 
 food3.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 icons/bread
   rotate: false
@@ -69,7 +69,7 @@ icons/lettuce
   orig: 130, 50
   offset: 0, 0
   index: -1
-icons/Onion
+icons/onion
   rotate: false
   xy: 397, 1
   size: 130, 50
