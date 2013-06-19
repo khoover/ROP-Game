@@ -1,0 +1,85 @@
+
+food.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bigger food/sideview_bread_top
+  rotate: false
+  xy: 1, 1
+  size: 674, 180
+  orig: 674, 180
+  offset: 0, 0
+  index: -1
+
+food2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bread/bread_brown
+  rotate: false
+  xy: 1, 1
+  size: 157, 149
+  orig: 157, 149
+  offset: 0, 0
+  index: -1
+bread/bread_burnt
+  rotate: false
+  xy: 160, 1
+  size: 157, 149
+  orig: 157, 149
+  offset: 0, 0
+  index: -1
+bread/bread_grilled
+  rotate: false
+  xy: 319, 1
+  size: 157, 149
+  orig: 157, 149
+  offset: 0, 0
+  index: -1
+bread/bread_normal
+  rotate: false
+  xy: 478, 1
+  size: 157, 149
+  orig: 157, 149
+  offset: 0, 0
+  index: -1
+
+food3.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+icons/bread
+  rotate: false
+  xy: 1, 1
+  size: 130, 50
+  orig: 130, 50
+  offset: 0, 0
+  index: -1
+icons/chicken
+  rotate: false
+  xy: 133, 1
+  size: 130, 50
+  orig: 130, 50
+  offset: 0, 0
+  index: -1
+icons/lettuce
+  rotate: false
+  xy: 265, 1
+  size: 130, 50
+  orig: 130, 50
+  offset: 0, 0
+  index: -1
+icons/Onion
+  rotate: false
+  xy: 397, 1
+  size: 130, 50
+  orig: 130, 50
+  offset: 0, 0
+  index: -1
+icons/tomato
+  rotate: false
+  xy: 529, 1
+  size: 130, 50
+  orig: 130, 50
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,94 @@
+
+people.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+person3
+  rotate: false
+  xy: 1, 366
+  size: 184, 363
+  orig: 184, 363
+  offset: 0, 0
+  index: 1
+person3
+  rotate: false
+  xy: 1, 1
+  size: 184, 363
+  orig: 184, 363
+  offset: 0, 0
+  index: 2
+person4
+  rotate: false
+  xy: 187, 366
+  size: 182, 363
+  orig: 182, 363
+  offset: 0, 0
+  index: 1
+person4
+  rotate: false
+  xy: 187, 1
+  size: 182, 363
+  orig: 182, 363
+  offset: 0, 0
+  index: 2
+person5
+  rotate: false
+  xy: 371, 366
+  size: 182, 363
+  orig: 182, 363
+  offset: 0, 0
+  index: 1
+person5
+  rotate: false
+  xy: 371, 1
+  size: 182, 363
+  orig: 182, 363
+  offset: 0, 0
+  index: 2
+person6
+  rotate: false
+  xy: 555, 366
+  size: 182, 363
+  orig: 182, 363
+  offset: 0, 0
+  index: 1
+person6
+  rotate: false
+  xy: 555, 1
+  size: 182, 363
+  orig: 182, 363
+  offset: 0, 0
+  index: 2
+person1
+  rotate: false
+  xy: 739, 366
+  size: 174, 363
+  orig: 174, 363
+  offset: 0, 0
+  index: 1
+person1
+  rotate: false
+  xy: 739, 1
+  size: 174, 363
+  orig: 174, 363
+  offset: 0, 0
+  index: 2
+
+people2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+person2
+  rotate: false
+  xy: 1, 1
+  size: 174, 363
+  orig: 174, 363
+  offset: 0, 0
+  index: 1
+person2
+  rotate: false
+  xy: 177, 1
+  size: 174, 363
+  orig: 174, 363
+  offset: 0, 0
+  index: 2
