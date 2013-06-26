@@ -67,7 +67,7 @@ public class Person extends Group {
 	
 	public TextureRegion getFrame(int state, float stateTime) {
 		TextureRegion r = sprites.get(state).getKeyFrame(stateTime, true);
-		if (r.isFlipX() != flipped) r.flip(flipped, false);
+		if (r.isFlipX() != flipped) r.flip(true, false);
 		return r;
 	}
 
