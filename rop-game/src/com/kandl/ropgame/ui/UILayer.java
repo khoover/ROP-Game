@@ -14,9 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Scaling;
 import com.kandl.ropgame.*;
 import com.kandl.ropgame.managers.GrillManager;
 import com.kandl.ropgame.managers.SheetManager;
@@ -74,7 +77,7 @@ public class UILayer extends Stage implements Disposable {
 		scene[3].setStyle(rightPanelSkin.get("cut", Button.ButtonStyle.class));
 		
 		clock = new Image();
-		orderLine = new Image(new TiledDrawable((TiledDrawable) this.background.getDrawable()));
+		orderLine = new Image(new NinePatchDrawable(rightPanelSkin.getAtlas().createPatch("line")), Scaling.stretchX);
 		confirm = new TextButton("", rightPanelSkin.get("accept", TextButton.TextButtonStyle.class));
 		trash = new TextButton("Trash", rightPanelSkin.get("trash", TextButton.TextButtonStyle.class));
 		
@@ -83,7 +86,7 @@ public class UILayer extends Stage implements Disposable {
 		clock.setPosition(5, 5);
 		addActor(orderLine);
 		orderLine.setPosition(0, height - padY);
-		orderLine.setSize(width, padY);
+		orderLine.setSize(width - padX, padY);
 		addActor(this.background);
 		this.background.setPosition(width - padX - 5, 0);
 		this.background.setSize(padX + 5, height);
@@ -210,7 +213,7 @@ public class UILayer extends Stage implements Disposable {
 	
 	// guaranteed that height never changes, so all we have to do is fidget with widths/X.
 	public void resize(float width, float height) {
-		orderLine.setSize(width, padY);
+		orderLine.setSize(width - padX, padY);
 		orderLine.setPosition(0, height - padY);
 		background.setPosition(width - padX - 5, 0);
 		score.setPosition(width - padX + 5, height - padY / 2f + 10);

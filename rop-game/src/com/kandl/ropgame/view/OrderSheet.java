@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Scaling;
+import com.kandl.ropgame.RopGame;
 import com.kandl.ropgame.ingredients.Ingredient;
 import com.kandl.ropgame.managers.SheetManager;
 import com.kandl.ropgame.managers.TableManager;
@@ -29,7 +32,7 @@ public class OrderSheet extends Group implements Disposable {
 	private RecipeHolder order;
 	private Array<Sandwich> sandwiches;
 	private boolean dragable = false, addable = true, servable = false;
-	private Image background, time, cut;
+	private Image background, cut;
 	private Array<Image> foreground;
 	private MiniOrderSheet mini;
 	
@@ -38,14 +41,10 @@ public class OrderSheet extends Group implements Disposable {
 	
 	public OrderSheet(RecipeHolder r) {
 		sandwiches = new Array<Sandwich>(2);
-		Pixmap p = new Pixmap(350, 480, Pixmap.Format.RGB888);
-		p.setColor(Color.WHITE);
-		p.fill();
-		Texture t = new Texture(512, 512, Pixmap.Format.RGB888);
-		t.draw(p, 0, 0);
-		p.dispose();
-		background = new Image(new TextureRegion(t, 0, 0, 350, 480));
+		background = new Image(new TextureRegionDrawable(RopGame.assets.get("img/icons/buttons.atlas", TextureAtlas.class).findRegion("paper")), Scaling.stretch);
 		addActor(background);
+		background.setPosition(0, 0);
+		background.setSize(350, 480);
 		
 		order = r;
 		name = new Label(r.getName(), UILayer.rightPanelSkin, "person");
@@ -53,12 +52,12 @@ public class OrderSheet extends Group implements Disposable {
 		name.setPosition(150, 430);
 		
 		foreground = new Array<Image>(3);
-		Image bread = new Image(new SpriteDrawable(r.getLeftRecipe().getBread().getIcon()));
+		/*Image bread = new Image(new SpriteDrawable(r.getLeftRecipe().getBread().getIcon()));
 		foreground.add(bread);
 		addActor(bread);
-		bread.setPosition(20, 370);
+		bread.setPosition(20, 370);*/
 		Image current;
-		int n = 1;
+		int n = 0;
 		for (Ingredient i: r.getLeftRecipe().getIngredients()) {
 			current = new Image(new SpriteDrawable(i.getIcon()));
 			foreground.add(current);
@@ -67,8 +66,8 @@ public class OrderSheet extends Group implements Disposable {
 		}
 		
 		if (r.getRightRecipe() != null) {
-			t = new Texture(128, 512, Pixmap.Format.RGB888);
-			p = new Pixmap(10, 420, Pixmap.Format.RGB888);
+			Texture t = new Texture(128, 512, Pixmap.Format.RGB888);
+			Pixmap p = new Pixmap(10, 420, Pixmap.Format.RGB888);
 			p.setColor(Color.BLACK);
 			p.fill();
 			t.draw(p, 0, 0);
@@ -78,11 +77,11 @@ public class OrderSheet extends Group implements Disposable {
 			addActor(current);
 			current.setPosition(170, 10);
 			
-			bread = new Image(new SpriteDrawable(r.getRightRecipe().getBread().getIcon()));
+			/*bread = new Image(new SpriteDrawable(r.getRightRecipe().getBread().getIcon()));
 			foreground.add(bread);
 			addActor(bread);
-			bread.setPosition(200, 370);
-			n = 1;
+			bread.setPosition(200, 370);*/
+			n = 0;
 			for (Ingredient i: r.getRightRecipe().getIngredients()) {
 				current = new Image(new SpriteDrawable(i.getIcon()));
 				foreground.add(current);
@@ -165,10 +164,6 @@ public class OrderSheet extends Group implements Disposable {
 
 	public Array<Sandwich> getSandwichs() {
 		return sandwiches;
-	}
-
-	public Image getTime() {
-		return time;
 	}
 
 	public Image getCut() {

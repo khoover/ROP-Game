@@ -3,9 +3,24 @@ buttons.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+paper
+  rotate: false
+  xy: 1, 101
+  size: 200, 400
+  orig: 200, 400
+  offset: 0, 0
+  index: -1
+line
+  rotate: false
+  xy: 203, 321
+  size: 400, 180
+  split: 13, 13, 0, 180
+  orig: 400, 180
+  offset: 0, 0
+  index: -1
 generic_button_down
   rotate: false
-  xy: 1, 169
+  xy: 1, 59
   size: 200, 40
   split: 5, 4, 4, 4
   orig: 200, 40
@@ -13,7 +28,7 @@ generic_button_down
   index: -1
 generic_button_up
   rotate: false
-  xy: 1, 127
+  xy: 203, 279
   size: 200, 40
   split: 4, 5, 4, 4
   orig: 200, 40
@@ -21,106 +36,99 @@ generic_button_up
   index: -1
 cut_down
   rotate: false
-  xy: 1, 23
+  xy: 605, 399
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 cut_selected
   rotate: false
-  xy: 105, 23
+  xy: 203, 175
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 cut_up
   rotate: false
-  xy: 209, 107
+  xy: 709, 399
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 front_down
   rotate: false
-  xy: 313, 107
+  xy: 203, 71
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 front_selected
   rotate: false
-  xy: 417, 107
+  xy: 813, 399
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 front_up
   rotate: false
-  xy: 521, 107
+  xy: 917, 399
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 grill_down
   rotate: false
-  xy: 625, 107
+  xy: 307, 175
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 grill_selected
   rotate: false
-  xy: 729, 107
+  xy: 307, 71
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 grill_up
   rotate: false
-  xy: 833, 107
+  xy: 605, 295
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 make_down
   rotate: false
-  xy: 209, 3
+  xy: 709, 295
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 make_selected
   rotate: false
-  xy: 313, 3
+  xy: 813, 295
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 make_up
   rotate: false
-  xy: 417, 3
+  xy: 917, 295
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
-triangle_down
-  rotate: false
-  xy: 937, 199
-  size: 20, 10
-  orig: 20, 10
-  offset: 0, 0
-  index: -1
-triangle_left
+plate
   rotate: false
   xy: 1, 1
-  size: 10, 20
-  orig: 10, 20
+  size: 88, 56
+  orig: 88, 56
   offset: 0, 0
   index: -1
-triangle_right
+triangle_down
   rotate: false
-  xy: 521, 85
-  size: 10, 20
-  orig: 10, 20
+  xy: 203, 59
+  size: 20, 10
+  orig: 20, 10
   offset: 0, 0
   index: -1

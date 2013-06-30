@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Scaling;
+import com.kandl.ropgame.RopGame;
 import com.kandl.ropgame.ingredients.Ingredient;
 import com.kandl.ropgame.managers.SheetManager;
 import com.kandl.ropgame.model.Recipe;
@@ -54,23 +57,18 @@ public class MiniOrderSheet extends Group implements Disposable {
 		} else {
 			this.source = source; 
 		}
-		Pixmap p = new Pixmap(350, 480, Pixmap.Format.RGB888);
-		p.setColor(Color.WHITE);
-		p.fill();
-		Texture t = new Texture(512, 512, Pixmap.Format.RGB888);
-		t.draw(p, 0, 0);
-		p.dispose();
-		background = new Image(new TextureRegion(t, 0, 0, 350, 480));
+		background = new Image(new TextureRegionDrawable(RopGame.assets.get("img/icons/buttons.atlas", TextureAtlas.class).findRegion("paper")), Scaling.stretch);
+		background.setSize(350,480);
 		background.setScale(scale);
 		addActor(background);
 		
-		Sprite currSprite = base.getOrder().getLeftRecipe().getBread().getIcon();
-		Image current = new Image(new SpriteDrawable(currSprite));
-		current.setScale(scale);
+		Sprite currSprite;// = base.getOrder().getLeftRecipe().getBread().getIcon();
+		Image current;// = new Image(new SpriteDrawable(currSprite));
+		/*current.setScale(scale);
 		components.add(current);
 		addActor(current);
-		current.setPosition(10, height - 50 * scale);
-		int n = 1;
+		current.setPosition(10, height - 50 * scale);*/
+		int n = 0;
 		for (Ingredient i: base.getOrder().getLeftRecipe().getIngredients()) {
 			currSprite = i.getIcon();
 			current = new Image(new SpriteDrawable(currSprite));
