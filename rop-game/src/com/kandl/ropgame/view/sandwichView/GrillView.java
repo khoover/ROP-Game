@@ -25,7 +25,7 @@ public class GrillView extends Group implements Disposable {
 		breadImage.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent e, float x, float y) {
-				if (RopGame.gameScreen.getCurrentCutting() != null) return;
+				if (bar.getTime() < 40 || RopGame.gameScreen.getCurrentCutting() != null) return;
 				RopGame.gameScreen.initCutting(new CutView(model));
 				SheetManager.switchTo(o);
 				GrillManager.removeFromGrill(GrillView.this);
@@ -49,7 +49,7 @@ public class GrillView extends Group implements Disposable {
 			breadImage.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent e, float x, float y) {
-					if (RopGame.gameScreen.getCurrentCutting() != null) return;
+					if (bar.getTime() < 40 || RopGame.gameScreen.getCurrentCutting() != null) return;
 					RopGame.gameScreen.initCutting(new CutView(model));
 					SheetManager.switchTo(order.getSource());
 					GrillManager.removeFromGrill(GrillView.this);

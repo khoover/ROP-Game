@@ -16,14 +16,14 @@ public abstract class TableManager {
 	public static final int TABLEHEIGHT = 400;
 	public static final int BUTTONHEIGHT = 334;
 	
-	private static Array<Group> tables = new Array<Group>(10);
+	private static Array<Group> tables = new Array<Group>(5);
 	static {
-		tables.addAll(new Group[] {null, null, null, null, null, null, null, null, null, null});
+		tables.addAll(new Group[] {null, null, null, null, null});
 	}
 	
 	public static int assignTable(Group g) {
 		while (true) {
-			int place = (int) (Math.random() * 10);
+			int place = (int) (Math.random() * 5);
 			if (tables.get(place) != null) continue;
 			tables.set(place, g);
 			return place;

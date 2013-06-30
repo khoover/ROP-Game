@@ -73,6 +73,10 @@ public class ProgressBar extends Image implements Disposable {
 		texture.dispose();
 		bar.dispose();
 	}
+	
+	public float getTime() {
+		return time;
+	}
 
 	public static void staticDispose() {
 		background.dispose();

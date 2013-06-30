@@ -79,11 +79,6 @@ public class MiniOrderSheet extends Group implements Disposable {
 			addActor(current);
 			current.setPosition(10, height - scale * (50 * ++n));
 		}
-		current = new ProgressBar(Recipe.CookState.toTime(base.getOrder().getLeftRecipe().getCooked()));
-		current.setScale(scale);
-		components.add(current);
-		addActor(current);
-		current.setPosition(10, height - scale * (50 * ++n));
 	}
 	
 	public MiniOrderSheet copy() {

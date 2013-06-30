@@ -65,9 +65,6 @@ public class OrderSheet extends Group implements Disposable {
 			addActor(current);
 			current.setPosition(20, 370 - n++*60);
 		}
-		current = new ProgressBar(Recipe.CookState.toTime(order.getLeftRecipe().getCooked()));
-		addActor(current);
-		current.setPosition(20, 370-n*60);
 		
 		if (r.getRightRecipe() != null) {
 			t = new Texture(128, 512, Pixmap.Format.RGB888);
@@ -92,9 +89,6 @@ public class OrderSheet extends Group implements Disposable {
 				addActor(current);
 				current.setPosition(200, 370 - n++*60);
 			}
-			current = new ProgressBar(Recipe.CookState.toTime(order.getRightRecipe().getCooked()));
-			addActor(current);
-			current.setPosition(200, 370-n*60);
 		}
 		
 		background.addListener(new DragListener() {

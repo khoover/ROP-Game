@@ -72,7 +72,7 @@ public abstract class SheetManager {
 	}
 	
 	public static void switchTo(MiniOrderSheet o) {
-		switchTo(miniSheets.indexOf(o, true));
+		if (miniSheets.indexOf(o, true) != -1) switchTo(miniSheets.indexOf(o, true));
 	}
 	
 	public static void layout() {

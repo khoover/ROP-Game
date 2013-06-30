@@ -16,7 +16,7 @@ public class GroupManager extends Actor {
 		spawnGap = 0;
 		Person p1 = new Person(Math.random() >= 0.5, true);
 		Person p2 = null;
-		if (Math.random() >= 0.5) p2 = new Person(Math.random() >= 0.5, false);
+		//if (Math.random() >= 0.5) p2 = new Person(Math.random() >= 0.5, false);
 		Group g = new Group(p1, p2);
 	}
 	

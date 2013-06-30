@@ -31,6 +31,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -75,6 +76,8 @@ public class GameScreen implements Screen{
 	}
 	
 	public GameScreen() {
+		loadAll();
+		
 		//Create UI, input processors
 		UILayer = new UILayer(1280, 800, true);
 		SheetManager.initialize(UILayer);
@@ -192,7 +195,7 @@ public class GameScreen implements Screen{
 		});
 		frontBackground = new Image(new TiledDrawable(new TextureRegion(RopGame.assets.get("img/backgrounds/new front.png", Texture.class), 0, 224, 1280, 800)), Scaling.stretch);
 		scene.addActor(frontBackground);
-		frontBackground.setSize(1280 * 5, 800);
+		frontBackground.setSize(1280 * 2.5f, 800);
 		scene.addActor(new GroupManager());
 		return scene;
 	}
@@ -250,7 +253,7 @@ public class GameScreen implements Screen{
 	@Override
 	public void resume() {
 		// TODO add call to showPauseOverlay
-
+		loadAll();
 	}
 	
 	@Override
@@ -323,5 +326,14 @@ public class GameScreen implements Screen{
 
 	public CutView getCurrentCutting() {
 		return currentCutting;
+	}
+	
+	private void loadAll() {
+		RopGame.assets.load("img/backgrounds/new front.png", Texture.class);
+		RopGame.assets.load("img/backgrounds/cuttingBoard.png", Texture.class);
+		RopGame.assets.load("img/backgrounds/Grills.png", Texture.class);
+		RopGame.assets.load("img/backgrounds/Making.png", Texture.class);
+		RopGame.assets.load("img/icons/buttons.atlas", TextureAtlas.class);
+		RopGame.assets.finishLoading();
 	}
 }

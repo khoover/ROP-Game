@@ -31,7 +31,6 @@ public class UILayer extends Stage implements Disposable {
 	private final Image orderLine;
 	private final TextButton confirm;
 	private final TextButton trash;
-	private final Image leftArrow, rightArrow;
 	private final Image clock;
 	
 	// right panel stuff
@@ -75,8 +74,6 @@ public class UILayer extends Stage implements Disposable {
 		scene[3].setStyle(rightPanelSkin.get("cut", Button.ButtonStyle.class));
 		
 		clock = new Image();
-		leftArrow = new Image(new TextureRegionDrawable(RopGame.assets.get("img/icons/buttons.atlas", TextureAtlas.class).findRegion("triangle_left")));
-		rightArrow = new Image(new TextureRegionDrawable(RopGame.assets.get("img/icons/buttons.atlas", TextureAtlas.class).findRegion("triangle_right")));
 		orderLine = new Image(new TiledDrawable((TiledDrawable) this.background.getDrawable()));
 		confirm = new TextButton("", rightPanelSkin.get("accept", TextButton.TextButtonStyle.class));
 		trash = new TextButton("Trash", rightPanelSkin.get("trash", TextButton.TextButtonStyle.class));
@@ -96,23 +93,6 @@ public class UILayer extends Stage implements Disposable {
 			addActor(scene[i]);
 			scene[i].setPosition(width - padX + 4 + i * 110, height - padY);
 		}
-		
-		addActor(leftArrow);
-		leftArrow.setPosition(width - padX + 5, ((float) height - padY) / 2f);
-		leftArrow.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent e, float x, float y) {
-				SheetManager.shiftLeft();
-			}
-		});
-		addActor(rightArrow);
-		rightArrow.setPosition(width - 15 - rightArrow.getImageWidth(), leftArrow.getY());
-		rightArrow.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent e, float x, float y) {
-				SheetManager.shiftRight();
-			}
-		});
 		
 		addActor(confirm);
 		confirm.setSize(300, 50);
@@ -239,8 +219,6 @@ public class UILayer extends Stage implements Disposable {
 		}
 		confirm.setPosition(width - (padX - (padX - 300f) / 2f), 70);
 		trash.setPosition(width - (padX - (padX - 200f)/2f), 10);
-		leftArrow.setPosition(width - padX + 5, ((float) height + 120 - padY) / 2f);
-		rightArrow.setPosition(width - 15 - rightArrow.getImageWidth(), leftArrow.getY());
 		SheetManager.resize(width, height);
 	}
 	

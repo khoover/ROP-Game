@@ -8,7 +8,7 @@ import com.kandl.ropgame.ingredients.*;
 
 public class Recipe {
 	public enum CookState {
-		UNCOOKED, LIGHT, MEDIUM, WELL, BURNT;
+		UNCOOKED, LIGHT, MEDIUM, WELL;
 		
 		public static CookState getRandom() {
 			double f = Math.random();
@@ -18,11 +18,10 @@ public class Recipe {
 		}
 		
 		public static CookState fromTime(float t) {
-			if (t < 5) return UNCOOKED;
-			else if (t < 15) return LIGHT;
-			else if (t < 25) return MEDIUM;
-			else if (t < 35) return WELL;
-			else return BURNT;
+			if (t < 10) return UNCOOKED;
+			else if (t < 20) return LIGHT;
+			else if (t < 30) return MEDIUM;
+			else return WELL;
 		}
 		
 		public static float toTime(CookState s) {
@@ -43,7 +42,6 @@ public class Recipe {
 	
 	private Array<Ingredient> ingredients;
 	private Bread bread;
-	private CookState cooked;
 	private Array<Vector2> cut;
 	
 	public Recipe () {
@@ -81,7 +79,6 @@ public class Recipe {
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		}
-		cooked = CookState.getRandom();
 		cut = null;
 	}
 
@@ -91,10 +88,6 @@ public class Recipe {
 
 	public Bread getBread() {
 		return bread;
-	}
-
-	public CookState getCooked() {
-		return cooked;
 	}
 
 	public Array<Vector2> getCut() {
