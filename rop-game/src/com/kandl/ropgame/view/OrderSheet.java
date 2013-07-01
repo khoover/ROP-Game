@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -47,9 +48,11 @@ public class OrderSheet extends Group implements Disposable {
 		background.setSize(350, 480);
 		
 		order = r;
-		name = new Label(r.getName(), UILayer.rightPanelSkin, "person");
+		name = new Label(r.getName() + ", " + r.getTable(), UILayer.rightPanelSkin, "person");
+		name.setAlignment(Align.center);
 		addActor(name);
-		name.setPosition(150, 430);
+		name.setSize(350, 50);
+		name.setPosition(0, 430);
 		
 		foreground = new Array<Image>(3);
 		/*Image bread = new Image(new SpriteDrawable(r.getLeftRecipe().getBread().getIcon()));

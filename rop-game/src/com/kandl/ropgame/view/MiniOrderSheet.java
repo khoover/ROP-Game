@@ -1,5 +1,6 @@
 package com.kandl.ropgame.view;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -25,7 +27,7 @@ import com.kandl.ropgame.managers.SheetManager;
 import com.kandl.ropgame.model.Recipe;
 
 public class MiniOrderSheet extends Group implements Disposable {
-	private static final LabelStyle normal = new LabelStyle(new BitmapFont(), Color.WHITE);
+	private static final LabelStyle normal = new LabelStyle(new BitmapFont(Gdx.files.internal("fonts/mini.fnt"), false), Color.BLACK);
 	
 	private final float targetHeight = 85;
 	private float width, height;
@@ -42,8 +44,10 @@ public class MiniOrderSheet extends Group implements Disposable {
 		if (ratio * targetHeight > width) { this.width = width; this.height = (1f / ratio) * width; scale = this.width / 170f; }
 		else { this.height = targetHeight; this.width = ratio * height; scale = this.height / 420f; }
 		this.base = base;
-		name = new Label(base.getOrder().getName(), normal);
+		name = new Label(base.getOrder().getName() + ", " + base.getOrder().getTable(), normal);
 		addActor(name);
+		name.setAlignment(Align.center);
+		name.setSize(350 * scale, 20);
 		name.setPosition(0, -30);
 		if (!copy) { 
 			this.addListener(new ClickListener() {

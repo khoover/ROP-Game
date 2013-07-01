@@ -197,6 +197,12 @@ public class GameScreen implements Screen{
 		scene.addActor(frontBackground);
 		frontBackground.setSize(1280 * 2.5f, 800);
 		scene.addActor(new GroupManager());
+		
+		/*int n = 1;
+		while (n <= 5) {
+			Label l = new Label(Integer.toString(n), );
+			n++;
+		}*/
 		return scene;
 	}
 
@@ -309,7 +315,7 @@ public class GameScreen implements Screen{
 	public void initCutting(CutView c) {
 		currentCutting = c;
 		Scene[3].addActor(currentCutting);
-		currentCutting.setPosition(315, 193);
+		currentCutting.setPosition(215, 93);
 		switchScreen(3);
 		UILayer.getButtons()[3].setChecked(true);
 		UILayer.getButtons()[2].setChecked(false);

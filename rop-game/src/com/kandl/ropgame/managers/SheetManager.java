@@ -1,11 +1,14 @@
 package com.kandl.ropgame.managers;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Scaling;
 import com.kandl.ropgame.RopGame;
 import com.kandl.ropgame.model.RecipeHolder;
 import com.kandl.ropgame.model.Sandwich;
@@ -64,7 +67,7 @@ public abstract class SheetManager {
 	public static void switchTo(int i) {
 		currentSheet.remove();
 		currentSheet.setDragable(false);
-		downArrow.setPosition(miniWidth * ((float) i + 0.5f), height - 30);
+		downArrow.setPosition(10 + miniWidth * i, height - 30);
 		currentSheet = miniSheets.get(i).getOrder();
 		currentSheet.setDragable(dragable);
 		UI.addActor(currentSheet);
@@ -96,7 +99,11 @@ public abstract class SheetManager {
 	public static void initialize(Stage ui) {
 		UI = ui;
 		UI.addActor(downArrow);
-		downArrow.setPosition(10 + miniWidth - downArrow.getWidth() - (miniWidth - downArrow.getWidth()) / 2f, height - 30);
+		downArrow.setSize(80, 20);
+		downArrow.setScaling(Scaling.none);
+		downArrow.setAlign(Align.center);
+		downArrow.setColor(Color.BLACK);
+		downArrow.setPosition(10, height - 30);
 	}
 	
 	public static OrderSheet getCurrent() {

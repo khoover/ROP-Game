@@ -7,8 +7,8 @@ import com.kandl.ropgame.view.Person;
 
 public class GroupManager extends Actor {
 	private static int dayMax = 3;
-	private static int dayTotal = 1;
-	private static int max = 1;
+	private static int dayTotal = 0;
+	private static int max = 3;
 	private static int current = 0;
 	private float spawnGap = 0;
 	private static float despawnGap = 10;

@@ -60,7 +60,7 @@ public class Group extends Actor {
 			front.addActor(p1Label);
 			this.p1.setPosition(this.getX() + SITTINGLEFT, (state != Person.WALKING ? SITTINGHEIGHT : 0));
 			p1Label.setPosition(this.p1.getX() + (this.p1.getWidth() - p1Label.getWidth())/2f, this.p1.getY() + this.p1.getHeight() + 10);
-			order = new RecipeHolder(p1.getName(), p1.getOrder());
+			order = new RecipeHolder(p1.getName(), table + 1, p1.getOrder());
 		}
 		else {
 			members = new Array<Person>(2);
@@ -80,7 +80,7 @@ public class Group extends Actor {
 			this.p2.setPosition(this.getX() + SITTINGRIGHT, (state != Person.WALKING ? SITTINGHEIGHT : 0));
 			p1Label.setPosition(this.p1.getX() + (this.p1.getWidth() - p1Label.getWidth())/2f, this.p1.getY() + this.p1.getHeight() + 10);
 			p2Label.setPosition(this.p1.getX() + (this.p2.getWidth() - p2Label.getWidth())/2f, this.p2.getY() + this.p2.getHeight() + 10);
-			order = new RecipeHolder(p1.getName(), p1.getOrder(), p2.getOrder());
+			order = new RecipeHolder(p1.getName(), table + 1, p1.getOrder(), p2.getOrder());
 		}
 		final TextButton getOrder = new TextButton("Take Order", UILayer.rightPanelSkin);
 		front.addActor(getOrder);
