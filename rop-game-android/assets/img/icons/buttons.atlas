@@ -132,9 +132,16 @@ endpiece
   orig: 20, 20
   offset: 0, 0
   index: -1
-cut_line
+blank_box
   rotate: false
   xy: 1013, 491
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+cut_line
+  rotate: false
+  xy: 1013, 479
   size: 10, 10
   orig: 10, 10
   offset: 0, 0

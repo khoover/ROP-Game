@@ -111,3 +111,36 @@ icons/tomato
   orig: 130, 50
   offset: 0, 0
   index: -1
+
+food4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+large bread/bread_burnt
+  rotate: false
+  xy: 1, 643
+  size: 349, 319
+  orig: 349, 319
+  offset: 0, 0
+  index: -1
+large bread/bread_grilled
+  rotate: false
+  xy: 1, 322
+  size: 349, 319
+  orig: 349, 319
+  offset: 0, 0
+  index: -1
+large bread/bread_normal
+  rotate: false
+  xy: 352, 643
+  size: 349, 319
+  orig: 349, 319
+  offset: 0, 0
+  index: -1
+large bread/bread_brown
+  rotate: false
+  xy: 1, 1
+  size: 347, 319
+  orig: 347, 319
+  offset: 0, 0
+  index: -1
