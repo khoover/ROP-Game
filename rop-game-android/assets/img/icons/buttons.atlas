@@ -13,9 +13,9 @@ paper
 line
   rotate: false
   xy: 203, 321
-  size: 400, 180
+  size: 288, 180
   split: 13, 13, 0, 180
-  orig: 400, 180
+  orig: 288, 180
   offset: 0, 0
   index: -1
 generic_button_down
@@ -36,7 +36,7 @@ generic_button_up
   index: -1
 cut_down
   rotate: false
-  xy: 605, 399
+  xy: 493, 399
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
@@ -50,7 +50,7 @@ cut_selected
   index: -1
 cut_up
   rotate: false
-  xy: 709, 399
+  xy: 597, 399
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
@@ -64,56 +64,56 @@ front_down
   index: -1
 front_selected
   rotate: false
-  xy: 813, 399
+  xy: 701, 399
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 front_up
   rotate: false
-  xy: 917, 399
+  xy: 805, 399
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 grill_down
   rotate: false
-  xy: 307, 175
+  xy: 909, 399
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 grill_selected
   rotate: false
-  xy: 307, 71
+  xy: 307, 175
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 grill_up
   rotate: false
-  xy: 605, 295
+  xy: 307, 71
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 make_down
   rotate: false
-  xy: 709, 295
+  xy: 493, 295
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 make_selected
   rotate: false
-  xy: 813, 295
+  xy: 597, 295
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 make_up
   rotate: false
-  xy: 917, 295
+  xy: 701, 295
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
@@ -123,6 +123,20 @@ plate
   xy: 1, 1
   size: 88, 56
   orig: 88, 56
+  offset: 0, 0
+  index: -1
+endpiece
+  rotate: false
+  xy: 405, 299
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+cut_line
+  rotate: false
+  xy: 1013, 491
+  size: 10, 10
+  orig: 10, 10
   offset: 0, 0
   index: -1
 triangle_down
