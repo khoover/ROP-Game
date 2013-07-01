@@ -25,7 +25,7 @@ public class Group extends Actor {
 	private int table;
 	private Array<Person> members;
 	private RecipeHolder order;
-	private int score = -1;
+	private double score = -1;
 	private float waitTime;
 	private float eatTime;
 	
@@ -127,7 +127,7 @@ public class Group extends Actor {
 	
 	public void leave() {
 		GroupManager.despawn();
-		TableManager.putTip(table, score / 20d);
+		TableManager.putTip(table, (double) Math.round((2.5d + score / 40d) * 100d) / 100d);
 		members.get(0).free();
 		p1.remove();
 		p1Label.remove();
@@ -140,18 +140,29 @@ public class Group extends Actor {
 	}
 	
 	public void score(RecipeHolder r, Array<Sandwich> sandwichs) {
-		score = 100;
+		double score = 0;
+		
+		// TODO: fill in scoring
+		
+		this.score = score;
 	}
 	
 	public void takeOrder() {
 		SheetManager.addOrder(order);
 	}
 	
-	public boolean serve (OrderSheet sheet) {
+	public boolean serve (final OrderSheet sheet) {
 		if (sheet.getOrder() != order) return false;
 		state = Person.EATING;
 		stateTime = 0;
-		score(order, sheet.getSandwichs());
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				score(order, sheet.getSandwichs());
+			}
+			
+		}).start();
 		return true;
 	}
 }

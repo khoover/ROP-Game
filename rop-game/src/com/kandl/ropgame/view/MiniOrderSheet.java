@@ -26,8 +26,11 @@ import com.kandl.ropgame.ingredients.Ingredient;
 import com.kandl.ropgame.managers.SheetManager;
 import com.kandl.ropgame.model.Recipe;
 
-public class MiniOrderSheet extends Group implements Disposable {
+public class MiniOrderSheet extends Group {
 	private static final LabelStyle normal = new LabelStyle(new BitmapFont(Gdx.files.internal("fonts/mini.fnt"), false), Color.BLACK);
+	static {
+		normal.font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+	}
 	
 	private final float targetHeight = 85;
 	private float width, height;
@@ -76,10 +79,11 @@ public class MiniOrderSheet extends Group implements Disposable {
 		for (Ingredient i: base.getOrder().getLeftRecipe().getIngredients()) {
 			currSprite = i.getIcon();
 			current = new Image(new SpriteDrawable(currSprite));
-			current.setScale(scale);
+			current.setScale(scale * 2);
+			System.out.println(scale * current.getWidth() + ", " + scale * background.getWidth());
 			components.add(current);
 			addActor(current);
-			current.setPosition(10, height - scale * (50 * ++n));
+			current.setPosition(10, height - scale * 2 * (50 * ++n));
 		}
 	}
 	
@@ -118,11 +122,6 @@ public class MiniOrderSheet extends Group implements Disposable {
 
 	public void setBackgroundColor(Color color) {
 		background.setColor(color);
-	}
-
-	@Override
-	public void dispose() {
-		((TextureRegionDrawable) background.getDrawable()).getRegion().getTexture().dispose();
 	}
 
 	public MiniOrderSheet getSource() {

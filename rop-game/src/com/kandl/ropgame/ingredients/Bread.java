@@ -10,8 +10,8 @@ public abstract class Bread extends Ingredient {
 	
 	private static Array<Class<? extends Bread>> subclasses = new Array<Class<? extends Bread>>(false, 6);
 	
-	public static void addSubclass (Class<? extends Bread> clazz) {
-		subclasses.add(clazz);
+	public static void addSubclass (Class<? extends Ingredient> clazz) {
+		if (Bread.class.isAssignableFrom(clazz)) subclasses.add(clazz.asSubclass(Bread.class));
 	}
 	
 	public static Class<? extends Bread> getRandomIngredient() {
@@ -19,4 +19,5 @@ public abstract class Bread extends Ingredient {
 	}
 	
 	public abstract Image getTopView(CookState state);
+	public abstract Image getLargeTopView(CookState state);
 }

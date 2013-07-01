@@ -10,7 +10,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -22,6 +24,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Scaling;
 import com.kandl.ropgame.*;
 import com.kandl.ropgame.managers.GrillManager;
+import com.kandl.ropgame.managers.GroupManager;
 import com.kandl.ropgame.managers.SheetManager;
 import com.kandl.ropgame.view.sandwichView.GrillView;
 
@@ -34,7 +37,7 @@ public class UILayer extends Stage implements Disposable {
 	private final Image orderLine;
 	private final TextButton confirm;
 	private final TextButton trash;
-	private final Image clock;
+	private final Label count;
 	
 	// right panel stuff
 	private final Label score;
@@ -76,14 +79,16 @@ public class UILayer extends Stage implements Disposable {
 		scene[2].setStyle(rightPanelSkin.get("grill", Button.ButtonStyle.class));
 		scene[3].setStyle(rightPanelSkin.get("cut", Button.ButtonStyle.class));
 		
-		clock = new Image();
+		count = new Label(String.format("%1$d/%2$d", GroupManager.getDayTotal(), GroupManager.getDayMax()), new Label.LabelStyle(score.getStyle()));
+		count.getStyle().fontColor = Color.WHITE;
 		orderLine = new Image(new NinePatchDrawable(rightPanelSkin.getAtlas().createPatch("line")), Scaling.stretchX);
 		confirm = new TextButton("", rightPanelSkin.get("accept", TextButton.TextButtonStyle.class));
+		confirm.getStyle().font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		trash = new TextButton("Trash", rightPanelSkin.get("trash", TextButton.TextButtonStyle.class));
 		
 		// add the components. ORDERING IMPORTANT
-		addActor(clock);
-		clock.setPosition(5, 5);
+		addActor(count);
+		count.setPosition(5, 5);
 		addActor(orderLine);
 		orderLine.setPosition(0, height - padY);
 		orderLine.setSize(width - padX, padY);
@@ -145,6 +150,17 @@ public class UILayer extends Stage implements Disposable {
 
 					@Override
 					public void changed(ChangeEvent event, Actor actor) {
+						if (SheetManager.getCurrent().getMini() == null) {
+							Label l = new Label("No order to serve.", score.getStyle());
+							l.setColor(Color.WHITE);
+							RopGame.gameScreen.getScreen(1).addActor(l);
+							l.setSize(840, 90);
+							l.setAlignment(Align.center);
+							l.setPosition(0, 400);
+							l.addAction(Actions.sequence(Actions.parallel(Actions.moveBy(0, 100, 1), Actions.fadeOut(1)), 
+									Actions.removeActor()));
+							return;
+						}
 						GrillView v = new GrillView(RopGame.gameScreen.getCurrentMaking().getSandwich(),
 								SheetManager.getCurrent().getMini());
 						if (GrillManager.assignGrill(v)) {
@@ -181,6 +197,9 @@ public class UILayer extends Stage implements Disposable {
 
 					@Override
 					public void changed(ChangeEvent event, Actor actor) {
+						if (RopGame.gameScreen.getCurrentCutting() == null ) {
+							return;
+						}
 						RopGame.gameScreen.trashCutting();
 					}
 					
@@ -194,6 +213,9 @@ public class UILayer extends Stage implements Disposable {
 
 					@Override
 					public void changed(ChangeEvent event, Actor actor) {
+						if (RopGame.gameScreen.getCurrentCutting() == null ) {
+							return;
+						}
 						if (SheetManager.addSandwich(RopGame.gameScreen.getCurrentCutting().getSandwich())) {
 							RopGame.gameScreen.trashCutting();
 						}
@@ -209,6 +231,7 @@ public class UILayer extends Stage implements Disposable {
 	public void act(float delta) {
 		super.act(delta);
 		score.setText("$" + String.format("%1$.2f", RopGame.score));
+		count.setText(String.format("%1$d/%2$d", GroupManager.getDayTotal(), GroupManager.getDayMax()));
 	}
 	
 	// guaranteed that height never changes, so all we have to do is fidget with widths/X.

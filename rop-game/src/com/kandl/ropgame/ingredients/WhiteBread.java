@@ -26,6 +26,20 @@ public class WhiteBread extends Bread {
 			return new Image(new SpriteDrawable(assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("bread/bread_burnt")));
 		}
 	}
+	
+	@Override
+	public Image getLargeTopView(CookState state) {
+		switch(state) {
+		case UNCOOKED: case LIGHT:
+			return new Image(new SpriteDrawable(assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("large bread/bread_normal")));
+		case MEDIUM:
+			return new Image(new SpriteDrawable(assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("large bread/bread_brown")));
+		case WELL:
+			return new Image(new SpriteDrawable(assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("large bread/bread_grilled")));
+		default:
+			return new Image(new SpriteDrawable(assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("large bread/bread_burnt")));
+		}
+	}
 
 	@Override
 	public Image getSideView() {

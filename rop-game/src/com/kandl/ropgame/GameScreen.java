@@ -31,6 +31,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
@@ -111,6 +112,7 @@ public class GameScreen implements Screen{
 	private Stage createCutScreen() {
 		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
 		Texture background = RopGame.assets.get("img/backgrounds/cuttingBoard.png", Texture.class);
+		background.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
 		for (Actor a: scene.getActors()) {
 			a.setPosition(-50, 0);
@@ -121,6 +123,7 @@ public class GameScreen implements Screen{
 	private Stage createGrillScreen() {
 		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
 		Texture background = RopGame.assets.get("img/backgrounds/Grills.png", Texture.class);
+		background.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
 		for (Actor a: scene.getActors()) {
 			a.setPosition(0, 0);
@@ -133,6 +136,7 @@ public class GameScreen implements Screen{
 		makeDrag.setDragActorPosition(-300, 50);
 		Stage scene = new Stage(1280, 800, true, UILayer.getSpriteBatch());
 		Texture background = RopGame.assets.get("img/backgrounds/Making.png", Texture.class);
+		background.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
 		for (Actor a: scene.getActors()) {
 			a.setPosition(-60, 0);
@@ -194,15 +198,21 @@ public class GameScreen implements Screen{
 			}
 		});
 		frontBackground = new Image(new TiledDrawable(new TextureRegion(RopGame.assets.get("img/backgrounds/new front.png", Texture.class), 0, 224, 1280, 800)), Scaling.stretch);
+		((TiledDrawable) frontBackground.getDrawable()).getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		scene.addActor(frontBackground);
 		frontBackground.setSize(1280 * 2.5f, 800);
 		scene.addActor(new GroupManager());
 		
-		/*int n = 1;
+		int n = 1;
 		while (n <= 5) {
-			Label l = new Label(Integer.toString(n), );
-			n++;
-		}*/
+			Label l = new Label(Integer.toString(n), new Label.LabelStyle(new BitmapFont(Gdx.files.internal("fonts/default.fnt"), false), Color.WHITE));
+			l.getStyle().font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+			scene.addActor(l);
+			l.setSize(61, 70);
+			l.setAlignment(Align.center);
+			l.setPosition((n-1)/2 * 1280 + 640 + (n % 2 == 0 ? 296 : -357), 209);
+			++n;
+		}
 		return scene;
 	}
 
@@ -315,7 +325,7 @@ public class GameScreen implements Screen{
 	public void initCutting(CutView c) {
 		currentCutting = c;
 		Scene[3].addActor(currentCutting);
-		currentCutting.setPosition(215, 93);
+		currentCutting.setPosition(65, 43);
 		switchScreen(3);
 		UILayer.getButtons()[3].setChecked(true);
 		UILayer.getButtons()[2].setChecked(false);

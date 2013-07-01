@@ -1,5 +1,6 @@
 package com.kandl.ropgame.view.sandwichView;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -85,6 +86,5 @@ public class GrillView extends Group implements Disposable {
 	@Override
 	public void dispose() {
 		bar.dispose();
-		order.dispose();
 	}
 }

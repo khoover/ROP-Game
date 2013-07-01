@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -23,6 +24,7 @@ import com.kandl.ropgame.ingredients.Ingredient;
 import com.kandl.ropgame.managers.SheetManager;
 import com.kandl.ropgame.managers.TableManager;
 import com.kandl.ropgame.model.Recipe;
+import com.kandl.ropgame.model.Recipe.CookState;
 import com.kandl.ropgame.model.RecipeHolder;
 import com.kandl.ropgame.model.Sandwich;
 import com.kandl.ropgame.ui.UILayer;
@@ -43,6 +45,7 @@ public class OrderSheet extends Group implements Disposable {
 	public OrderSheet(RecipeHolder r) {
 		sandwiches = new Array<Sandwich>(2);
 		background = new Image(new TextureRegionDrawable(RopGame.assets.get("img/icons/buttons.atlas", TextureAtlas.class).findRegion("paper")), Scaling.stretch);
+		((TextureRegionDrawable) background.getDrawable()).getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		addActor(background);
 		background.setPosition(0, 0);
 		background.setSize(350, 480);
@@ -63,9 +66,36 @@ public class OrderSheet extends Group implements Disposable {
 		int n = 0;
 		for (Ingredient i: r.getLeftRecipe().getIngredients()) {
 			current = new Image(new SpriteDrawable(i.getIcon()));
+			((SpriteDrawable) current.getDrawable()).getSprite().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 			foreground.add(current);
 			addActor(current);
 			current.setPosition(20, 370 - n++*60);
+		}
+		
+		n += 2;
+		current = r.getLeftRecipe().getBread().getTopView(CookState.UNCOOKED);
+		foreground.add(current);
+		addActor(current);
+		current.setPosition(10, 370 - n * 60);
+		
+		float diag = (float) Math.sqrt(current.getWidth() * current.getWidth() + current.getHeight() * current.getHeight());
+		for (Vector2 v: r.getLeftRecipe().getCut()) {
+			TextureRegionDrawable t = new TextureRegionDrawable(RopGame.assets.get("img/icons/buttons.atlas", TextureAtlas.class).findRegion("cut_line"));
+			Image i = new Image(t, Scaling.stretch);
+			foreground.add(i);
+			addActor(i);
+			i.setSize((int) Math.round(v.angle()) % 90 == 0 ? current.getWidth() : diag, 4);
+			i.setOrigin(0, 2);
+			i.setRotation(v.angle());
+			if (v.x == 1) {
+				i.setPosition(current.getX(), current.getY() + current.getHeight() / 2f - 2);
+			} else if (v.y == 1) {
+				i.setPosition(current.getX() + current.getWidth() / 2f, current.getY() - 2);
+			} else if (v.angle() < 90) {
+				i.setPosition(current.getX(), current.getY() - 4);
+			} else {
+				i.setPosition(current.getX() + current.getWidth(), current.getY() - 4);
+			}
 		}
 		
 		if (r.getRightRecipe() != null) {
@@ -134,7 +164,6 @@ public class OrderSheet extends Group implements Disposable {
 
 	@Override
 	public void dispose() {
-		((TextureRegionDrawable) background.getDrawable()).getRegion().getTexture().dispose();
 		for (Image i: foreground) {
 			if (i instanceof Disposable) ((Disposable)  i).dispose();
 		}
