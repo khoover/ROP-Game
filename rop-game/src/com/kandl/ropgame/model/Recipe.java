@@ -82,19 +82,19 @@ public class Recipe {
 		cut = new Array<Vector2>(2);
 		pos = new Array<Vector2>(2);
 		int n = (int) (Math.random() * 16);
-		if ((n & 0b0001) != 0) {
+		if ((n & 0x0001) != 0) {
 			cut.add(new Vector2(1, 0));
 			pos.add(new Vector2(0.5f, 0.5f));
 		}
-		if ((n & 0b0010) != 0) {
+		if ((n & 0x0002) != 0) {
 			cut.add(new Vector2(0, 1));
 			pos.add(new Vector2(0.5f, 0.5f));
 		}
-		if ((n & 0b0100) != 0) {
+		if ((n & 0x0004) != 0) {
 			cut.add(new Vector2(1, 1).nor());
 			pos.add(new Vector2(0.5f,0.5f));
 		}
-		if ((n & 0b1000) != 0) {
+		if ((n & 0x0008) != 0) {
 			cut.add(new Vector2(-1,1).nor());
 			pos.add(new Vector2(0.5f,0.5f));
 		}

@@ -80,7 +80,6 @@ public class MiniOrderSheet extends Group {
 			currSprite = i.getIcon();
 			current = new Image(new SpriteDrawable(currSprite));
 			current.setScale(scale * 2);
-			System.out.println(scale * current.getWidth() + ", " + scale * background.getWidth());
 			components.add(current);
 			addActor(current);
 			current.setPosition(10, height - scale * 2 * (50 * ++n));
