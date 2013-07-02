@@ -1,5 +1,8 @@
 package com.kandl.ropgame.model;
 
+import java.util.Arrays;
+
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -9,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.kandl.ropgame.RopGame;
+import com.kandl.ropgame.ingredients.Ingredient;
 import com.kandl.ropgame.managers.GroupManager;
 import com.kandl.ropgame.managers.SheetManager;
 import com.kandl.ropgame.managers.TableManager;
@@ -171,13 +175,98 @@ public class Group extends Actor {
 	
 	// returns 0 - 100
 	public double scoreMake(Recipe r, Sandwich s) {
-		double score = 0;
+		double score = 100;
+		Array<Ingredient> recipeIngredients = r.getIngredients();
+		Array<Ingredient> sandwichIngredients = s.getIngredients();
+		if (recipeIngredients.size != sandwichIngredients.size) {
+			score = Math.max(0, score - 50 * Math.abs(recipeIngredients.size - sandwichIngredients.size));
+			if (score == 0) return score;
+		}
+		Array<Class<? extends Ingredient>> recipeClasses = new Array<Class<? extends Ingredient>>(recipeIngredients.size);
+		Array<Class<? extends Ingredient>> sandwichClasses = new Array<Class<? extends Ingredient>>(sandwichIngredients.size);
+		for (Ingredient i: recipeIngredients) {
+			recipeClasses.add(i.getClass());
+		}
+		recipeClasses.reverse();
+		for (Ingredient i: sandwichIngredients) {
+			sandwichClasses.add(i.getClass());
+		}
+		
+		Array<Integer> used = new Array<Integer>(sandwichClasses.size);
+		for (int i = 0; i < recipeClasses.size; ++i) {
+			boolean contains = false;
+			int delta = 20;
+			int pos = -1;
+			for (int j = 0; j < sandwichClasses.size; ++j) {
+				if (used.contains(Integer.valueOf(j), false)) continue;
+				if (sandwichClasses.get(j).equals(recipeClasses.get(i))) {
+					contains = true;
+					if (i == j) {
+						delta = 0;
+						pos = j;
+						break;
+					} else if (Math.abs(i - j) < delta) {
+						delta = Math.abs(i - j);
+						pos = j;
+					}
+				}
+			}
+			used.add(pos);
+			score = Math.max(0, (contains ? score - delta*5 : score - 30));
+		}
+		
 		return score;
 	}
 	
 	// returns 0 - 100
 	public double scoreCuts(Recipe r, Sandwich s) {
 		double score = 0;
+		Array<Vector2> recipeCuts = r.getCut();
+		Array<Vector2> recipePositions = r.getPos();
+		Array<Vector2> sandwichCuts = s.getCuts();
+		Array<Vector2> sandwichPositions = s.getPositions();
+		assert(recipeCuts.size == recipePositions.size && sandwichCuts.size == sandwichPositions.size);
+		if (recipeCuts.size != sandwichCuts.size) {
+			score = Math.max(0, score - 50 * Math.abs(recipeCuts.size - sandwichCuts.size));
+			if (score == 0) return score;
+		}
+		double[][] scores = new double[4][sandwichCuts.size];
+		for (double[] a: scores) {
+			Arrays.fill(a, 0);
+		}
+		for (int i = 0; i < recipeCuts.size; ++i) {
+			for (int j = 0; j < sandwichCuts.size; ++j) {
+				scores[i][j] = compareCuts(new Vector2(recipeCuts.get(i)), new Vector2(recipePositions.get(i)), 
+						new Vector2(sandwichCuts.get(j)), new Vector2(sandwichPositions.get(j)));
+			}
+		}
+		
+		for (int i = 0; i < sandwichCuts.size; ++i) {
+			double currentScore = scores[0][i];
+			int used = 1;
+			for (int j = 0; j < sandwichCuts.size; ++j) {
+				if (j != i) { currentScore += scores[1][j]; ++used; }
+				for (int k = 0; k < sandwichCuts.size; ++k) {
+					if (k != j || k != i) { currentScore += scores[2][k]; ++used; }
+					for (int l = 0; l < sandwichCuts.size; ++l) {
+						if (l != k || l != j || l != i) { currentScore += scores[3][l]; ++used; }
+						if(used == recipeCuts.size && currentScore > score) score = currentScore / (double) used;
+						if (l != k || l != j || l != i) { currentScore -= scores[3][l]; --used; }
+					}
+					if (k != j || k != i) { currentScore -= scores[2][k]; ++ used; }
+				}
+				if (j != i) { currentScore -= scores[1][j]; --used; }
+			}
+		}
+		return score;
+	}
+	
+	public double compareCuts(Vector2 recipeDir, Vector2 recipePos, Vector2 sandwichDir, Vector2 sandwichPos) {
+		double score = 100;
+		float posDelta = recipePos.sub(sandwichPos).len();
+		float angleDelta = Math.abs(recipeDir.angle() - (sandwichDir.angle() == 360 ? 0 : sandwichDir.angle()));
+		score = Math.max(0, score - Math.max(0, posDelta - 0.05) * 100);
+		score = Math.max(0, score - Math.max(0, angleDelta - 10) / 1.7d);
 		return score;
 	}
 	

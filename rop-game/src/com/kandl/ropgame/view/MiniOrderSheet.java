@@ -110,8 +110,8 @@ public class MiniOrderSheet extends Group {
 		
 		int n = 0;
 		for (Image i: components) {
-			i.setScale(scale);
-			i.setPosition(10, height - scale * (50 * ++n));
+			i.setScale(scale * 2);
+			i.setPosition(10, height - scale * 2 * (50 * ++n));
 		}
 	}
 	

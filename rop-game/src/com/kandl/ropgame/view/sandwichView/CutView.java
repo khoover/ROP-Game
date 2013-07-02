@@ -31,6 +31,8 @@ public class CutView extends Group {
 	private Image bread, dragUI;
 	private Group cuts, dragImages;
 	
+	private final int OFFSET = 150;
+	
 	public CutView(Sandwich s) {
 		cuts = new Group();
 		dragImages = new Group();
@@ -143,7 +145,6 @@ public class CutView extends Group {
 			
 			@Override
 			public void dragStop(InputEvent e, float x, float y, int pointer) {
-				final int OFFSET = 150;
 				beginCircle.remove();
 				endCircle.remove();
 				cutLine.remove();
@@ -354,7 +355,7 @@ public class CutView extends Group {
 	
 	public void cut(Vector2 v, Vector2 p) {
 		Vector2 adjDir = new Vector2(v).nor();
-		Vector2 adjPos = new Vector2(p).add(v.x / 2f, v.y / 2f).mul(1f/bread.getWidth(), 1f/bread.getHeight());
+		Vector2 adjPos = new Vector2(p).add(v.x / 2f, v.y / 2f).sub(OFFSET, OFFSET).mul(1f/bread.getWidth(), 1f/bread.getHeight());
 		sandwich.addCut(adjDir, adjPos);
 		Sprite s = RopGame.assets.get("img/icons/buttons.atlas", TextureAtlas.class).createSprite("blank_box");
 		Image i = new Image(new SpriteDrawable(s), Scaling.none);
