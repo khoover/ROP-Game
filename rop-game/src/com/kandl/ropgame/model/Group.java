@@ -247,13 +247,13 @@ public class Group extends Actor {
 			for (int j = 0; j < sandwichCuts.size; ++j) {
 				if (j != i) { currentScore += scores[1][j]; ++used; }
 				for (int k = 0; k < sandwichCuts.size; ++k) {
-					if (k != j || k != i) { currentScore += scores[2][k]; ++used; }
+					if (k != j && k != i) { currentScore += scores[2][k]; ++used; }
 					for (int l = 0; l < sandwichCuts.size; ++l) {
-						if (l != k || l != j || l != i) { currentScore += scores[3][l]; ++used; }
-						if(used == recipeCuts.size && currentScore > score) score = currentScore / (double) used;
-						if (l != k || l != j || l != i) { currentScore -= scores[3][l]; --used; }
+						if (l != k && l != j && l != i) { currentScore += scores[3][l]; ++used; }
+						if(used == recipeCuts.size && currentScore > score * recipeCuts.size) score = currentScore / (double) used;
+						if (l != k && l != j && l != i) { currentScore -= scores[3][l]; --used; }
 					}
-					if (k != j || k != i) { currentScore -= scores[2][k]; ++ used; }
+					if (k != j && k != i) { currentScore -= scores[2][k]; --used; }
 				}
 				if (j != i) { currentScore -= scores[1][j]; --used; }
 			}
