@@ -13,7 +13,7 @@ public class RopGame extends Game {
 	public void create() {
 		score = 0;
 		gameScreen = new GameScreen();
-		setScreen(gameScreen);
+		setScreen((DEBUG ? gameScreen : new StartScreen(this)));
 	}	
 
 	@Override

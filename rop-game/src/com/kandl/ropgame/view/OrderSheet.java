@@ -51,7 +51,7 @@ public class OrderSheet extends Group implements Disposable {
 		background.setSize(350, 480);
 		
 		order = r;
-		name = new Label(r.getName() + ", " + r.getTable(), UILayer.rightPanelSkin, "person");
+		name = new Label(r.getName() + ", " + r.getTable(), UILayer.buttonSkin, "person");
 		name.setAlignment(Align.center);
 		addActor(name);
 		name.setSize(350, 50);

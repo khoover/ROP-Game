@@ -40,7 +40,7 @@ public abstract class TableManager {
 	
 	public static void putTip(final int i, final double tip) {
 		final Stage front = RopGame.gameScreen.getScreen(0);
-		TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(UILayer.rightPanelSkin.get("default", TextButton.TextButtonStyle.class));
+		TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(UILayer.buttonSkin.get("default", TextButton.TextButtonStyle.class));
 		final TextButton tipButton = new TextButton("Get tip", style);
 		front.addActor(tipButton);
 		tipButton.setSize(200, 60);
@@ -50,7 +50,7 @@ public abstract class TableManager {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				RopGame.score += tip;
-				final Label tipLabel = new Label("$" + String.format("%1$.2f", tip), UILayer.rightPanelSkin);
+				final Label tipLabel = new Label("$" + String.format("%1$.2f", tip), UILayer.buttonSkin);
 				front.addActor(tipLabel);
 				tipLabel.setPosition(tipButton.getX(), tipButton.getY());
 				tipButton.remove();

@@ -57,7 +57,7 @@ public class Group extends Actor {
 			p2Drawable = null;
 			members = new Array<Person>(1);
 			members.add(p1);
-			p1Label = new Label(p1.getName(), UILayer.rightPanelSkin, "person");
+			p1Label = new Label(p1.getName(), UILayer.buttonSkin, "person");
 			this.p1 = new Image(p1.getFrame(state, stateTime));
 			p1Drawable = (TextureRegionDrawable) this.p1.getDrawable();
 			front.addActor(this.p1);
@@ -70,8 +70,8 @@ public class Group extends Actor {
 			members = new Array<Person>(2);
 			members.add(p1);
 			members.add(p2);
-			p1Label = new Label(p1.getName(), UILayer.rightPanelSkin, "person");
-			p2Label = new Label(p2.getName(), UILayer.rightPanelSkin, "person");
+			p1Label = new Label(p1.getName(), UILayer.buttonSkin, "person");
+			p2Label = new Label(p2.getName(), UILayer.buttonSkin, "person");
 			this.p2 = new Image(p2.getFrame(state, stateTime));
 			this.p1 = new Image(p1.getFrame(state, stateTime));
 			p2Drawable = (TextureRegionDrawable) this.p2.getDrawable();
@@ -86,7 +86,7 @@ public class Group extends Actor {
 			p2Label.setPosition(this.p1.getX() + (this.p2.getWidth() - p2Label.getWidth())/2f, this.p2.getY() + this.p2.getHeight() + 10);
 			order = new RecipeHolder(p1.getName(), table + 1, p1.getOrder(), p2.getOrder());
 		}
-		final TextButton getOrder = new TextButton("Take Order", UILayer.rightPanelSkin);
+		final TextButton getOrder = new TextButton("Take Order", UILayer.buttonSkin);
 		front.addActor(getOrder);
 		getOrder.setSize(200, 60);
 		getOrder.setPosition(table * TableManager.TABLEWIDTH + ((float) TableManager.TABLEWIDTH - 200f) / 2f, TableManager.BUTTONHEIGHT);

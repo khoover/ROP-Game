@@ -48,7 +48,7 @@ public class UILayer extends Stage implements Disposable {
 	private ChangeListener confirmListener;
 	private ChangeListener trashListener;
 	
-	public static final Skin rightPanelSkin = new Skin(Gdx.files.internal("img/icons/buttons.json"));
+	public static final Skin buttonSkin = new Skin(Gdx.files.internal("img/icons/buttons.json"));
 
 	public UILayer(int width, int height, boolean stretch) {
 		super(width, height, stretch);
@@ -74,17 +74,17 @@ public class UILayer extends Stage implements Disposable {
 			scenes.add(scene[i]);
 			scene[i].setSize(102, 102);
 		}
-		scene[0].setStyle(rightPanelSkin.get("front", Button.ButtonStyle.class));
-		scene[1].setStyle(rightPanelSkin.get("make", Button.ButtonStyle.class));
-		scene[2].setStyle(rightPanelSkin.get("grill", Button.ButtonStyle.class));
-		scene[3].setStyle(rightPanelSkin.get("cut", Button.ButtonStyle.class));
+		scene[0].setStyle(buttonSkin.get("front", Button.ButtonStyle.class));
+		scene[1].setStyle(buttonSkin.get("make", Button.ButtonStyle.class));
+		scene[2].setStyle(buttonSkin.get("grill", Button.ButtonStyle.class));
+		scene[3].setStyle(buttonSkin.get("cut", Button.ButtonStyle.class));
 		
 		count = new Label(String.format("%1$d/%2$d", GroupManager.getDayTotal(), GroupManager.getDayMax()), new Label.LabelStyle(score.getStyle()));
 		count.getStyle().fontColor = Color.WHITE;
-		orderLine = new Image(new NinePatchDrawable(rightPanelSkin.getAtlas().createPatch("line")), Scaling.stretchX);
-		confirm = new TextButton("", rightPanelSkin.get("accept", TextButton.TextButtonStyle.class));
+		orderLine = new Image(new NinePatchDrawable(buttonSkin.getAtlas().createPatch("line")), Scaling.stretchX);
+		confirm = new TextButton("", buttonSkin.get("accept", TextButton.TextButtonStyle.class));
 		confirm.getStyle().font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		trash = new TextButton("Trash", rightPanelSkin.get("trash", TextButton.TextButtonStyle.class));
+		trash = new TextButton("Trash", buttonSkin.get("trash", TextButton.TextButtonStyle.class));
 		
 		// add the components. ORDERING IMPORTANT
 		addActor(count);
@@ -255,6 +255,6 @@ public class UILayer extends Stage implements Disposable {
 	@Override
 	public void dispose() {
 		score.getStyle().font.dispose();
-		rightPanelSkin.dispose();
+		buttonSkin.dispose();
 	}
 }

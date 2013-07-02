@@ -84,7 +84,6 @@ public class GameScreen implements Screen{
 		SheetManager.initialize(UILayer);
 		frontMusic.setLooping(true);
 		frontMusic.setVolume(0.5f);
-		frontMusic.play();
 		grillMusic.setLooping(true);
 		grillMusic.setVolume(0.75f);
 		
@@ -102,11 +101,6 @@ public class GameScreen implements Screen{
 		Scene[3] = createCutScreen();
 		Person.initialize();
 		ActiveScene = Scene[0];
-		
-		InputMultiplexer input = new InputMultiplexer();
-		input.addProcessor(UILayer);
-		input.addProcessor(ActiveScene);
-		Gdx.input.setInputProcessor(input);
 	}
 
 	private Stage createCutScreen() {
@@ -251,8 +245,11 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-
+		InputMultiplexer input = new InputMultiplexer();
+		input.addProcessor(UILayer);
+		input.addProcessor(ActiveScene);
+		Gdx.input.setInputProcessor(input);
+		frontMusic.play();
 	}
 
 	@Override
