@@ -141,10 +141,44 @@ public class Group extends Actor {
 	
 	public void score(RecipeHolder r, Array<Sandwich> sandwichs) {
 		double score = 0;
+		final float targetTime = 10*2 + 10 + 50 + 10;
 		
-		// TODO: fill in scoring
+		// score time
+		score = Math.max(0, Math.min(50, 50 - (waitTime - targetTime)));
+		
+		// score sandwiches
+		if (r.getRightRecipe() == null) {
+			score += scoreSandwich(r.getLeftRecipe(), sandwichs.get(0)) / 2d;
+		} else {
+			double[][] scores = new double[2][2];
+			scores[0][0] = scoreSandwich(r.getLeftRecipe(), sandwichs.get(0));
+			scores[1][0] = scoreSandwich(r.getRightRecipe(), sandwichs.get(0));
+			scores[0][1] = scoreSandwich(r.getLeftRecipe(), sandwichs.get(1));
+			scores[1][1] = scoreSandwich(r.getRightRecipe(), sandwichs.get(1));
+			score += Math.max(scores[0][0] + scores[1][1], scores[1][0] + scores[0][1]) / 4d;
+		}
 		
 		this.score = score;
+	}
+	
+	// returns 0 - 100
+	public double scoreSandwich(Recipe r, Sandwich s) {
+		double score = 0;
+		score += scoreMake(r, s) / 2d;
+		score += scoreCuts(r, s) / 2d;
+		return score;
+	}
+	
+	// returns 0 - 100
+	public double scoreMake(Recipe r, Sandwich s) {
+		double score = 0;
+		return score;
+	}
+	
+	// returns 0 - 100
+	public double scoreCuts(Recipe r, Sandwich s) {
+		double score = 0;
+		return score;
 	}
 	
 	public void takeOrder() {
