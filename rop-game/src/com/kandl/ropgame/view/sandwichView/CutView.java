@@ -31,7 +31,7 @@ public class CutView extends Group {
 	private Image bread, dragUI;
 	private Group cuts, dragImages;
 	
-	private final int OFFSET = 150;
+	private final int OFFSET = 155;
 	
 	public CutView(Sandwich s) {
 		cuts = new Group();
@@ -47,7 +47,7 @@ public class CutView extends Group {
 		
 		dragUI = new Image();//new Image(new TiledDrawable(new TextureRegion(t)));
 		dragUI.setSize(bread.getWidth() + 300, bread.getHeight() + 300);
-		dragUI.addListener(new DragListener() {
+		DragListener listener = new DragListener() {
 			private Vector2 cut, orig;
 			private Image beginCircle, endCircle, cutLine;
 			private Sprite line;
@@ -334,7 +334,9 @@ public class CutView extends Group {
 				cut.sub(orig);
 				CutView.this.cut(cut, orig);
 			}
-		});
+		};
+		listener.setTapSquareSize(1);
+		dragUI.addListener(listener);
 		addActor(bread);
 		addActor(cuts);
 		addActor(dragUI);
