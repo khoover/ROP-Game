@@ -6,7 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 public class RopGame extends Game {
 	public static GameScreen gameScreen;
 	public static double score;
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	public static final AssetManager assets = new AssetManager();
 	
 	@Override
