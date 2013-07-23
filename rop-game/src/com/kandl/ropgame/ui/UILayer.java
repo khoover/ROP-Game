@@ -255,5 +255,6 @@ public class UILayer extends Stage implements Disposable {
 	@Override
 	public void dispose() {
 		score.getStyle().font.dispose();
+		((TiledDrawable) background.getDrawable()).getRegion().getTexture().dispose();
 	}
 }
