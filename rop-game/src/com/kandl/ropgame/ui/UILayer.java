@@ -43,7 +43,7 @@ public class UILayer extends Stage implements Disposable {
 	private final Label score;
 	private final Button[] scene;
 	private final ButtonGroup scenes;
-	private final Image background;
+	private Image background;
 	
 	private ChangeListener confirmListener;
 	private ChangeListener trashListener;
@@ -256,5 +256,13 @@ public class UILayer extends Stage implements Disposable {
 	public void dispose() {
 		score.getStyle().font.dispose();
 		((TiledDrawable) background.getDrawable()).getRegion().getTexture().dispose();
+	}
+	
+	public void resume() {
+		Pixmap background = new Pixmap(128, 128, Pixmap.Format.RGBA8888);
+		background.setColor(Color.BLACK);
+		background.fill();
+		this.background = new Image(new TiledDrawable(new TextureRegion(new Texture(background))));
+		background.dispose();
 	}
 }
