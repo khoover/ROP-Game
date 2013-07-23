@@ -2,6 +2,7 @@ package com.kandl.ropgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.kandl.ropgame.ui.UILayer;
 
 public class RopGame extends Game {
 	public static GameScreen gameScreen;
@@ -20,5 +21,6 @@ public class RopGame extends Game {
 	public void dispose() {
 		gameScreen.dispose();
 		assets.dispose();
+		UILayer.buttonSkin.dispose();
 	}
 }
