@@ -28,6 +28,7 @@ package com.kandl.ropgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
@@ -65,12 +66,14 @@ public class GameScreen implements Screen{
 	private DragAndDrop makeDrag;
 	private final UILayer UILayer;
 	private final Stage[] Scene = new Stage[4];
-	private Stage ActiveScene;
+	private Stage ActiveScene, dayStage;
 	private Image frontBackground;
 	private float offsetX;
 	private Array<Ingredient> ingredients = new Array<Ingredient>(5);
 	private Music frontMusic = Gdx.audio.newMusic(Gdx.files.internal("sound/front_music.ogg"));
 	private Music grillMusic = Gdx.audio.newMusic(Gdx.files.internal("sound/grill_music.ogg"));
+	private boolean dayOver = false;
+	private InputProcessor input;
 
 	public float getOffsetX() {
 		return offsetX;
@@ -99,6 +102,7 @@ public class GameScreen implements Screen{
 		Scene[1] = createMakeScreen();
 		Scene[2] = createGrillScreen();
 		Scene[3] = createCutScreen();
+		dayStage = new Stage(1280, 800, true, UILayer.getSpriteBatch());
 		Person.initialize();
 		ActiveScene = Scene[0];
 	}
@@ -212,25 +216,30 @@ public class GameScreen implements Screen{
 
 	public void switchScreen(final int screen) {
 		if (RopGame.DEBUG) assert(screen >= 0 && screen <= 3);
-		frontMusic.stop();
-		grillMusic.stop();
+		frontMusic.setVolume(0);
+		grillMusic.setVolume(0);
 		((InputMultiplexer) Gdx.input.getInputProcessor()).removeProcessor(ActiveScene);
-		if (screen == 0) frontMusic.play();
-		else if (screen == 2) grillMusic.play();
+		if (screen == 0) frontMusic.setVolume(0.5f);
+		else if (screen == 2) grillMusic.setVolume(0.75f);
 		ActiveScene = Scene[screen];
 		((InputMultiplexer) Gdx.input.getInputProcessor()).addProcessor(ActiveScene);
 	}
 
 	@Override
 	public void render(float delta) {
-		for (Stage s: Scene) {
-			s.act(delta);
+		if (dayOver) {
+			dayStage.act(delta);
+		} else {
+			for (Stage s: Scene) {
+				s.act(delta);
+			}
+			UILayer.act(delta);
 		}
-		UILayer.act(delta);
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		ActiveScene.draw();
 		UILayer.draw();
+		if (dayOver) dayStage.draw();
 	}
 
 	@Override
@@ -248,6 +257,7 @@ public class GameScreen implements Screen{
 		InputMultiplexer input = new InputMultiplexer();
 		input.addProcessor(UILayer);
 		input.addProcessor(ActiveScene);
+		this.input = input;
 		Gdx.input.setInputProcessor(input);
 		frontMusic.play();
 	}
@@ -269,6 +279,20 @@ public class GameScreen implements Screen{
 		loadAll();
 	}
 	
+	public void endDay() {
+		dayOver = true;
+		frontMusic.stop();
+		grillMusic.stop();
+		Gdx.input.setInputProcessor(dayStage);
+	}
+	
+	public void startDay() {
+		dayOver = false;
+		frontMusic.play();
+		grillMusic.play();
+		Gdx.input.setInputProcessor(input);
+	}
+	
 	@Override
 	public void dispose() {
 		for (Stage s: Scene) {
@@ -276,6 +300,7 @@ public class GameScreen implements Screen{
 		}
 		ActiveScene = null;
 		UILayer.dispose();
+		dayStage.dispose();
 		frontMusic.dispose();
 		grillMusic.dispose();
 		Ingredient.dispose();
