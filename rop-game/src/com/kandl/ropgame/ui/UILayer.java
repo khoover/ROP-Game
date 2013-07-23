@@ -262,7 +262,7 @@ public class UILayer extends Stage implements Disposable {
 		Pixmap background = new Pixmap(128, 128, Pixmap.Format.RGBA8888);
 		background.setColor(Color.BLACK);
 		background.fill();
-		this.background = new Image(new TiledDrawable(new TextureRegion(new Texture(background))));
+		((TiledDrawable) this.background.getDrawable()).setRegion(new TextureRegion(new Texture(background)));
 		background.dispose();
 	}
 }

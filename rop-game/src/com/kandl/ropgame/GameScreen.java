@@ -288,7 +288,6 @@ public class GameScreen implements Screen{
 	@Override
 	public void resume() {
 		Gdx.app.log("life-cycle", "Resuming.");
-		loadAll();
 		UILayer.resume();
 	}
 	
