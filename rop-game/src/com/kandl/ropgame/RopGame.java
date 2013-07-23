@@ -1,6 +1,7 @@
 package com.kandl.ropgame;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.kandl.ropgame.ui.UILayer;
 
@@ -12,6 +13,7 @@ public class RopGame extends Game {
 	
 	@Override
 	public void create() {
+		Gdx.app.log("life-cycle", "Creating.");
 		score = 0;
 		gameScreen = new GameScreen();
 		setScreen((DEBUG ? gameScreen : new StartScreen(this)));

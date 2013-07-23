@@ -277,18 +277,19 @@ public class GameScreen implements Screen{
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void pause() {
 		// TODO Gets called when this goes to background. So, what?
+		Gdx.app.log("life-cycle", "Pausing.");
 	}
 
 	@Override
 	public void resume() {
-		// TODO add call to showPauseOverlay
+		Gdx.app.log("life-cycle", "Resuming.");
 		loadAll();
+		UILayer.resume();
 	}
 	
 	public void endDay() {
@@ -307,9 +308,9 @@ public class GameScreen implements Screen{
 	
 	@Override
 	public void dispose() {
+		Gdx.app.log("life-cycle", "Disposing.");
 		for (Stage s: Scene) {
 			s.dispose();
-			((TextureRegionDrawable) ((Image) s.getActors().get(0)).getDrawable()).getRegion().getTexture().dispose();
 		}
 		ActiveScene = null;
 		UILayer.dispose();
