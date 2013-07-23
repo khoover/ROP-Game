@@ -17,6 +17,10 @@ public class Person extends Group {
 	private static Pool<Array<Animation>> femaleSpriteStore;
 	private static Pool<String> maleNames;
 	private static Pool<String> femaleNames;
+	private static Array<Array<Animation>> maleToFree;
+	private static Array<Array<Animation>> femaleToFree;
+	private static Array<String> maleNameToFree;
+	private static Array<String> femaleNameToFree;
 	private static TextureAtlas spriteAtlas;
 	
 	private Array<Animation> sprites;
@@ -80,6 +84,7 @@ public class Person extends Group {
 			}
 			
 		};
+		maleNameToFree = new Array<String>(6);
 		femaleNames = new Pool<String>(0, 6){
 
 			@Override
@@ -88,6 +93,7 @@ public class Person extends Group {
 			}
 			
 		};
+		femaleNameToFree = new Array<String>(6);
 		maleSpriteStore = new Pool<Array<Animation>>(0, 3){
 
 			@Override
@@ -96,6 +102,7 @@ public class Person extends Group {
 			}
 			
 		};
+		maleToFree = new Array<Array<Animation>>(3);
 		femaleSpriteStore = new Pool<Array<Animation>>(0, 3){
 
 			@Override
@@ -104,6 +111,7 @@ public class Person extends Group {
 			}
 			
 		};
+		femaleToFree = new Array<Array<Animation>>(3);
 		
 		// add assets here
 		maleNames.freeAll(new Array<String>(new String[] {"Bob", "Frank", "Joe", "Harry", "George", "Alf"}));
@@ -131,8 +139,14 @@ public class Person extends Group {
 	}
 	
 	public void free() {
-		if (male) { maleNames.free(name); maleSpriteStore.free(sprites); }
-		else { femaleNames.free(name); femaleSpriteStore.free(sprites); }
+		if (male) { maleNameToFree.add(name); maleToFree.add(sprites);
+			if (maleToFree.size == 3) { maleToFree.shuffle(); maleSpriteStore.freeAll(maleToFree); maleToFree.clear(); }
+			if (maleNameToFree.size == 6) { maleNameToFree.shuffle(); maleNames.freeAll(maleNameToFree); maleNameToFree.clear();}
+		}
+		else { femaleNameToFree.add(name); femaleToFree.add(sprites);
+			if (femaleToFree.size == 3) { femaleToFree.shuffle(); femaleSpriteStore.freeAll(femaleToFree); femaleToFree.clear(); }
+			if (femaleNameToFree.size == 6) { femaleNameToFree.shuffle(); femaleNames.freeAll(femaleNameToFree); femaleNameToFree.clear(); }
+		}
 	}
 	
 	public static void dispose() {

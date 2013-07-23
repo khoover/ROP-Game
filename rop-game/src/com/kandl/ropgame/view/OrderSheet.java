@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -54,6 +55,7 @@ public class OrderSheet extends Group implements Disposable {
 		name = new Label(r.getName() + ", " + r.getTable(), UILayer.buttonSkin, "person");
 		name.setAlignment(Align.center);
 		addActor(name);
+		name.setTouchable(Touchable.disabled);
 		name.setSize(350, 50);
 		name.setPosition(0, 430);
 		
@@ -69,6 +71,7 @@ public class OrderSheet extends Group implements Disposable {
 			((SpriteDrawable) current.getDrawable()).getSprite().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 			foreground.add(current);
 			addActor(current);
+			current.setTouchable(Touchable.disabled);
 			current.setPosition(20, 370 - n++*60);
 		}
 		
@@ -77,6 +80,7 @@ public class OrderSheet extends Group implements Disposable {
 		foreground.add(current);
 		addActor(current);
 		current.setPosition(10, 370 - n * 60);
+		current.setTouchable(Touchable.disabled);
 		
 		float diag = (float) Math.sqrt(current.getWidth() * current.getWidth() + current.getHeight() * current.getHeight());
 		for (Vector2 v: r.getLeftRecipe().getCut()) {
@@ -84,6 +88,7 @@ public class OrderSheet extends Group implements Disposable {
 			Image i = new Image(t, Scaling.stretch);
 			foreground.add(i);
 			addActor(i);
+			i.setTouchable(Touchable.disabled);
 			i.setSize((int) Math.round(v.angle()) % 90 == 0 ? current.getWidth() : diag, 4);
 			i.setOrigin(0, 2);
 			i.setRotation(v.angle());

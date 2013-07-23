@@ -141,9 +141,10 @@ public class GameScreen implements Screen{
 		}
 		int n = 0;
 		for (final Ingredient i: ingredients) {
-			Image current = new Image(new SpriteDrawable(i.getIcon()));
+			Image current = new Image(new SpriteDrawable(i.getIcon()), Scaling.none);
 			scene.addActor(current);
 			current.setPosition(10 + 170 * n++, 550);
+			current.setSize(current.getWidth(), 140);
 			makeDrag.addSource(new Source(current) {
 
 				@Override

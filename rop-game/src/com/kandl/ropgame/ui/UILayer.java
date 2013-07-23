@@ -213,7 +213,7 @@ public class UILayer extends Stage implements Disposable {
 
 					@Override
 					public void changed(ChangeEvent event, Actor actor) {
-						if (RopGame.gameScreen.getCurrentCutting() == null ) {
+						if (RopGame.gameScreen.getCurrentCutting() == null || RopGame.gameScreen.getCurrentCutting().getSandwich() == null) {
 							return;
 						}
 						if (SheetManager.addSandwich(RopGame.gameScreen.getCurrentCutting().getSandwich())) {
