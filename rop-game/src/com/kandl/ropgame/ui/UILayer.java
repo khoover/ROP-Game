@@ -65,7 +65,7 @@ public class UILayer extends Stage implements Disposable {
 		background.dispose();
 		
 		// create components of corner table
-		score = new Label("$" + String.format("%1$.2f", RopGame.score), new Label.LabelStyle(new BitmapFont(Gdx.files.internal("fonts/score.fnt"), false), Color.YELLOW));
+		score = new Label("$" + String.format("%1$.2f", RopGame.score), new Label.LabelStyle(buttonSkin.getFont("score"), Color.YELLOW));
 		score.getStyle().font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		scenes = new ButtonGroup();
 		scene = new Button[4];
@@ -256,7 +256,6 @@ public class UILayer extends Stage implements Disposable {
 
 	@Override
 	public void dispose() {
-		score.getStyle().font.dispose();
 		((TiledDrawable) background.getDrawable()).getRegion().getTexture().dispose();
 	}
 	
