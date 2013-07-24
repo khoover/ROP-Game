@@ -331,7 +331,6 @@ public class GameScreen implements Screen{
 		background.fill();
 		((TextureRegionDrawable) ((Image) dayStage.getActors().get(0)).getDrawable()).setRegion(new TextureRegion(new Texture(background)));
 		background.dispose();
-		loadAll();
 		UILayer.resume();
 	}
 	
