@@ -31,6 +31,16 @@ public abstract class GrillManager {
 		return false;
 	}
 	
+	public static void resume() {
+		for (int x = 0; x < 2; ++x) {
+			for (int y = 0; y < 2; ++y) {
+				if (spots.get(x).get(y) != null) {
+					spots.get(x).get(y).resume();
+				}
+			}
+		}
+	}
+	
 	public static void removeFromGrill(GrillView v) {
 		v.remove();
 		for (Array<GrillView> arr: spots) {
