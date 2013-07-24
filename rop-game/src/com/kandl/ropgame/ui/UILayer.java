@@ -103,13 +103,13 @@ public class UILayer extends Stage implements Disposable {
 		}
 		
 		addActor(confirm);
-		confirm.setSize(300, 50);
-		confirm.setPosition(width - (padX + (padX - 300f) / 2f), 70);
+		confirm.setSize((padX - 20f)/2f - 5f, 100);
+		confirm.setPosition(width - padX + 10, 10);
 		confirm.setVisible(false);
 		confirm.addListener(confirmListener);
 		addActor(trash);
-		trash.setSize(200, 50);
-		trash.setPosition(width - (padX + (padX - 300f)/2f), 10);
+		trash.setSize(confirm.getWidth(), confirm.getHeight());
+		trash.setPosition(confirm.getX() + confirm.getWidth() + 10, 10);
 		trash.setVisible(false);
 		trash.addListener(trashListener);
 		
@@ -243,8 +243,10 @@ public class UILayer extends Stage implements Disposable {
 		for (int i = 0; i < 4; ++i) {
 			scene[i].setPosition(width - padX + 4 + i * 110, height - padY);
 		}
-		confirm.setPosition(width - (padX - (padX - 300f) / 2f), 70);
-		trash.setPosition(width - (padX - (padX - 200f)/2f), 10);
+		confirm.setSize((padX - 20f)/2f - 5f, 100);
+		confirm.setPosition(width - padX + 10, 10);
+		trash.setSize(confirm.getWidth(), confirm.getHeight());
+		trash.setPosition(confirm.getX() + confirm.getWidth() + 10, 10);
 		SheetManager.resize(width, height);
 	}
 	

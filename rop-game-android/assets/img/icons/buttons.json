@@ -19,7 +19,8 @@
 		cut: { up: cut_up, down: cut_down, checked: cut_selected },
 	},
 	com.badlogic.gdx.graphics.g2d.BitmapFont: {
-        default: { file: fonts/default.fnt }
+        default: { file: fonts/default.fnt },
+        medium: { file: fonts/medium.fnt }
     },
     com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
     	default: { font: default, fontColor: green },
@@ -27,7 +28,7 @@
     },
 	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		default: { up: generic_button_up, down: generic_button_down, font: default, fontColor: white },
-		accept: { up: green_up, down: green_down, font: default, fontColor: white },
-		trash: { up: red_up, down: red_down, font: default, fontColor: white }
+		accept: { up: green_up, down: green_down, font: medium, fontColor: white },
+		trash: { up: red_up, down: red_down, font: medium, fontColor: white }
 	}
 }
