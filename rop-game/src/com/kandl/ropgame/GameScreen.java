@@ -33,6 +33,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -41,9 +42,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
@@ -83,9 +87,16 @@ public class GameScreen implements Screen{
 	private Array<Ingredient> ingredients = new Array<Ingredient>(5);
 	private Music frontMusic = Gdx.audio.newMusic(Gdx.files.internal("sound/front_music.ogg"));
 	private Music grillMusic = Gdx.audio.newMusic(Gdx.files.internal("sound/grill_music.ogg"));
-	private boolean dayOver = false;
+	private boolean dayOver = true;
 	private InputProcessor input;
 
+	private Array<Label> dayNotes = new Array<Label>(2);
+	private Label dayHeader;
+	private Label dayScore;
+	private int day;
+	private double yesterdayScore;
+	private TextButton dayContinue;
+	
 	public float getOffsetX() {
 		return offsetX;
 	}
@@ -113,7 +124,30 @@ public class GameScreen implements Screen{
 		Scene[1] = createMakeScreen();
 		Scene[2] = createGrillScreen();
 		Scene[3] = createCutScreen();
+		
 		dayStage = new Stage(1280, 800, true, UILayer.getSpriteBatch());
+		Pixmap background = new Pixmap(128,128,Pixmap.Format.RGBA4444);
+		background.setColor(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.8f);
+		background.fill();
+		dayStage.addActor(new Image(new TextureRegionDrawable(new TextureRegion(new Texture(background))), Scaling.stretch));
+		dayStage.getActors().get(0).setSize(dayStage.getWidth(), dayStage.getHeight());
+		background.dispose();
+		yesterdayScore = 0;
+		day = 0;
+		dayHeader = new Label("", new Label.LabelStyle(new BitmapFont(Gdx.files.internal("fonts/big.fnt"), false), Color.WHITE));
+		dayScore = new Label("", dayHeader.getStyle());
+		dayContinue = new TextButton("Continue", com.kandl.ropgame.ui.UILayer.buttonSkin);
+		dayStage.addActor(dayHeader);
+		dayStage.addActor(dayScore);
+		dayStage.addActor(dayContinue);
+		dayHeader.setPosition(0, 640);
+		dayHeader.setSize(1280, 160);
+		dayHeader.setAlignment(Align.center);
+		dayScore.setPosition(0, 300);
+		dayScore.setSize(1280, 160);
+		dayScore.setAlignment(Align.center);
+		dayContinue.setPosition((dayStage.getWidth() - dayContinue.getWidth()) / 2f, 20);
+		
 		Person.initialize();
 		ActiveScene = Scene[0];
 	}
@@ -259,6 +293,10 @@ public class GameScreen implements Screen{
 		float length = (float) width * 800f / (float) height;
 		UILayer.setViewport(length, 800, true);
 		UILayer.resize(length, 800);
+		dayStage.setViewport(length, 800, true);
+		dayHeader.setWidth(length);
+		dayScore.setWidth(length);
+		dayContinue.setPosition((length - dayContinue.getWidth()) / 2f, dayContinue.getY());
 		for (Stage s: Scene) {
 			s.setViewport(length, 800, true);
 		}
@@ -270,8 +308,8 @@ public class GameScreen implements Screen{
 		input.addProcessor(UILayer);
 		input.addProcessor(ActiveScene);
 		this.input = input;
-		Gdx.input.setInputProcessor(input);
-		frontMusic.play();
+		Gdx.input.setInputProcessor(dayStage);
+		prepDay();
 	}
 
 	@Override
@@ -288,22 +326,94 @@ public class GameScreen implements Screen{
 	@Override
 	public void resume() {
 		Gdx.app.log("life-cycle", "Resuming.");
+		Pixmap background = new Pixmap(128,128,Pixmap.Format.RGBA4444);
+		background.setColor(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.75f);
+		background.fill();
+		((TextureRegionDrawable) ((Image) dayStage.getActors().get(0)).getDrawable()).setRegion(new TextureRegion(new Texture(background)));
+		background.dispose();
 		loadAll();
 		UILayer.resume();
 	}
 	
 	public void endDay() {
 		dayOver = true;
+		UILayer.act(0);
 		frontMusic.stop();
 		grillMusic.stop();
 		Gdx.input.setInputProcessor(dayStage);
+		dayScore.setVisible(false);
+		dayContinue.setVisible(false);
+		dayContinue.setText("Continue");
+		dayContinue.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				prepDay();
+				GameScreen.this.dayContinue.removeListener(this);
+			}
+			
+		});
+		dayHeader.setText(String.format("Day %1$d over!", day));
+		dayScore.setText("Today, you earned $" + String.format("%1$.2f", RopGame.score - yesterdayScore) + ".");
+		dayScore.addAction(Actions.delay(2, Actions.visible(true)));
+		if (day == 10) {
+			Label gameOver = new Label("Game Over, thanks for playing!", dayHeader.getStyle());
+			dayStage.addActor(gameOver);
+			gameOver.setPosition(0, 200);
+			gameOver.setSize(dayStage.getWidth(), 160);
+			gameOver.setAlignment(Align.center);
+			gameOver.setVisible(false);
+			gameOver.addAction(Actions.delay(3, Actions.visible(true)));
+		}
+		else {
+			dayContinue.addAction(Actions.delay(3, Actions.visible(true)));
+		}
 	}
 	
 	public void startDay() {
+		for (Label l: dayNotes) {
+			l.remove();
+		}
+		dayNotes.clear();
 		dayOver = false;
 		frontMusic.play();
 		grillMusic.play();
 		Gdx.input.setInputProcessor(input);
+	}
+	
+	public void prepDay() {
+		++day;
+		Day today = Day.dayMapper.get(day);
+		yesterdayScore = RopGame.score;
+		GroupManager.setDayTotal(0);
+		if (today != null) {
+			GroupManager.setDayMax(today.getDayMax());
+			GroupManager.setMax(today.getDayConcurrent());
+			for (String s: today.getDayNotes()) {
+				dayNotes.add(new Label(s, new Label.LabelStyle(com.kandl.ropgame.ui.UILayer.buttonSkin.getFont("score"), Color.WHITE)));
+			}
+			if (dayNotes.size != 0) {
+				for (int i = 0; i < dayNotes.size; ++i) {
+					dayStage.addActor(dayNotes.get(i));
+					dayNotes.get(i).setPosition(0, 500 - i * 90);
+					dayNotes.get(i).setSize(dayStage.getWidth(), 90);
+					dayNotes.get(i).setAlignment(Align.center);
+				}
+			}
+		}
+		UILayer.act(0);
+		dayScore.setVisible(false);
+		dayHeader.setText(String.format("Day %1$d", day));
+		dayContinue.setText("Start");
+		dayContinue.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				startDay();
+				GameScreen.this.dayContinue.removeListener(this);
+			}
+			
+		});
 	}
 	
 	@Override
@@ -341,7 +451,6 @@ public class GameScreen implements Screen{
 		Scene[1].addActor(currentMaking);
 		currentMaking.setPosition(100, 146);
 		makeTarget = new Target(currentMaking) {
-
 			@Override
 			public boolean drag(Source source, Payload payload, float x,
 					float y, int pointer) {
