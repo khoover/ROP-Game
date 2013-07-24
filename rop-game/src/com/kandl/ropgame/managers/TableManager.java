@@ -32,6 +32,12 @@ public abstract class TableManager {
 	
 	public static void freeTable(int i) {
 		tables.set(i, null);
+		if (GroupManager.getDayMax() == GroupManager.getDayTotal()) {
+			for (int n = 0; n < 5; ++n) {
+				if (tables.get(n) != null) return;
+			}
+			RopGame.gameScreen.endDay();
+		}
 	}
 	
 	public static void freeTable(Group g) {
