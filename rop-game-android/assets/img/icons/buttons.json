@@ -20,7 +20,8 @@
 	},
 	com.badlogic.gdx.graphics.g2d.BitmapFont: {
         default: { file: fonts/default.fnt },
-        medium: { file: fonts/medium.fnt }
+        medium: { file: fonts/medium.fnt },
+        score: { file: fonts/score.fnt }
     },
     com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
     	default: { font: default, fontColor: green },
