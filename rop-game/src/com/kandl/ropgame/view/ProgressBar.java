@@ -43,10 +43,10 @@ public class ProgressBar extends Image implements Disposable {
 		running = false;
 		int barWidth = (int) (140f * time / fullBar);
 		if (time <= 5) bar.setColor(Color.WHITE);
-		else if (time <= 15) bar.setColor(Color.GREEN);
-		else if (time <= 25) bar.setColor(YELLOW);
-		else if (time <= 35) bar.setColor(Color.ORANGE);
-		else bar.setColor(Color.RED);
+		else if (time <= 15) bar.setColor(Color.RED);
+		else if (time <= 25) bar.setColor(Color.ORANGE);
+		else if (time <= 35) bar.setColor(YELLOW);
+		else bar.setColor(Color.GREEN);
 		bar.fillRectangle(0, 0, barWidth, 30);
 		texture.draw(bar, 5, 5);
 	}
@@ -60,10 +60,10 @@ public class ProgressBar extends Image implements Disposable {
 		if (oldTime == time) return;
 		int barWidth = (int) (140f * time / fullBar);
 		if (time <= 5) bar.setColor(Color.WHITE);
-		else if (time <= 15) bar.setColor(Color.GREEN);
-		else if (time <= 25) bar.setColor(YELLOW);
-		else if (time <= 35) bar.setColor(Color.ORANGE);
-		else bar.setColor(Color.RED);
+		else if (time <= 15) bar.setColor(Color.RED);
+		else if (time <= 25) bar.setColor(Color.ORANGE);
+		else if (time <= 35) bar.setColor(YELLOW);
+		else bar.setColor(Color.GREEN);
 		bar.fillRectangle(0, 0, barWidth, 30);
 		texture.draw(bar, 5, 5);
 	}
