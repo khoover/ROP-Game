@@ -19,7 +19,7 @@ public class Cucumber extends Ingredient {
 
 	@Override
 	public Sprite getIcon() {
-		return assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("icons/bacon");
+		return assets.get("img/food/food.atlas", TextureAtlas.class).createSprite("icons/cucumber");
 	}
 
 }
