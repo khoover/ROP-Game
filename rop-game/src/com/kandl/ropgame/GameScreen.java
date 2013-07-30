@@ -58,10 +58,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
+import com.kandl.ropgame.ingredients.Bacon;
 import com.kandl.ropgame.ingredients.Chicken;
+import com.kandl.ropgame.ingredients.Cucumber;
+import com.kandl.ropgame.ingredients.Fish;
+import com.kandl.ropgame.ingredients.Ham;
 import com.kandl.ropgame.ingredients.Ingredient;
 import com.kandl.ropgame.ingredients.Lettuce;
 import com.kandl.ropgame.ingredients.Onion;
+import com.kandl.ropgame.ingredients.Pork;
 import com.kandl.ropgame.ingredients.Tomato;
 import com.kandl.ropgame.ingredients.WhiteBread;
 import com.kandl.ropgame.managers.GrillManager;
@@ -117,6 +122,11 @@ public class GameScreen implements Screen{
 		Lettuce.initialize(ingredients);
 		Onion.initialize(ingredients);
 		Tomato.initialize(ingredients);
+		Bacon.initialize(ingredients);
+		Cucumber.initialize(ingredients);
+		Fish.initialize(ingredients);
+		Ham.initialize(ingredients);
+		Pork.initialize(ingredients);
 		WhiteBread.initialize();
 		Ingredient.loadAll();
 		
@@ -186,10 +196,12 @@ public class GameScreen implements Screen{
 			a.setPosition(-60, 0);
 		}
 		int n = 0;
+		int height = 520;
 		for (final Ingredient i: ingredients) {
 			Image current = new Image(new SpriteDrawable(i.getIcon()), Scaling.none);
 			scene.addActor(current);
-			current.setPosition(10 + 170 * n++, 550);
+			current.setPosition(10 + 170 * n++, height);
+			if (n > 5) { n = 0; height = 400; }
 			current.setSize(current.getWidth(), 140);
 			makeDrag.addSource(new Source(current) {
 

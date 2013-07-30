@@ -1,30 +1,65 @@
 
 food.png
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
+bigger food/bacon_side
+  rotate: false
+  xy: 1, 768
+  size: 600, 87
+  orig: 600, 87
+  offset: 0, 0
+  index: -1
 bigger food/bread_side
   rotate: false
-  xy: 1, 323
+  xy: 1, 679
   size: 600, 87
   orig: 600, 87
   offset: 0, 0
   index: -1
 bigger food/chicken_side
   rotate: false
-  xy: 1, 234
+  xy: 1, 590
+  size: 600, 87
+  orig: 600, 87
+  offset: 0, 0
+  index: -1
+bigger food/cucumber_side
+  rotate: false
+  xy: 1, 501
+  size: 600, 87
+  orig: 600, 87
+  offset: 0, 0
+  index: -1
+bigger food/fish_side
+  rotate: false
+  xy: 1, 412
+  size: 600, 87
+  orig: 600, 87
+  offset: 0, 0
+  index: -1
+bigger food/ham_side
+  rotate: false
+  xy: 1, 323
   size: 600, 87
   orig: 600, 87
   offset: 0, 0
   index: -1
 bigger food/lettuce_side
   rotate: false
-  xy: 1, 145
+  xy: 1, 234
   size: 600, 87
   orig: 600, 87
   offset: 0, 0
   index: -1
 bigger food/onions_side
+  rotate: false
+  xy: 1, 145
+  size: 600, 87
+  orig: 600, 87
+  offset: 0, 0
+  index: -1
+bigger food/pork_side
   rotate: false
   xy: 1, 56
   size: 600, 87
@@ -41,7 +76,7 @@ bigger food/tomatoes_side
 
 food2.png
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
 bread/bread_brown
   rotate: false
@@ -74,8 +109,15 @@ bread/bread_normal
 
 food3.png
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
+icons/bacon
+  rotate: false
+  xy: 1, 53
+  size: 130, 50
+  orig: 130, 50
+  offset: 0, 0
+  index: -1
 icons/bread
   rotate: false
   xy: 1, 1
@@ -85,14 +127,35 @@ icons/bread
   index: -1
 icons/chicken
   rotate: false
+  xy: 133, 53
+  size: 130, 50
+  orig: 130, 50
+  offset: 0, 0
+  index: -1
+icons/cucumber
+  rotate: false
   xy: 133, 1
+  size: 130, 50
+  orig: 130, 50
+  offset: 0, 0
+  index: -1
+icons/fish
+  rotate: false
+  xy: 265, 53
+  size: 130, 50
+  orig: 130, 50
+  offset: 0, 0
+  index: -1
+icons/ham
+  rotate: false
+  xy: 265, 1
   size: 130, 50
   orig: 130, 50
   offset: 0, 0
   index: -1
 icons/lettuce
   rotate: false
-  xy: 265, 1
+  xy: 397, 53
   size: 130, 50
   orig: 130, 50
   offset: 0, 0
@@ -100,6 +163,13 @@ icons/lettuce
 icons/onion
   rotate: false
   xy: 397, 1
+  size: 130, 50
+  orig: 130, 50
+  offset: 0, 0
+  index: -1
+icons/pork
+  rotate: false
+  xy: 529, 53
   size: 130, 50
   orig: 130, 50
   offset: 0, 0
@@ -114,7 +184,7 @@ icons/tomato
 
 food4.png
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
 large bread/bread_burnt
   rotate: false
