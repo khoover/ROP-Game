@@ -49,6 +49,11 @@ public class UILayer extends Stage implements Disposable {
 	private ChangeListener trashListener;
 	
 	public static final Skin buttonSkin = new Skin(Gdx.files.internal("img/icons/buttons.json"));
+	static {
+		for (BitmapFont f: buttonSkin.getAll(BitmapFont.class).values()) {
+			f.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		}
+	}
 
 	public UILayer(int width, int height, boolean stretch) {
 		super(width, height, stretch);
@@ -66,7 +71,6 @@ public class UILayer extends Stage implements Disposable {
 		
 		// create components of corner table
 		score = new Label("$" + String.format("%1$.2f", RopGame.score), new Label.LabelStyle(buttonSkin.getFont("score"), Color.YELLOW));
-		score.getStyle().font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		scenes = new ButtonGroup();
 		scene = new Button[4];
 		for (int i = 0; i < 4; ++i) {
@@ -83,7 +87,6 @@ public class UILayer extends Stage implements Disposable {
 		count.getStyle().fontColor = Color.WHITE;
 		orderLine = new Image(new NinePatchDrawable(buttonSkin.getAtlas().createPatch("line")), Scaling.stretchX);
 		confirm = new TextButton("", buttonSkin.get("accept", TextButton.TextButtonStyle.class));
-		confirm.getStyle().font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		trash = new TextButton("Trash", buttonSkin.get("trash", TextButton.TextButtonStyle.class));
 		
 		// add the components. ORDERING IMPORTANT
