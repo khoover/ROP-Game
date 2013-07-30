@@ -13,7 +13,7 @@ public class RopGame extends Game {
 	
 	@Override
 	public void create() {
-		Gdx.app.log("life-cycle", "Creating.");
+		if (DEBUG) Gdx.app.log("life-cycle", "Creating.");
 		score = 0;
 		gameScreen = new GameScreen();
 		setScreen((DEBUG ? gameScreen : new StartScreen(this)));

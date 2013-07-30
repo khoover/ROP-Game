@@ -327,18 +327,16 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void pause() {
-		// TODO Gets called when this goes to background. So, what?
-		Gdx.app.log("life-cycle", "Pausing.");
+		if (RopGame.DEBUG) Gdx.app.log("life-cycle", "Pausing.");
 	}
 
 	@Override
 	public void resume() {
-		Gdx.app.log("life-cycle", "Resuming.");
+		if (RopGame.DEBUG) Gdx.app.log("life-cycle", "Resuming.");
 		Pixmap background = new Pixmap(128,128,Pixmap.Format.RGBA4444);
 		background.setColor(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.75f);
 		background.fill();
@@ -431,7 +429,7 @@ public class GameScreen implements Screen{
 	
 	@Override
 	public void dispose() {
-		Gdx.app.log("life-cycle", "Disposing.");
+		if (RopGame.DEBUG) Gdx.app.log("life-cycle", "Disposing.");
 		for (Stage s: Scene) {
 			s.dispose();
 		}
