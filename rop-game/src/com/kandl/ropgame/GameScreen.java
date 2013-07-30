@@ -124,7 +124,7 @@ public class GameScreen implements Screen{
 		frontMusic.setLooping(true);
 		frontMusic.setVolume(0.5f);
 		grillMusic.setLooping(true);
-		grillMusic.setVolume(0.75f);
+		grillMusic.setVolume(0);
 		
 		Chicken.initialize(ingredients);
 		Bacon.initialize(ingredients);
