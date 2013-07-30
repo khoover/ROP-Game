@@ -77,6 +77,23 @@ public class ProgressBar extends Image implements Disposable {
 	public float getTime() {
 		return time;
 	}
+	
+	public void resume() {
+		setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(256, 128, Pixmap.Format.RGB888), 0, 0, 150, 40)));
+		texture = ((TextureRegionDrawable) getDrawable()).getRegion().getTexture();
+		texture.draw(background, 0, 0);
+		bar = new Pixmap(140, 30, Pixmap.Format.RGB888);
+		bar.setColor(Color.BLACK);
+		bar.fill();
+		int barWidth = (int) (140f * time / fullBar);
+		if (time <= 5) bar.setColor(Color.WHITE);
+		else if (time <= 15) bar.setColor(Color.GREEN);
+		else if (time <= 25) bar.setColor(YELLOW);
+		else if (time <= 35) bar.setColor(Color.ORANGE);
+		else bar.setColor(Color.RED);
+		bar.fillRectangle(0, 0, barWidth, 30);
+		texture.draw(bar, 5, 5);
+	}
 
 	public static void staticDispose() {
 		background.dispose();

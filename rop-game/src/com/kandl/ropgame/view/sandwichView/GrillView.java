@@ -82,6 +82,9 @@ public class GrillView extends Group implements Disposable {
 			order.setPosition(170, 0);
 		}
 	}
+	public void resume() {
+		bar.resume();
+	}
 
 	@Override
 	public void dispose() {

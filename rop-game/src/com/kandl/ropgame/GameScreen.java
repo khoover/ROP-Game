@@ -64,6 +64,7 @@ import com.kandl.ropgame.ingredients.Lettuce;
 import com.kandl.ropgame.ingredients.Onion;
 import com.kandl.ropgame.ingredients.Tomato;
 import com.kandl.ropgame.ingredients.WhiteBread;
+import com.kandl.ropgame.managers.GrillManager;
 import com.kandl.ropgame.managers.GroupManager;
 import com.kandl.ropgame.managers.SheetManager;
 import com.kandl.ropgame.model.Sandwich;
@@ -332,6 +333,7 @@ public class GameScreen implements Screen{
 		((TextureRegionDrawable) ((Image) dayStage.getActors().get(0)).getDrawable()).setRegion(new TextureRegion(new Texture(background)));
 		background.dispose();
 		UILayer.resume();
+		GrillManager.resume();
 	}
 	
 	public void endDay() {
