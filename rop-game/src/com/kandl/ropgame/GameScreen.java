@@ -26,6 +26,9 @@ package com.kandl.ropgame;
  * Really nothing I can't do. Incredibly nice. 
  */
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -58,6 +61,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
+import com.kandl.ropgame.datamodel.ModelPerson;
 import com.kandl.ropgame.ingredients.Bacon;
 import com.kandl.ropgame.ingredients.Chicken;
 import com.kandl.ropgame.ingredients.Cucumber;
@@ -102,6 +106,8 @@ public class GameScreen implements Screen{
 	private int day;
 	private double yesterdayScore;
 	private TextButton dayContinue;
+	
+	public final String ID = (new SimpleDateFormat("MMddHHmmss")).format(new Date());
 	
 	public float getOffsetX() {
 		return offsetX;
@@ -331,11 +337,13 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void pause() {
+		ModelPerson.pause();
 		if (RopGame.DEBUG) Gdx.app.log("life-cycle", "Pausing.");
 	}
 
 	@Override
 	public void resume() {
+		ModelPerson.resume();
 		if (RopGame.DEBUG) Gdx.app.log("life-cycle", "Resuming.");
 		Pixmap background = new Pixmap(128,128,Pixmap.Format.RGBA4444);
 		background.setColor(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.75f);
@@ -382,6 +390,7 @@ public class GameScreen implements Screen{
 	}
 	
 	public void startDay() {
+		new ModelPerson();
 		for (Label l: dayNotes) {
 			l.remove();
 		}

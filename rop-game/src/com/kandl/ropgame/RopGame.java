@@ -3,6 +3,7 @@ package com.kandl.ropgame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.kandl.ropgame.datamodel.ModelPerson;
 import com.kandl.ropgame.ui.UILayer;
 
 public class RopGame extends Game {
@@ -16,11 +17,13 @@ public class RopGame extends Game {
 		if (DEBUG) Gdx.app.log("life-cycle", "Creating.");
 		score = 0;
 		gameScreen = new GameScreen();
+		ModelPerson.create();
 		setScreen((DEBUG ? gameScreen : new StartScreen(this)));
 	}	
 
 	@Override
 	public void dispose() {
+		ModelPerson.dispose();
 		gameScreen.dispose();
 		assets.dispose();
 		UILayer.buttonSkin.dispose();
