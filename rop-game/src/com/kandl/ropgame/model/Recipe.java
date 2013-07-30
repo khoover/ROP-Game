@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.kandl.ropgame.datamodel.ModelRecipe;
 import com.kandl.ropgame.ingredients.*;
 
 public class Recipe {
@@ -43,6 +44,7 @@ public class Recipe {
 	private Array<Ingredient> ingredients;
 	private Bread bread;
 	private Array<Vector2> cut, pos;
+	private final ModelRecipe model;
 	
 	public Recipe () {
 		int i = (int) (Math.random() * 3) + 1;
@@ -98,6 +100,8 @@ public class Recipe {
 			cut.add(new Vector2(-1,1).nor());
 			pos.add(new Vector2(0.5f,0.5f));
 		}
+		
+		model = new ModelRecipe(ingredients, cut);
 	}
 
 	public Array<Ingredient> getIngredients() {
@@ -114,5 +118,9 @@ public class Recipe {
 	
 	public Array<Vector2> getPos() {
 		return pos;
+	}
+
+	public ModelRecipe getModel() {
+		return model;
 	}
 }

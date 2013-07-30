@@ -62,6 +62,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.kandl.ropgame.datamodel.ModelPerson;
+import com.kandl.ropgame.datamodel.ModelRecipe;
+import com.kandl.ropgame.datamodel.ModelSandwich;
 import com.kandl.ropgame.ingredients.Bacon;
 import com.kandl.ropgame.ingredients.Chicken;
 import com.kandl.ropgame.ingredients.Cucumber;
@@ -125,14 +127,14 @@ public class GameScreen implements Screen{
 		grillMusic.setVolume(0.75f);
 		
 		Chicken.initialize(ingredients);
-		Lettuce.initialize(ingredients);
-		Onion.initialize(ingredients);
-		Tomato.initialize(ingredients);
 		Bacon.initialize(ingredients);
-		Cucumber.initialize(ingredients);
 		Fish.initialize(ingredients);
 		Ham.initialize(ingredients);
 		Pork.initialize(ingredients);
+		Lettuce.initialize(ingredients);
+		Onion.initialize(ingredients);
+		Tomato.initialize(ingredients);
+		Cucumber.initialize(ingredients);
 		WhiteBread.initialize();
 		Ingredient.loadAll();
 		
@@ -207,7 +209,7 @@ public class GameScreen implements Screen{
 			Image current = new Image(new SpriteDrawable(i.getIcon()), Scaling.none);
 			scene.addActor(current);
 			current.setPosition(10 + 170 * n++, height);
-			if (n > 5) { n = 0; height = 400; }
+			if (n > 4) { n = 0; height = 400; }
 			current.setSize(current.getWidth(), 140);
 			makeDrag.addSource(new Source(current) {
 
@@ -338,12 +340,16 @@ public class GameScreen implements Screen{
 	@Override
 	public void pause() {
 		ModelPerson.pause();
+		ModelRecipe.pause();
+		ModelSandwich.pause();
 		if (RopGame.DEBUG) Gdx.app.log("life-cycle", "Pausing.");
 	}
 
 	@Override
 	public void resume() {
 		ModelPerson.resume();
+		ModelRecipe.resume();
+		ModelSandwich.resume();
 		if (RopGame.DEBUG) Gdx.app.log("life-cycle", "Resuming.");
 		Pixmap background = new Pixmap(128,128,Pixmap.Format.RGBA4444);
 		background.setColor(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.75f);
@@ -390,7 +396,6 @@ public class GameScreen implements Screen{
 	}
 	
 	public void startDay() {
-		new ModelPerson();
 		for (Label l: dayNotes) {
 			l.remove();
 		}

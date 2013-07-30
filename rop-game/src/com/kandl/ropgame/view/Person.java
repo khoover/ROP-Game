@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.kandl.ropgame.datamodel.ModelPerson;
 import com.kandl.ropgame.model.Recipe;
 
 public class Person extends Group {
@@ -28,6 +29,7 @@ public class Person extends Group {
 	private final String name;
 	private final Recipe order;
 	private boolean flipped;
+	private ModelPerson model;
 	
 	public Person(boolean male, boolean flipped) {
 		this.flipped = flipped;
@@ -55,6 +57,8 @@ public class Person extends Group {
 			}
 		}
 		order = new Recipe();
+		model = new ModelPerson(order, null);
+		order.getModel().setPerson(this);
 	}
 	
 	public Recipe getOrder() {
@@ -139,6 +143,7 @@ public class Person extends Group {
 	}
 	
 	public void free() {
+		model.finalize();
 		if (male) { maleNameToFree.add(name); maleToFree.add(sprites);
 			if (maleToFree.size == 3) { maleToFree.shuffle(); maleSpriteStore.freeAll(maleToFree); maleToFree.clear(); }
 			if (maleNameToFree.size == 6) { maleNameToFree.shuffle(); maleNames.freeAll(maleNameToFree); maleNameToFree.clear();}
@@ -151,6 +156,10 @@ public class Person extends Group {
 	
 	public static void dispose() {
 		spriteAtlas.dispose();
+	}
+
+	public ModelPerson getModel() {
+		return model;
 	}
 	
 }

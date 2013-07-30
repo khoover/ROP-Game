@@ -2,6 +2,7 @@ package com.kandl.ropgame.model;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.kandl.ropgame.datamodel.ModelSandwich;
 import com.kandl.ropgame.ingredients.*;
 
 public class Sandwich {
@@ -9,6 +10,7 @@ public class Sandwich {
 	private float cookTime;
 	private Bread bread;
 	private Array<Vector2> cuts, positions;
+	private ModelSandwich model;
 	
 	public Sandwich (Bread bread) {
 		components = new Array<Ingredient>(2);
@@ -16,6 +18,7 @@ public class Sandwich {
 		this.bread = bread;
 		cuts = new Array<Vector2>(0);
 		positions = new Array<Vector2>(0);
+		model = new ModelSandwich(components, cuts, positions);
 	}
 	
 	public Bread getBread() {
@@ -49,5 +52,9 @@ public class Sandwich {
 	
 	public Array<Vector2> getPositions() {
 		return positions;
+	}
+
+	public ModelSandwich getModel() {
+		return model;
 	}
 }
