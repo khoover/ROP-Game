@@ -16,7 +16,7 @@
             </classpath>
         </javac>
     </target>
-    <target name="compile" description"compile the base files used across all versions">
+    <target name="compile" description="compile the base files used across all versions">
         <mkdir dir="classes"/>
         <javac srcdir="rop-game/src" destdir="classes">
             <classpath>
