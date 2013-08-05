@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project name="ROP-Game" default="compile">
+    <target name="compile-desktop" depends="compile" description="compile the desktop version of the game">
+        <mkdir dir="classes"/>
+        <javac srcdir="rop-game-desktop/src" destdir="classes">
+            <classpath>
+                <pathelement path="${classpath}"/>
+                <fileset dir="rop-game/libs">
+                    <include name="**/*.jar"/>
+                    <exclude name="**/*source*"/>
+                </fileset>
+                <fileset dir="rop-game-desktop/libs">
+                    <include name="**/*.jar"/>
+                    <exclude name="**/*source*"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+    <target name="compile" description="compile the base files used across all versions">
+        <mkdir dir="classes"/>
+        <javac srcdir="rop-game/src" destdir="classes">
+            <classpath>
+                <pathelement path="${classpath}"/>
+                <fileset dir="rop-game/libs">
+                    <include name="**/*.jar"/>
+                    <exclude name="**/*source*"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+    <target name="clean" description="cleans class files">
+        <delete dir="classes"/>
+    </target>
+    <target name="run-desktop" depends="compile-desktop" description="runs the desktop version">
+        <java classname="com.kandl.ropgame.Main" fork="true" spawn="true">
+            <classpath>
+                <pathelement path="${classpath}"/>
+                <pathelement location="classes"/>
+                <pathelement location="rop-game-android/assets"/>
+                <fileset dir="rop-game/libs">
+                    <include name="**/*.jar"/>
+                    <exclude name="**/*source*"/>
+                </fileset>
+                <fileset dir="rop-game-desktop/libs">
+                    <include name="**/*.jar"/>
+                    <exclude name="**/*source*"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+</project>
