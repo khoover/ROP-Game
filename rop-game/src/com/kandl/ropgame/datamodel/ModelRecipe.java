@@ -42,7 +42,7 @@ public class ModelRecipe {
 		});
 	}
 	
-	public void finalize() {
+	public void close() {
 		if (!finalized) {
 			finalized = true;
 			output.execute(new Runnable() {

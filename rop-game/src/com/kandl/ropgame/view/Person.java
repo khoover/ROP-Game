@@ -143,7 +143,7 @@ public class Person extends Group {
 	}
 	
 	public void free() {
-		model.finalize();
+		model.close();
 		if (male) { maleNameToFree.add(name); maleToFree.add(sprites);
 			if (maleToFree.size == 3) { maleToFree.shuffle(); maleSpriteStore.freeAll(maleToFree); maleToFree.clear(); }
 			if (maleNameToFree.size == 6) { maleNameToFree.shuffle(); maleNames.freeAll(maleNameToFree); maleNameToFree.clear();}

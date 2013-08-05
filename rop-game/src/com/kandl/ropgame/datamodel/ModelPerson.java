@@ -27,7 +27,7 @@ public class ModelPerson {
 		if (s != null) sandwich = s.getModel();
 	}
 	
-	public void finalize() {
+	public void close() {
 		if (!finalized) {
 			finalized = true;
 			output.execute(new Runnable() {
@@ -37,8 +37,8 @@ public class ModelPerson {
 											make + "," + cut, true);
 				}
 			});
-			recipe.finalize();
-			sandwich.finalize();
+			recipe.close();
+			sandwich.close();
 		}
 	}
 	
