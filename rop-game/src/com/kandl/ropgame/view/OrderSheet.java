@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -24,7 +23,6 @@ import com.kandl.ropgame.RopGame;
 import com.kandl.ropgame.ingredients.Ingredient;
 import com.kandl.ropgame.managers.SheetManager;
 import com.kandl.ropgame.managers.TableManager;
-import com.kandl.ropgame.model.Recipe;
 import com.kandl.ropgame.model.Recipe.CookState;
 import com.kandl.ropgame.model.RecipeHolder;
 import com.kandl.ropgame.model.Sandwich;
@@ -52,13 +50,14 @@ public class OrderSheet extends Group implements Disposable {
 		background.setSize(350, 480);
 		
 		order = r;
-		name = new Label(r.getName() + ", " + r.getTable(), UILayer.buttonSkin, "person");
-		name.setAlignment(Align.center);
-		addActor(name);
-		name.setTouchable(Touchable.disabled);
-		name.setSize(350, 50);
-		name.setPosition(0, 430);
-		
+		if (SheetManager.isShowInfo()) {
+			name = new Label(r.getName() + ", " + r.getTable(), UILayer.buttonSkin, "person");
+			name.setAlignment(Align.center);
+			addActor(name);
+			name.setTouchable(Touchable.disabled);
+			name.setSize(350, 50);
+			name.setPosition(0, 430);
+		}
 		foreground = new Array<Image>(3);
 		/*Image bread = new Image(new SpriteDrawable(r.getLeftRecipe().getBread().getIcon()));
 		foreground.add(bread);

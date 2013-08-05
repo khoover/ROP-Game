@@ -24,6 +24,7 @@ public abstract class SheetManager {
 	private static OrderSheet currentSheet = new OrderSheet();
 	private static Array<MiniOrderSheet> miniSheets = new Array<MiniOrderSheet>(10);
 	private static Image downArrow = new Image(new TextureRegionDrawable(RopGame.assets.get("img/icons/buttons.atlas", TextureAtlas.class).findRegion("triangle_down")));
+	private static boolean showInfo = true;
 	
 	public static void resize(float width, float height) {
 		SheetManager.width = width - padX;
@@ -108,5 +109,13 @@ public abstract class SheetManager {
 	
 	public static OrderSheet getCurrent() {
 		return currentSheet;
+	}
+
+	public static boolean isShowInfo() {
+		return showInfo;
+	}
+
+	public static void setShowInfo(boolean showInfo) {
+		SheetManager.showInfo = showInfo;
 	}
 }

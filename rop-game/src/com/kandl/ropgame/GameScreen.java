@@ -45,7 +45,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -78,8 +77,8 @@ import com.kandl.ropgame.ingredients.WhiteBread;
 import com.kandl.ropgame.managers.GrillManager;
 import com.kandl.ropgame.managers.GroupManager;
 import com.kandl.ropgame.managers.SheetManager;
-import com.kandl.ropgame.model.Sandwich;
 import com.kandl.ropgame.model.Day;
+import com.kandl.ropgame.model.Sandwich;
 import com.kandl.ropgame.ui.UILayer;
 import com.kandl.ropgame.view.Person;
 import com.kandl.ropgame.view.ProgressBar;
@@ -412,6 +411,7 @@ public class GameScreen implements Screen{
 		yesterdayScore = RopGame.score;
 		GroupManager.setDayTotal(0);
 		if (today != null) {
+			SheetManager.setShowInfo(today.isShowInfo());
 			GroupManager.setDayMax(today.getDayMax());
 			GroupManager.setMax(today.getDayConcurrent());
 			for (String s: today.getDayNotes()) {
