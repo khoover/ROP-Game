@@ -34,7 +34,7 @@ import com.kandl.ropgame.view.sandwichView.GrillView;
 public class UILayer extends Stage implements Disposable {
 	private final float padX, padY;
 	
-	private final Image orderLine;
+	private Image orderLine;
 	private final TextButton confirm;
 	private final TextButton trash;
 	private final Label count;
@@ -239,6 +239,9 @@ public class UILayer extends Stage implements Disposable {
 	
 	// guaranteed that height never changes, so all we have to do is fidget with widths/X.
 	public void resize(float width, float height) {
+		orderLine.remove();
+		orderLine = new Image(new NinePatchDrawable(buttonSkin.getAtlas().createPatch("line")), Scaling.stretchX);
+		this.addActor(orderLine);
 		orderLine.setSize(width - padX, padY);
 		orderLine.setPosition(0, height - padY);
 		background.setPosition(width - padX - 5, 0);
