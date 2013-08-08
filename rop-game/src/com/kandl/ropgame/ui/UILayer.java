@@ -32,7 +32,7 @@ import com.kandl.ropgame.view.sandwichView.GrillView;
  * 
  * @author Ken Hoover */
 public class UILayer extends Stage implements Disposable {
-	private final float padX, padY;
+	public final float padX, padY;
 	
 	private Image orderLine;
 	private final TextButton confirm;
@@ -241,7 +241,7 @@ public class UILayer extends Stage implements Disposable {
 	public void resize(float width, float height) {
 		orderLine.remove();
 		orderLine = new Image(new NinePatchDrawable(buttonSkin.getAtlas().createPatch("line")), Scaling.stretchX);
-		this.addActor(orderLine);
+		this.getRoot().addActorAt(1, orderLine);
 		orderLine.setSize(width - padX, padY);
 		orderLine.setPosition(0, height - padY);
 		background.setPosition(width - padX - 5, 0);

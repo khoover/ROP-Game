@@ -100,6 +100,8 @@ public class GameScreen implements Screen{
 	private Music grillMusic = Gdx.audio.newMusic(Gdx.files.internal("sound/grill_music.ogg"));
 	private boolean dayOver = true;
 	private InputProcessor input;
+	private Array<Source> sources;
+	private Array<Actor> makeActors;
 
 	private Array<Label> dayNotes = new Array<Label>(2);
 	private Label dayHeader;
@@ -188,6 +190,7 @@ public class GameScreen implements Screen{
 		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
 		for (Actor a: scene.getActors()) {
 			a.setPosition(0, 0);
+			a.setName("background");
 		}
 		return scene;
 	}
@@ -201,16 +204,18 @@ public class GameScreen implements Screen{
 		scene.addActor(new Image(new TextureRegionDrawable(new TextureRegion(background, 0, 224, 1280, 800))));
 		for (Actor a: scene.getActors()) {
 			a.setPosition(-60, 0);
+			a.setName("make_background");
 		}
 		int n = 0;
 		int height = 520;
+		sources = new Array<Source>(ingredients.size);
 		for (final Ingredient i: ingredients) {
 			Image current = new Image(new SpriteDrawable(i.getIcon()), Scaling.none);
 			scene.addActor(current);
 			current.setPosition(10 + 170 * n++, height);
 			if (n > 4) { n = 0; height = 400; }
 			current.setSize(current.getWidth(), 140);
-			makeDrag.addSource(new Source(current) {
+			sources.add(new Source(current) {
 
 				@Override
 				public Payload dragStart(InputEvent event, float x, float y,
@@ -222,7 +227,10 @@ public class GameScreen implements Screen{
 				}
 				
 			});
+			makeDrag.addSource(sources.peek());
 		}
+		makeActors = new Array<Actor>(scene.getActors());
+		makeActors.removeIndex(0);
 		currentMaking = new MakeView(new Sandwich(new WhiteBread()));
 		scene.addActor(currentMaking);
 		currentMaking.setPosition(100, 146);
@@ -319,6 +327,49 @@ public class GameScreen implements Screen{
 		dayContinue.setPosition((length - dayContinue.getWidth()) / 2f, dayContinue.getY());
 		for (Stage s: Scene) {
 			s.setViewport(length, 800, true);
+			if (s != Scene[0]) {
+				if (length < 1280) {
+					if (s == Scene[1]) {
+						s.getRoot().addAction(Actions.moveTo(Math.max(-90, length - 1280), 0));
+					} else if (s == Scene[2]) {
+						s.getRoot().addAction(Actions.moveTo(Math.max(-100, length - 1280), 0));
+					} else if (s == Scene[3]) {
+						s.getRoot().addAction(Actions.moveTo(Math.max(-100, length - 1280), 0));
+					}
+				} else {
+					s.getRoot().addAction(Actions.moveTo(0,0));
+				}
+			}
+		}
+		for (Source s: sources) {
+			makeDrag.removeSource(s);
+		}
+		for (Actor a: makeActors) {
+			a.remove();
+		}
+		int n = 0;
+		int height1 = 520;
+		makeActors = new Array<Actor>(ingredients.size);
+		for (final Ingredient i: ingredients) {
+			Image current = new Image(new SpriteDrawable(i.getIcon()), Scaling.none);
+			makeActors.add(current);
+			Scene[1].addActor(current);
+			current.setPosition(Math.max(Math.min(length-1280, 90), 0) + 170 * n++, height1);
+			if (n >= (int) (length - UILayer.padX + 10) / 170) { n = 0; height1 -= 120; }
+			current.setSize(current.getWidth(), 140);
+			sources.add(new Source(current) {
+
+				@Override
+				public Payload dragStart(InputEvent event, float x, float y,
+						int pointer) {
+					Payload p = new Payload();
+					p.setDragActor(i.getSideView());
+					p.setObject(i);
+					return p;
+				}
+				
+			});
+			makeDrag.addSource(sources.peek());
 		}
 	}
 
@@ -473,7 +524,7 @@ public class GameScreen implements Screen{
 
 	public void initMaking() {
 		currentMaking = new MakeView(new Sandwich(new WhiteBread()));
-		Scene[1].addActor(currentMaking);
+		Scene[1].getRoot().addActorAt(1, currentMaking);
 		currentMaking.setPosition(100, 146);
 		makeTarget = new Target(currentMaking) {
 			@Override

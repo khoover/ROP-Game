@@ -54,7 +54,8 @@ public class CutView extends Group {
 			
 			@Override
 			public void dragStart(InputEvent e, float x, float y, int pointer) {
-				orig = CutView.this.dragUI.stageToLocalCoordinates(new Vector2(e.getStageX(), e.getStageY()));
+				orig = CutView.this.dragUI.stageToLocalCoordinates(new Vector2(e.getStageX()-RopGame.gameScreen.getScreen(3).getRoot().getX(),
+																			   e.getStageY()-RopGame.gameScreen.getScreen(3).getRoot().getY()));
 				cut = new Vector2(0,0);
 				
 				beginCircle = new Image(new TextureRegionDrawable(RopGame.assets.get("img/icons/buttons.atlas", TextureAtlas.class).findRegion("endpiece")), Scaling.none);
@@ -74,7 +75,8 @@ public class CutView extends Group {
 			
 			@Override
 			public void drag(InputEvent e, float x, float y, int pointer) {
-				cut = CutView.this.dragUI.stageToLocalCoordinates(cut.set(e.getStageX(), e.getStageY()));
+				cut = CutView.this.dragUI.stageToLocalCoordinates(cut.set(e.getStageX()-RopGame.gameScreen.getScreen(3).getRoot().getX(),
+						   												  e.getStageY()-RopGame.gameScreen.getScreen(3).getRoot().getY()));
 				if (cut.x < 0 || cut.x > CutView.this.dragUI.getWidth() || cut.y < 0 || cut.y > CutView.this.dragUI.getHeight()) {
 					if (cut.x < 0) {
 						if (cut.y < 0) {
