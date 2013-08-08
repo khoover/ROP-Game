@@ -44,6 +44,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -220,10 +221,20 @@ public class GameScreen implements Screen{
 				@Override
 				public Payload dragStart(InputEvent event, float x, float y,
 						int pointer) {
+					for (Actor a: makeActors) {
+						a.setTouchable(Touchable.disabled);
+					}
 					Payload p = new Payload();
 					p.setDragActor(i.getSideView());
 					p.setObject(i);
 					return p;
+				}
+				
+				@Override
+				public void dragStop (InputEvent event, float x, float y, int pointer, Target target) {
+					for (Actor a: makeActors) {
+						a.setTouchable(Touchable.enabled);
+					}
 				}
 				
 			});
@@ -325,6 +336,7 @@ public class GameScreen implements Screen{
 		dayHeader.setWidth(length);
 		dayScore.setWidth(length);
 		dayContinue.setPosition((length - dayContinue.getWidth()) / 2f, dayContinue.getY());
+		dayStage.getActors().get(0).setSize(dayStage.getWidth(), dayStage.getHeight());
 		for (Stage s: Scene) {
 			s.setViewport(length, 800, true);
 			if (s != Scene[0]) {
@@ -349,12 +361,13 @@ public class GameScreen implements Screen{
 		}
 		int n = 0;
 		int height1 = 520;
+		final float offset = (Math.min(1280 - length, 90) >= 0 ? Math.min(1280 - length, 90) : 0);
 		makeActors = new Array<Actor>(ingredients.size);
 		for (final Ingredient i: ingredients) {
 			Image current = new Image(new SpriteDrawable(i.getIcon()), Scaling.none);
 			makeActors.add(current);
 			Scene[1].addActor(current);
-			current.setPosition(Math.max(Math.min(length-1280, 90), 0) + 170 * n++, height1);
+			current.setPosition(offset + 170 * n++, height1);
 			if (n >= (int) (length - UILayer.padX + 10) / 170) { n = 0; height1 -= 120; }
 			current.setSize(current.getWidth(), 140);
 			sources.add(new Source(current) {
@@ -362,10 +375,20 @@ public class GameScreen implements Screen{
 				@Override
 				public Payload dragStart(InputEvent event, float x, float y,
 						int pointer) {
+					for (Actor a: makeActors) {
+						a.setTouchable(Touchable.disabled);
+					}
 					Payload p = new Payload();
 					p.setDragActor(i.getSideView());
 					p.setObject(i);
 					return p;
+				}
+				
+				@Override
+				public void dragStop (InputEvent event, float x, float y, int pointer, Target target) {
+					for (Actor a: makeActors) {
+						a.setTouchable(Touchable.enabled);
+					}
 				}
 				
 			});
