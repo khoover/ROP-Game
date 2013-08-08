@@ -54,7 +54,7 @@ public class StartScreen implements Screen {
 	public void resize(int width, int height) {
 		float oldWidth = stage.getWidth();
 		stage.setViewport(((float) width/ (float) height) * 800f, 800, true);
-		stage.addAction(Actions.moveBy(oldWidth - stage.getWidth(),0));
+		stage.getRoot().addAction(Actions.moveBy(-(oldWidth - stage.getWidth()), 0));
 	}
 
 	@Override
