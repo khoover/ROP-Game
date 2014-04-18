@@ -32,6 +32,7 @@ public abstract class TableManager {
 	
 	public static void freeTable(int i) {
 		tables.set(i, null);
+		GroupManager.freeSeat();
 		if (GroupManager.getDayMax() == GroupManager.getDayTotal()) {
 			for (int n = 0; n < 5; ++n) {
 				if (tables.get(n) != null) return;

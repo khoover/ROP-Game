@@ -8,6 +8,8 @@ import com.kandl.ropgame.view.Person;
 public class GroupManager extends Actor {
 	private static int dayMax = 0;
 	private static int dayTotal = 0;
+	private static int seated = 0;
+	private static final int SEATS = 5;
 	private static int max = 0;
 	private static int current = 0;
 	private float spawnGap = 15;
@@ -16,6 +18,7 @@ public class GroupManager extends Actor {
 	public void createGroup() {
 		if (dayTotal++ >= dayMax) {--dayTotal; return;}
 		current++;
+		seated++;
 		spawnGap = 0;
 		Person p1 = new Person(Math.random() >= 0.5, true);
 		Person p2 = null;
@@ -27,12 +30,19 @@ public class GroupManager extends Actor {
 	public void act(float delta) {
 		spawnGap += delta;
 		despawnGap += delta;
-		if (spawnGap >= (RopGame.DEBUG ? 0 : 20) && despawnGap >= 5 && current < max) createGroup();
+		if (spawnGap >= (RopGame.DEBUG ? 0 : 20) &&
+				despawnGap >= 5 &&
+				current < max &&
+				seated < SEATS) createGroup();
 	}
 	
 	public static void despawn() {
 		current--;
 		despawnGap = 0;
+	}
+	
+	public static void freeSeat() {
+		seated--;
 	}
 	
 	public static void setMax(int n) {
