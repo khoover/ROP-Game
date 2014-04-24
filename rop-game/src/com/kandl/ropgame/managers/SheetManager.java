@@ -72,7 +72,7 @@ public abstract class SheetManager {
 		currentSheet = miniSheets.get(i).getOrder();
 		currentSheet.setDragable(dragable);
 		UI.addActor(currentSheet);
-		currentSheet.addAction(Actions.moveTo(width + 45, 130));
+		currentSheet.addAction(Actions.moveTo(width + 45, 120));
 	}
 	
 	public static void switchTo(MiniOrderSheet o) {

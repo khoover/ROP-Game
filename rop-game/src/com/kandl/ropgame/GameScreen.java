@@ -301,11 +301,16 @@ public class GameScreen implements Screen{
 
 	public void switchScreen(final int screen) {
 		if (RopGame.DEBUG) assert(screen >= 0 && screen <= 3);
-		frontMusic.setVolume(0);
-		grillMusic.setVolume(0);
 		((InputMultiplexer) Gdx.input.getInputProcessor()).removeProcessor(ActiveScene);
-		if (screen == 0) frontMusic.setVolume(0.5f);
-		else if (screen == 2) grillMusic.setVolume(0.75f);
+		if (screen == 0) {
+			frontMusic.setVolume(0.5f);
+			grillMusic.setVolume(0);
+		}
+		else {
+			frontMusic.setVolume(0.2f);
+			if (screen == 2) grillMusic.setVolume(0.75f);
+			else grillMusic.setVolume(0.15f);
+		}
 		ActiveScene = Scene[screen];
 		((InputMultiplexer) Gdx.input.getInputProcessor()).addProcessor(ActiveScene);
 	}
@@ -429,7 +434,6 @@ public class GameScreen implements Screen{
 		background.fill();
 		((TextureRegionDrawable) ((Image) dayStage.getActors().get(0)).getDrawable()).setRegion(new TextureRegion(new Texture(background)));
 		background.dispose();
-		UILayer.resume();
 		GrillManager.resume();
 	}
 	

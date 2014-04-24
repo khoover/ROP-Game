@@ -3,24 +3,32 @@ buttons.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-paper
+panel_bg
   rotate: false
-  xy: 1, 101
-  size: 200, 400
-  orig: 200, 400
+  xy: 1, 283
+  size: 445, 200
+  split: 4, 4, 4, 156
+  orig: 445, 200
   offset: 0, 0
   index: -1
 line
   rotate: false
-  xy: 203, 321
+  xy: 1, 101
   size: 288, 180
   split: 13, 13, 0, 180
   orig: 288, 180
   offset: 0, 0
   index: -1
+paper
+  rotate: false
+  xy: 448, 83
+  size: 200, 400
+  orig: 200, 400
+  offset: 0, 0
+  index: -1
 generic_button_down
   rotate: false
-  xy: 1, 59
+  xy: 650, 443
   size: 200, 40
   split: 5, 4, 4, 4
   orig: 200, 40
@@ -28,7 +36,7 @@ generic_button_down
   index: -1
 generic_button_up
   rotate: false
-  xy: 203, 279
+  xy: 1, 59
   size: 200, 40
   split: 4, 5, 4, 4
   orig: 200, 40
@@ -36,84 +44,84 @@ generic_button_up
   index: -1
 cut_down
   rotate: false
-  xy: 493, 399
+  xy: 291, 179
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 cut_selected
   rotate: false
-  xy: 203, 175
+  xy: 650, 339
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 cut_up
   rotate: false
-  xy: 597, 399
+  xy: 650, 235
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 front_down
   rotate: false
-  xy: 203, 71
+  xy: 650, 131
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 front_selected
   rotate: false
-  xy: 701, 399
+  xy: 754, 339
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 front_up
   rotate: false
-  xy: 805, 399
+  xy: 754, 235
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 grill_down
   rotate: false
-  xy: 909, 399
+  xy: 754, 131
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 grill_selected
   rotate: false
-  xy: 307, 175
+  xy: 291, 75
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 grill_up
   rotate: false
-  xy: 307, 71
+  xy: 858, 381
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 make_down
   rotate: false
-  xy: 493, 295
+  xy: 858, 277
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 make_selected
   rotate: false
-  xy: 597, 295
+  xy: 858, 173
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
   index: -1
 make_up
   rotate: false
-  xy: 701, 295
+  xy: 650, 27
   size: 102, 102
   orig: 102, 102
   offset: 0, 0
@@ -127,29 +135,29 @@ plate
   index: -1
 endpiece
   rotate: false
-  xy: 405, 299
+  xy: 395, 261
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
+triangle_down
+  rotate: false
+  xy: 203, 89
+  size: 20, 10
+  orig: 20, 10
+  offset: 0, 0
+  index: -1
 blank_box
   rotate: false
-  xy: 1013, 491
+  xy: 962, 473
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 cut_line
   rotate: false
-  xy: 1013, 479
+  xy: 858, 161
   size: 10, 10
   orig: 10, 10
-  offset: 0, 0
-  index: -1
-triangle_down
-  rotate: false
-  xy: 203, 59
-  size: 20, 10
-  orig: 20, 10
   offset: 0, 0
   index: -1

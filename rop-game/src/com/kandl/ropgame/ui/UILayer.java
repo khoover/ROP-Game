@@ -43,7 +43,8 @@ public class UILayer extends Stage implements Disposable {
 	private final Label score;
 	private final Button[] scene;
 	private final ButtonGroup scenes;
-	private Image background;
+	private Image button_background;
+	private Image sheet_background;
 	
 	private ChangeListener confirmListener;
 	private ChangeListener trashListener;
@@ -63,11 +64,8 @@ public class UILayer extends Stage implements Disposable {
 		trashListener = null;
 		
 		// set skin up
-		Pixmap background = new Pixmap(128, 128, Pixmap.Format.RGBA8888);
-		background.setColor(Color.BLACK);
-		background.fill();
-		this.background = new Image(new TiledDrawable(new TextureRegion(new Texture(background))));
-		background.dispose();
+		button_background = new Image(new NinePatchDrawable(buttonSkin.getAtlas().createPatch("panel_bg")), Scaling.stretchY);
+		sheet_background = new Image(new NinePatchDrawable(buttonSkin.getAtlas().createPatch("panel_bg")), Scaling.stretchY); 
 		
 		// create components of corner table
 		score = new Label("$" + String.format("%1$.2f", RopGame.score), new Label.LabelStyle(buttonSkin.getFont("score"), Color.YELLOW));
@@ -95,9 +93,12 @@ public class UILayer extends Stage implements Disposable {
 		addActor(orderLine);
 		orderLine.setPosition(0, height - padY);
 		orderLine.setSize(width - padX, padY);
-		addActor(this.background);
-		this.background.setPosition(width - padX - 5, 0);
-		this.background.setSize(padX + 5, height);
+		addActor(button_background);
+		button_background.setPosition(width - padX - 5, height - padY);
+		button_background.setSize(padX + 5, padY);
+		addActor(sheet_background);
+		sheet_background.setPosition(width - padX - 5, 0);
+		sheet_background.setSize(padX + 5, height - padY);
 		addActor(score);
 		score.setPosition(width - padX + 5, height - padY / 2f + 5);
 		for (int i = 0; i < 4; ++i) {
@@ -244,7 +245,8 @@ public class UILayer extends Stage implements Disposable {
 		this.getRoot().addActorAt(1, orderLine);
 		orderLine.setSize(width - padX, padY);
 		orderLine.setPosition(0, height - padY);
-		background.setPosition(width - padX - 5, 0);
+		button_background.setPosition(width - padX - 5, height - padY);
+		sheet_background.setPosition(width - padX - 5, 0);
 		score.setPosition(width - padX + 5, height - padY / 2f + 10);
 		for (int i = 0; i < 4; ++i) {
 			scene[i].setPosition(width - padX + 4 + i * 110, height - padY);
@@ -258,18 +260,5 @@ public class UILayer extends Stage implements Disposable {
 	
 	public Button[] getButtons() {
 		return scene;
-	}
-
-	@Override
-	public void dispose() {
-		((TiledDrawable) background.getDrawable()).getRegion().getTexture().dispose();
-	}
-	
-	public void resume() {
-		Pixmap background = new Pixmap(128, 128, Pixmap.Format.RGBA8888);
-		background.setColor(Color.BLACK);
-		background.fill();
-		((TiledDrawable) this.background.getDrawable()).setRegion(new TextureRegion(new Texture(background)));
-		background.dispose();
 	}
 }
