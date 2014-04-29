@@ -145,12 +145,12 @@ public class Person extends Group {
 	public void free() {
 		model.close();
 		if (male) { maleNameToFree.add(name); maleToFree.add(sprites);
-			if (maleToFree.size == 3) { maleToFree.shuffle(); maleSpriteStore.freeAll(maleToFree); maleToFree.clear(); }
-			if (maleNameToFree.size == 6) { maleNameToFree.shuffle(); maleNames.freeAll(maleNameToFree); maleNameToFree.clear();}
+			if (maleToFree.size >= 2) { maleToFree.shuffle(); maleSpriteStore.freeAll(maleToFree); maleToFree.clear(); }
+			if (maleNameToFree.size >= 2) { maleNameToFree.shuffle(); maleNames.freeAll(maleNameToFree); maleNameToFree.clear();}
 		}
 		else { femaleNameToFree.add(name); femaleToFree.add(sprites);
-			if (femaleToFree.size == 3) { femaleToFree.shuffle(); femaleSpriteStore.freeAll(femaleToFree); femaleToFree.clear(); }
-			if (femaleNameToFree.size == 6) { femaleNameToFree.shuffle(); femaleNames.freeAll(femaleNameToFree); femaleNameToFree.clear(); }
+			if (femaleToFree.size >= 2) { femaleToFree.shuffle(); femaleSpriteStore.freeAll(femaleToFree); femaleToFree.clear(); }
+			if (femaleNameToFree.size >= 2) { femaleNameToFree.shuffle(); femaleNames.freeAll(femaleNameToFree); femaleNameToFree.clear(); }
 		}
 	}
 	
