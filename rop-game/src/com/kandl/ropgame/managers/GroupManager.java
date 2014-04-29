@@ -31,7 +31,7 @@ public class GroupManager extends Actor {
 		spawnGap += delta;
 		despawnGap += delta;
 		if (spawnGap >= (RopGame.DEBUG ? 0 : 20) &&
-				despawnGap >= 5 &&
+				despawnGap >= (RopGame.DEBUG ? 0 : 5) &&
 				current < max &&
 				seated < SEATS) createGroup();
 	}
