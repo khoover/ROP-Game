@@ -68,7 +68,7 @@ public abstract class SheetManager {
 	public static void switchTo(int i) {
 		currentSheet.remove();
 		currentSheet.setDragable(false);
-		downArrow.setPosition(10 + miniWidth * i, height - 30);
+		downArrow.setPosition(5 + miniWidth * i + (miniWidth - miniSheets.get(i).getLogicWidth()) / 2f, height - 30);
 		currentSheet = miniSheets.get(i).getOrder();
 		currentSheet.setDragable(dragable);
 		UI.addActor(currentSheet);
@@ -84,6 +84,10 @@ public abstract class SheetManager {
 		for (MiniOrderSheet m: miniSheets) {
 			m.resize(miniWidth - 10);
 			m.addAction(Actions.moveTo(10 + miniWidth * i++ + (miniWidth - m.getLogicWidth()) / 2f, height - padY + 35));
+		}
+		MiniOrderSheet m = currentSheet.getMini();
+		if (m != null) {
+			downArrow.setPosition(5 + miniWidth * miniSheets.indexOf(m, true) + (miniWidth - m.getLogicWidth()) / 2f, height - 30);
 		}
 		currentSheet.addAction(Actions.moveTo(width + 45, 130));
 	}
